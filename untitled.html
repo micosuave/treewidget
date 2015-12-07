@@ -1,0 +1,269 @@
+<!-- <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="si21h6tw2o3msis"></script>-->
+<!-- <script type="text/javascript" src="https://app.box.com/js/static/select.js"></script> -->
+<!--<script type="text/javascript" src="https://js.live.net/v5.0/OneDrive.js" id="onedrive-js" client-id="000000004C14EF09"></script>
+<script src="//js.live.net/v5.0/wl.debug.js"></script>-->
+<!-- structures -->
+<!-- bower_components/angular-dashboard-framework-master/sample/ -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/adf-dynamic-example/public/components/adf-structures-base/dist/adf-structures-base.js"></script> -->
+
+<!-- news widget -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/adf-dynamic-example/public/components/adf-widget-news/dist/adf-widget-news.js"></script> -->
+
+<!-- weather widget -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/adf-dynamic-example/public/components/adf-widget-weather/dist/adf-widget-weather.js"></script> -->
+
+<!-- linklist widget -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/adf-dynamic-example/public/components/adf-widget-linklist/dist/adf-widget-linklist.js"></script> -->
+
+<!-- markdown widget -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/sample/widgets/markdown/components/showdown/src/showdown.js"></script> -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/sample/widgets/markdown/components/angular-markdown-directive/markdown.js"></script> -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/adf-dynamic-example/public/components/adf-widget-markdown/dist/adf-widget-markdown.js"></script> -->
+
+<!-- randommsg widget -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/adf-dynamic-example/public/components/adf-widget-randommsg/dist/adf-widget-randommsg.js"></script> -->
+
+<!-- github widget -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/sample/widgets/github/components/highcharts/adapters/standalone-framework.src.js"></script> -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/sample/widgets/github/components/highcharts/highcharts.js"></script> -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/sample/widgets/github/components/highcharts-ng/dist/highcharts-ng.js"></script> -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/adf-dynamic-example/public/components/adf-widget-github/dist/adf-widget-github.js"></script> -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/sample/widgets/github/src/service.js"></script> -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/sample/widgets/github/src/authorController.js"></script> -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/sample/widgets/github/src/historyController.js"></script> -->
+
+<!-- version widget -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/adf-dynamic-example/public/components/adf-widget-version/dist/adf-widget-version.js"></script> -->
+<!-- <script src="bower_components/angular-dashboard-framework-master/adf-dynamic-example/public/components/adf-widget-iframe/dist/adf-widget-iframe.js"></script> -->
+<!-- clock widget -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/sample/widgets/clock/components/moment/moment.js"></script> -->
+<!-- <script type="text/javascript" src="bower_components/angular-dashboard-framework-master/adf-dynamic-example/public/components/adf-widget-clock/dist/adf-widget-clock.js"></script> -->
+
+
+<script>
+    $('body').flowtype({
+        minimum: 500,
+        maximum: 1600,
+        minFont: 8,
+        maxFont: 32,
+        fontRatio: 90
+    });
+</script>
+
+<!-- <script>
+    var iframe = document.createElement('iframe');
+    iframe.onload = function() {
+        console.log(iframe.contentWindow);
+        getIframeSelectionText(iframe);
+        // contentWindow is set! 
+    };
+    iframe.src = 'assets/tableOfContents.html';
+    $('footer').append(iframe);
+
+    $(iframe).css({
+        'padding': '15px',
+        'border': '3px inset rgba(0,0,0,1);',
+        'border-radius': '15px',
+        'width': '550px',
+        'position': 'absolute',
+        'right': '0px'
+    });
+    $(iframe).addClass('card ng-click-active');
+    $('footer').append(iframe);
+    // $(document.body).bind('click', function() {
+    //     var u_sel;
+    //     if (window.getSelection) {
+    //         u_sel = iframe[0].contentWindow.getSelection();
+    //         // u_sel.text()   InternetExplorer !!
+    //         alert(u_sel);
+    //     }
+    // });
+    $('.card').draggable({
+        scroll: true,
+        cursor: 'move',
+        handle: '.card',
+        stack: '.card'
+    }).resizable();
+
+
+
+
+    function getIframeSelectionText(iframe) {
+        var win = iframe.contentWindow;
+        var doc = iframe.contentDocument || win.document;
+
+        if (win.getSelection) {
+            return win.getSelection().toString();
+        } else if (doc.selection && doc.selection.createRange) {
+            return doc.selection.createRange().text;
+        }
+    }
+
+
+    console.log(getIframeSelectionText(iframe));
+
+
+
+    var tcon = {}, // static class
+        _transformClass = 'tcon-transform',
+
+        // const
+        DEFAULT_EVENTS = {
+            transform: ['click'],
+            revert: ['click']
+        };
+
+    // ##############
+    // private methods
+    // ##############
+
+    /**
+     * Normalize a selector string, a single DOM element or an array of elements into an array of DOM elements.
+     * @private
+     *
+     * @param {(string|element|array)} elements - Selector, DOM element or Array of DOM elements
+     * @returns {array} Array of DOM elements
+     */
+    var getElementList = function(elements) {
+        if (typeof elements === 'string') {
+            return Array.prototype.slice.call(document.querySelectorAll(elements));
+        } else if (typeof elements === 'undefined' || elements instanceof Array) {
+            return elements;
+        } else {
+            return [elements];
+        }
+    };
+
+    /**
+     * Normalize a string with eventnames separated by spaces or an array of eventnames into an array of eventnames.
+     * @private
+     *
+     * @param {(string|array)} elements - String with eventnames separated by spaces or array of eventnames
+     * @returns {array} Array of eventnames
+     */
+    var getEventList = function(events) {
+        if (typeof events === 'string') {
+            return events.toLowerCase().split(' ');
+        } else {
+            return events;
+        }
+    };
+
+    /**
+     * Attach or remove transformicon events to one or more elements.
+     * @private
+     *
+     * @param {(string|element|array)} elements - Selector, DOM element or Array of DOM elements to be toggled
+     * @param {object} [events] - An Object containing one or more special event definitions
+     * @param {boolean} [remove=false] - Defines wether the listeners should be added (default) or removed.
+     */
+    var setListeners = function(elements, events, remove) {
+        var
+            method = (remove ? 'remove' : 'add') + 'EventListener',
+            elementList = getElementList(elements),
+            currentElement = elementList.length,
+            eventLists = {};
+
+        // get events or use defaults
+        for (var prop in DEFAULT_EVENTS) {
+            eventLists[prop] = (events && events[prop]) ? getEventList(events[prop]) : DEFAULT_EVENTS[prop];
+        }
+
+        // add or remove all events for all occasions to all elements
+        while (currentElement--) {
+            for (var occasion in eventLists) {
+                var currentEvent = eventLists[occasion].length;
+                while (currentEvent--) {
+                    elementList[currentElement][method](eventLists[occasion][currentEvent], handleEvent);
+                }
+            }
+        }
+    };
+
+    /**
+     * Event handler for transform events.
+     * @private
+     *
+     * @param {object} event - event object
+     */
+    var handleEvent = function(event) {
+        tcon.toggle(event.currentTarget);
+    };
+
+    // ##############
+    // public methods
+    // ##############
+
+    /**
+     * Add transformicon behavior to one or more elements.
+     * @public
+     *
+     * @param {(string|element|array)} elements - Selector, DOM element or Array of DOM elements to be toggled
+     * @param {object} [events] - An Object containing one or more special event definitions
+     * @param {(string|array)} [events.transform] - One or more events that trigger the transform. Can be an Array or string with events seperated by space.
+     * @param {(string|array)} [events.revert] - One or more events that trigger the reversion. Can be an Array or string with events seperated by space.
+     * @returns {transformicon} transformicon instance for chaining
+     */
+    tcon.add = function(elements, events) {
+        setListeners(elements, events);
+        return tcon;
+    };
+
+    /**
+     * Remove transformicon behavior from one or more elements.
+     * @public
+     *
+     * @param {(string|element|array)} elements - Selector, DOM element or Array of DOM elements to be toggled
+     * @param {object} [events] - An Object containing one or more special event definitions
+     * @param {(string|array)} [events.transform] - One or more events that trigger the transform. Can be an Array or string with events seperated by space.
+     * @param {(string|array)} [events.revert] - One or more events that trigger the reversion. Can be an Array or string with events seperated by space.
+     * @returns {transformicon} transformicon instance for chaining
+     */
+    tcon.remove = function(elements, events) {
+        setListeners(elements, events, true);
+        return tcon;
+    };
+
+    /**
+     * Put one or more elements in the transformed state.
+     * @public
+     *
+     * @param {(string|element|array)} elements - Selector, DOM element or Array of DOM elements to be transformed
+     * @returns {transformicon} transformicon instance for chaining
+     */
+    tcon.transform = function(elements) {
+        getElementList(elements).forEach(function(element) {
+            element.classList.add(_transformClass);
+        });
+        return tcon;
+    };
+
+    /**
+     * Revert one or more elements to the original state.
+     * @public
+     *
+     * @param {(string|element|array)} elements - Selector, DOM element or Array of DOM elements to be reverted
+     * @returns {transformicon} transformicon instance for chaining
+     */
+    tcon.revert = function(elements) {
+        getElementList(elements).forEach(function(element) {
+            element.classList.remove(_transformClass);
+        });
+        return tcon;
+    };
+
+    /**
+     * Toggles one or more elements between transformed and original state.
+     * @public
+     *
+     * @param {(string|element|array)} elements - Selector, DOM element or Array of DOM elements to be toggled
+     * @returns {transformicon} transformicon instance for chaining
+     */
+    tcon.toggle = function(elements) {
+        getElementList(elements).forEach(function(element) {
+            tcon[element.classList.contains(_transformClass) ? 'revert' : 'transform'](element);
+        });
+        return tcon;
+    };
+</script>
+ -->
