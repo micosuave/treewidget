@@ -8,7 +8,7 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
                 description: 'build a D3 Tree Visualization',
                 templateUrl: '{widgetsPath}/treewidget/src/view.html',
                 reload: true,
-                frameless: false,
+                frameless: true,
                 controller: 'TreeWidgetCtrl',
                 edit: {
                     templateUrl: '{widgetsPath}/treewidget/src/edit.html',
