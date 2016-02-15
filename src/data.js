@@ -11,7 +11,7 @@ angular.module('adf.widget.treewidget').service('data', ['$http', '$q', 'bus', '
         if (typeof(jsonData) !== 'undefined') {
             return $q.when(jsonData);
         } else if (!config.url) {
-            return $http.get('../treewidget/src/data.json').success(function(data) {
+            return $http.get('/llp_core/data.json').success(function(data) {
                 setJsonData(data);
                 return data;
             })

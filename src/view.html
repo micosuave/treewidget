@@ -40,7 +40,7 @@
             <div ng-if="hasHistory()" class="alert alert-success json-update-label bg-success">Updated JSON <a ng-click="undo()">(undo)</a></div>
         </div>
         <div ng-controller="jsonDataCtrl">
-            <textarea id="json-data" class="form-control card card-dark well " ng-model="data" ng-blur="updateData()"></textarea>
+            <textarea id="json-data" class="form-control card card-dark well " style="margin-top:50%;" ng-model="data" ng-blur="updateData()"></textarea>
         </div>
     </div>
 </div>
