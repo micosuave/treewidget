@@ -60,6 +60,9 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
                     config.data = resp.data;
                 });
             };
+            $http.get(config.url).then(function(resp) {
+                   $scope.data = config.data = resp.data;
+                });
             if (config.url) {
                 this.url = $sce.trustAsResourceUrl(config.url);
             }
@@ -68,13 +71,4 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
             }
 
         }
-    ]).factory('config', function() {
-        return function() {
-            var config = {
-                url: '/src/data.json',
-
-                diameter: '500'
-            };
-            return config;
-        }
-    });
+    ]);
