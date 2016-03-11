@@ -1,4 +1,4 @@
-angular.module('adf.widget.treewidget').directive('treeChartWidget', ['bus', function(bus) {
+angular.module('adf.widget.treewidget').directive('treeChartWidget', ['bus','d3Service', function(bus, d3Service) {
     'use strict';
 
     return {
@@ -9,6 +9,7 @@ angular.module('adf.widget.treewidget').directive('treeChartWidget', ['bus', fun
             data: '='
         },
         link: function(scope, element) {
+             d3Service.d3().then(function(d3) {
             var chart = d3.chart.architectureTree();
 
             scope.$watch("data", function(data) {
@@ -43,6 +44,7 @@ angular.module('adf.widget.treewidget').directive('treeChartWidget', ['bus', fun
                 chart.unselect();
             });
 
-        }
+        });
+       }
     };
 }]);

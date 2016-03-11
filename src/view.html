@@ -21,9 +21,10 @@
         </div>
 
         <div ng-controller="chartCtrl">
-            <tree-chart-widget data="data" diameter="{{config.diameter || '500'}}"></tree-chart-widget>
+            <tree-chart-widget data="tree" diameter="{{config.diameter || '500'}}"></tree-chart-widget>
+        <d3pendingtree patent="7654321" pattern="" tree="tree"></d3pendingtree>
         </div>
-        <d3pendingtree></d3pendingtree>
+        
         <div ng-controller="panelCtrl">
             <div id="panel">
                 <div ng-if="detail">
@@ -44,7 +45,7 @@
         </div>
     </div>
 </div>
-<script src="/treewidget/src/d3.v3.js"></script>
+<!--<script src="/treewidget/src/d3.v3.js"></script>-->
 <!-- <script src="angular.min.js"></script> -->
 <script src="/treewidget/src/d3.architectureTree.js"></script>
 <script src="/treewidget/src/app.js"></script>

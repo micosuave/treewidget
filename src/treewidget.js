@@ -8,7 +8,8 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
                 description: 'build a D3 Tree Visualization',
                 templateUrl: '{widgetsPath}/treewidget/src/view.html',
                 reload: true,
-                frameless: true,
+                frameless: false,
+                styleClass: 'NOA',
                 controller: 'TreeWidgetCtrl',
                 edit: {
                     templateUrl: '{widgetsPath}/treewidget/src/edit.html',
@@ -21,7 +22,7 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
     .controller('TreeWidgetConfigCtrl', ['$scope', 'config', '$window', '$document', '$compile', '$parse', '$http', 'dashboard', '$sce',
         function($scope, config, $window, $document, $compile, $parse, $http, dashboard, $sce) {
             if (!config.url) {
-                config.url = '/src/data.json';
+                config.url = '/llp_core/data.json';
             } else {
                 //var draft = PROJECTDRAFT(config.draftid);
                 //$scope.draft = draft;
@@ -71,7 +72,7 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
     ]).factory('config', function() {
         return function() {
             var config = {
-                url: '/src/data.json',
+                url: '/llp_core/data.json',
 
                 diameter: '500'
             };
