@@ -21,8 +21,8 @@
         </div>
 
         <div ng-controller="chartCtrl">
-            <tree-chart-widget data="tree" diameter="{{config.diameter || '500'}}"></tree-chart-widget>
-        <d3pendingtree patent="7654321" pattern="" tree="tree"></d3pendingtree>
+            <tree-chart-widget data="{{tree}}" diameter="{{config.diameter || '500'}}"></tree-chart-widget>
+        <d3pendingtree id="7654321" patent="7654321" pattern="" tree="tree"></d3pendingtree>
         </div>
         
         <div ng-controller="panelCtrl">
