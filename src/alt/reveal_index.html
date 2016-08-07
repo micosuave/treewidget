@@ -1,0 +1,27 @@
+<link rel="stylesheet" href="/lexlab-starter/node_modules/reveal.js/css/reveal.css" />
+<link rel="stylesheet" href="/lexlab-starter/node_modules/reveal.js/css/theme/black.css" />
+<!-- Theme used for syntax highlighting of code -->
+<link rel="stylesheet" href="/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css" />
+
+<div class="reveal">
+  <div class="slides" collection="{{reveal.col ||'11745932'}}">
+    <section ng-repeat="slide in reveal.slides||collection.roarlist" class="convex slide" ffbase="{{slide.$id}}">
+
+      <section class="convex zoom slide">
+        <h2>{{item.rid}} - {{item.title}}</h2>
+        <hr><img ng-src="{{item.media}}" class="img img-thumbnail img-responsive" /></section>
+
+
+      <section ng-repeat="vslide in item.roarlist" ffbase="{{vslide}}">
+
+        {{item.rid}} - {{item.title}}
+        <hr>
+        <a ng-href="{{item.media}}" class="fragment"><img ng-src="{{item.media}}" class="img img-thumbnail img-responsive" /></a>
+
+      </section>
+
+    </section>
+    <section>Slide 2</section>
+
+  </div>
+</div>
