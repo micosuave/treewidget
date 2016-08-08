@@ -4,15 +4,15 @@
 <link rel="stylesheet" href="/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css" />
 
 <div class="reveal">
-  <div class="slides" collection="{{reveal.col ||'11745932'}}">
-    <section ng-repeat="slide in reveal.slides||collection.roarlist" class="convex slide" ffbase="{{slide.$id}}">
+  <div class="slides" collection="{{config.id ||'11745932'}}">
+    <section ng-repeat="(slide,key) in collection.roarlist" class="convex slide" ffbase="{{key}}">
 
       <section class="convex zoom slide">
         <h2>{{item.rid}} - {{item.title}}</h2>
         <hr><img ng-src="{{item.media}}" class="img img-thumbnail img-responsive" /></section>
 
 
-      <section ng-repeat="vslide in item.roarlist" ffbase="{{vslide}}">
+      <section ng-repeat="(vslide,key) in item.roarlist" ffbase="{{key}}">
 
         {{item.rid}} - {{item.title}}
         <hr>
@@ -21,7 +21,7 @@
       </section>
 
     </section>
-    <section>Slide 2</section>
+    <section data-background="https://lexlab.io/llp_core/img/GoldLion.svg">Slide 2</section>
 
   </div>
 </div>

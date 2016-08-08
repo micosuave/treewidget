@@ -1,7 +1,9 @@
-<fieldset class="material" ng-repeat="(option, key) in reveal.options">
-<label class="label label-NOA">{{key}}</label>
-<switch ng-model="option" text="{{key}}" icon="fa fa-{{key}}"/>
+<input ng-model="config.id" />
+<hr>
+<label  class="label material" ng-repeat="(option, key) in reveal.options">{{key}}
 
-  <br>
+<switch ng-model="option" text="{{key}}" icon="fa fa-{{key}}"/>
   <input ng-model="option" />
-</fieldset>
+  <textarea ng-model="option" />
+</label>
+<hr>

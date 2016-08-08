@@ -1,371 +1,355 @@
 (function(window, undefined) {'use strict';
-
+'use strict'
 
 angular.module('adf.widget.treewidget', ['adf.provider'])
-    .config(["dashboardProvider", function(dashboardProvider) {
-        dashboardProvider
-            .widget('treewidget', {
-                title: 'Tree Builder',
-                description: 'build a D3 Tree Visualization',
-                templateUrl: '{widgetsPath}/treewidget/src/view.html',
-                reload: true,
-                frameless: false,
-                styleClass: 'NOA',
-                controller: 'TreeWidgetCtrl',
-                edit: {
-                    templateUrl: '{widgetsPath}/treewidget/src/edit.html',
-                    reload: true,
-                    controller: 'TreeWidgetConfigCtrl'
-
-                }
-            }).widget('timelinewidget', {
-              title: 'Time Line',
-              description: 'build a Timeline',
-              templateUrl: '{widgetsPath}/treewidget/src/alt/timeline.html',
-              reload: true,
-              frameless: false,
-              styleClass: 'NOA',
-              controller: 'TimeLineCtrl',
-              controllerAs: 'time',
-              edit: {
-                templateUrl: '{widgetsPath}/treewidget/src/alt/timeedit.html',
-                reload: true,
-                controller: 'TimeLineCtrl',
-                controllerAs: 'time'
-
-              }
-            }).widget('histogram', {
-              title: '3D Histogram',
-              description: 'build an interactive 3D Histogram Visualization',
-              templateUrl: '{widgetsPath}/treewidget/src/alt/histogram.html',
-              reload: true,
-              frameless: false,
-              styleClass: 'NOA',
-              controller: 'HistogramCtrl',
-              controllerAs: 'histogram',
-              edit: {
-                templateUrl: '{widgetsPath}/treewidget/src/alt/hist_edit.html',
-                reload: true,
-                controller: 'HistogramCtrl'
-
-              }
-            }).widget('revealjs', {
-              title: 'RevealJS Slideshow',
-              description: 'build a presentaion using reveal.js',
-              templateUrl: '{widgetsPath}/treewidget/src/alt/reveal_index.html',
-              reload: true,
-              frameless: false,
-              styleClass: 'NOA',
-              controller: 'RevealCtrl',
-              controllerAs: 'reveal',
-              edit: {
-                templateUrl: '{widgetsPath}/treewidget/src/alt/slide_edit.html',
-                reload: true,
-                controller: 'RevealCtrl',
-                controllerAs: 'reveal'
-
-              }
-            }).widget('threejs', {
-              title: 'Three.JS 3D World',
-              description: 'build an interactive 3D envirobnent',
-              templateUrl: '{widgetsPath}/treewidget/src/alt/three.html',
-              reload: true,
-              frameless: false,
-              styleClass: 'NOA',
-              controller: 'ThreeWorldCtrl',
-              edit: {
-                templateUrl: '{widgetsPath}/treewidget/src/alt/three_edit.html',
-                reload: true,
-                controller: 'ThreeWorldConfigCtrl'
-
-              }
-            })
-            ;
-    }])
-    .controller('TreeWidgetConfigCtrl', ['$scope', 'config', '$window', '$document', '$compile', '$parse', '$http', 'dashboard', '$sce',
-        function($scope, config, $window, $document, $compile, $parse, $http, dashboard, $sce) {
-            if (!config.url) {
-                config.url = '/llp_core/data.json';
-            } else {
-                //var draft = PROJECTDRAFT(config.draftid);
-                //$scope.draft = draft;
-            }
-            $scope.config = config;
-
-            $scope.configured = function() {
-                return $scope.config.content !== '';
-            };
-
-            $scope.notConfigured = function() {
-                return $scope.config.content === '';
-            };
-
-            $scope.loadData = function(config) {
-                var req = $http.get(config.url).then(function(resp) {
-                    config.data = resp.data;
-                });
-            };
-            if (config.url) {
-                this.url = $sce.trustAsResourceUrl(config.url);
-            }
-        }
-    ]).controller('TreeWidgetCtrl', ['$scope', 'config', '$window', '$document', '$compile', '$parse', '$http', 'dashboard', '$sce',
-        function($scope, config, $window, $document, $compile, $parse, $http, dashboard, $sce) {
-            if (!config.url) {
-                config.url = '';
-            } else {
-                //var draft = PROJECTDRAFT(config.draftid);
-                //$scope.draft = draft;
-            }
-            $scope.config = config;
-
-            $scope.loadTemplate = function(config) {
-                var req = $http.get(config.url).then(function(resp) {
-                    config.data = resp.data;
-                });
-            };
-            if (config.url) {
-                this.url = $sce.trustAsResourceUrl(config.url);
-            }
-            if (config.data) {
-                this.data = config.data;
-            }
+  .config(["dashboardProvider", function (dashboardProvider) {
+    dashboardProvider
+      .widget('treewidget', {
+        title: 'Tree Builder',
+        description: 'build a D3 Tree Visualization',
+        templateUrl: '{widgetsPath}/treewidget/src/view.html',
+        reload: true,
+        frameless: false,
+        styleClass: 'NOA',
+        controller: 'TreeWidgetCtrl',
+        edit: {
+          templateUrl: '{widgetsPath}/treewidget/src/edit.html',
+          reload: true,
+          controller: 'TreeWidgetConfigCtrl'
 
         }
-    ]).factory('config', function() {
-        return function() {
-            var config = {
-                url: '/llp_core/data.json',
+      }).widget('timelinewidget', {
+      title: 'Time Line',
+      description: 'build a Timeline',
+      templateUrl: '{widgetsPath}/treewidget/src/alt/timeline.html',
+      reload: true,
+      frameless: false,
+      styleClass: 'NOA',
+      controller: 'TimeLineCtrl',
+      controllerAs: 'time',
+      edit: {
+        templateUrl: '{widgetsPath}/treewidget/src/alt/timeedit.html',
+        reload: true,
+        controller: 'TimeLineCtrl',
+        controllerAs: 'time'
 
-                diameter: '500'
-            };
-            return config;
-        }
-    }).controller('HistogramCtrl', ['$scope','$stateParams','$templateCache','Collection','config', function($scope,$stateParams,$templateCache, Collection, config){
-        var vm = this;
-        config = config || $scope.$parent.config;
-        vm.col = config.id;
-        Collection(vm.col).$loaded().then(function(collection){
+      }
+    }).widget('histogram', {
+      title: '3D Histogram',
+      description: 'build an interactive 3D Histogram Visualization',
+      templateUrl: '{widgetsPath}/treewidget/src/alt/histogram.html',
+      reload: true,
+      frameless: false,
+      styleClass: 'dark-bg',
+      controller: 'HistogramCtrl',
+      controllerAs: 'histogram',
+      edit: {
+        templateUrl: '{widgetsPath}/treewidget/src/alt/hist_edit.html',
+        reload: true,
+        controller: 'HistogramCtrl'
 
+      }
+    }).widget('revealjs', {
+      title: 'RevealJS Slideshow',
+      description: 'build a presentaion using reveal.js',
+      templateUrl: '{widgetsPath}/treewidget/src/alt/reveal_index.html',
+      reload: true,
+      frameless: false,
+      styleClass: 'NOA',
+      controller: 'RevealCtrl',
+      controllerAs: 'reveal',
+      edit: {
+        templateUrl: '{widgetsPath}/treewidget/src/alt/slide_edit.html',
+        reload: true,
+        controller: 'RevealCtrl',
+        controllerAs: 'reveal'
 
-        var tpl = $templateCache.get('bartpl');
-        var $ = window.$;
-        var Modernizr = window.Modernizr;
+      }
+    }).widget('threejs', {
+      title: 'Three.JS 3D World',
+      description: 'build an interactive 3D envirobnent',
+      templateUrl: '{widgetsPath}/treewidget/src/alt/three.html',
+      reload: true,
+      frameless: false,
+      styleClass: 'NOA',
+      controller: 'ThreeWorldCtrl',
+      edit: {
+        templateUrl: '{widgetsPath}/treewidget/src/alt/three_edit.html',
+        reload: true,
+        controller: 'ThreeWorldConfigCtrl'
 
-        $('.histogram-3d td').each(function () {
-          var val = this.innerHTML;
-          $(this)
-            .html(tpl)
-            .css('font-size', val + 'px')
-            ;
-        });
-          var dragStart = {}, dragging = false, curpos = {x:100, y: -75};
-          var touch = Modernizr.touch, $vp = $('.viewport:first');
-          $vp.on(touch?'touchstart': 'mousedown', function(e) {
+      }
+    })
+  }])
+  .controller('TreeWidgetConfigCtrl', ['$scope', 'config', '$window', '$document', '$compile', '$parse', '$http', 'dashboard', '$sce',
+    function ($scope, config, $window, $document, $compile, $parse, $http, dashboard, $sce) {
+      if (!config.url) {
+        config.url = '/llp_core/data.json'
+      } else {
+        // var draft = PROJECTDRAFT(config.draftid)
+        // $scope.draft = draft
+      }
+      $scope.config = config
 
-    var evt = touch?e.originalEvent.touches[0]: e;
-          dragStart = {
-            x: evt.screenX + curpos.x,
-          y: evt.screenY + curpos.y
-          };
+      $scope.configured = function () {
+        return $scope.config.content !== ''
+      }
 
-          dragging = true;
-          $('body').addClass('noselect');
-          });
+      $scope.notConfigured = function () {
+        return $scope.config.content === ''
+      }
 
-          $(document).on(touch?'touchend': 'mouseup', function() {
-            dragging = false;
-          $('body').removeClass('noselect');
-          });
+      $scope.loadData = function (config) {
+        var req = $http.get(config.url).then(function (resp) {
+          config.data = resp.data
+        })
+      }
+      if (config.url) {
+        this.url = $sce.trustAsResourceUrl(config.url)
+      }
+    }
+  ]).controller('TreeWidgetCtrl', ['$scope', 'config', '$window', '$document', '$compile', '$parse', '$http', 'dashboard', '$sce',
+  function ($scope, config, $window, $document, $compile, $parse, $http, dashboard, $sce) {
+    if (!config.url) {
+      config.url = ''
+    } else {
+      // var draft = PROJECTDRAFT(config.draftid)
+      // $scope.draft = draft
+    }
+    $scope.config = config
 
-          $(document).on(touch?'touchmove': 'mousemove', function(e) {
+    $scope.loadTemplate = function (config) {
+      var req = $http.get(config.url).then(function (resp) {
+        config.data = resp.data
+      })
+    }
+    if (config.url) {
+      this.url = $sce.trustAsResourceUrl(config.url)
+    }
+    if (config.data) {
+      this.data = config.data
+    }
+  }
+]).factory('config', function () {
+  return function () {
+    var config = {
+      url: '/llp_core/data.json',
 
-    if (!dragging) return;
+      diameter: '500'
+    }
+    return config;
+  }
+}).controller('HistogramCtrl', ['$scope', '$stateParams', '$templateCache', 'Collection', 'config', function ($scope, $stateParams, $templateCache, Collection, config) {
+  var vm = this;
+  config = config || $scope.$parent.config;
+  vm.col = config.id;
+  Collection(vm.col).$loaded().then(function (collection) {
+    var tpl = $templateCache.get('bartpl');
 
-          e.preventDefault();
-
-          var evt = touch?e.originalEvent.touches[0]: e
-          , x = dragStart.x - evt.screenX
-          , y = dragStart.y - evt.screenY
-          , amp = 0.2
-          ;
-
-          curpos.x = x;
-          curpos.y = y;
-
-          $vp.find('.world').css(
-          Modernizr.prefixed('transform'),
-          ['rotateX(', y*amp, 'deg) rotateY(', -x*amp, 'deg)'].join('')
-          );
-
-          });
-        });
-
-    }]).controller('RevealCtrl', ['$scope', '$stateParams','revealjs','$document','$window','$css','toastr', function ($scope, $stateParams, revealjs,$document,$window,$css, toastr) {
-      var vm = this;
-      vm.csssources = ['https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css','/lexlab-starter/node_modules/reveal.js/css/reveal.css','/lexlab-starter/node_modules/reveal.js/css/theme/black.css','/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css'];
-      $css.add(vm.csssources, function(msg){
-        toastr.info(msg);
-      });
-      vm.options = {
-        history: true,
-        controls: true,
-        progress: true,
-        slideNumber: false,
-        overview: true,
-        center: true,
-        touch: true,
-        loop: true,
-        rtl: false,
-        shuffle: false,
-        fragments: true,
-        embedded: true,
-        help: true,
-        showNotes: false,
-        autoSlide: 10000,
-        autoSlideStoppable: true,
-        autoSlideMethod: Reveal.navigateNext,
-        mouseWheel: true,
-        hideAddressBar: true,
-        previewLinks: true,
-        transition: 'concave',
-        transitionSpeed: 'slow',
-        backgroundTransition: 'convex',
-        viewDistance: 4,
-        parallaxBackgroundImage: 'https://lexlab.io/llp_core/img/lll3.svg',
-        parallaxBackgroundSize: '1500px 1500px',
-        parallaxBackgroundHorizontal: $window.innerWidth*1.5,
-        parallaxBackgroundVertical:$window.innerHeight*2,
-        dependencies: [
-          { src: '/lexlab-starter/node_modules/reveal.js/plugin/markdown/marked.js' },
-          { src: '/lexlab-starter/node_modules/reveal.js/plugin/markdown/markdown.js' },
-          { src: '/lexlab-starter/node_modules/reveal.js/plugin/notes/notes.js', async: true },
-          { src: '/lexlab-starter/node_modules/reveal.js/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
-          { src: '/lexlab-starter/node_modules/reveal.js/plugin/zoom-js/zoom.js', async: true }
-          /*{ src: '/lexlab-starter/node_modules/reveal.js/plugin/search/search.js', async: true},
-          { src: '/lexlab-starter/node_modules/reveal.js/plugin/print-pdf/print-pdf.js', async: true }*/
-        ]
+    $('.histogram-3d td').each(function () {
+      var val = this.innerHTML;
+      $(this)
+        .html(tpl)
+        .css('font-size', val + 'px')
+    });
+    var dragStart = {}, dragging = false, curpos = {x: 100, y: -75}
+    var touch = Modernizr.touch, $vp = $('.viewport:first');
+    $vp.on(touch ? 'touchstart' : 'mousedown', function (e) {
+      var evt = touch ? e.originalEvent.touches[0] : e;
+      dragStart = {
+        x: evt.screenX + curpos.x,
+        y: evt.screenY + curpos.y
       };
 
-revealjs.Reveal().then(function(){
-
-
-      window.Reveal.initialize(vm.options);
-  });
-    }]).controller('TimeLineCtrl', ['$scope', '$stateParams','$document','$http','storyjs','config','Collection','toastr','$filter', function ($scope, $stateParams,$document,$http, storyjs, config, Collection,toastr, $filter) {
-      var vm = this;
-
-
-
-      config = config || $scope.$parent.config;
-      vm.data = {
-        'timeline': {
-          'headline': 'Prosecution History Digest',
-          'type': 'default',
-          'text': 'US 8,382,656',
-          'asset': {
-            'media': '/patents/8382656/preview',
-            'credit': 'Lion Legal Products',
-            'caption': 'Master the Jungle of Legal Information'
-          },
-          'date': [{
-            'startDate': '2000-01-01',
-            'endDate': '2000-01-01',
-            'headline': 'Initial Entry',
-            'text': 'This is a poodle',
-            'asset': {
-              'media': '/llp_core/img/lll3.svg',
-              'credit': 'LLP',
-              'caption': '',
-              'thumbnail': '/files/public/uspto/patents/8382656.png',
-              'type': 'image/png',
-              'tag': 'test'
-            }
-          }]
-        }
-      };
-      Collection(config.id).$loaded().then(function(collection){
-
-        // vm.data = {
-        //   'timeline': {
-        //     'headline': 'Prosecution History Digest',
-        //     'type': 'default',
-        //     'text': collection.id + ' - ' +  collection.title,
-        //     'asset': {
-        //       'media': '/patents/'+collection.id+'/preview',
-        //       'credit': 'Lion Legal Products',
-        //       'caption': 'Master the Jungle of Legal Information'
-        //     },
-        //     'date': [{
-        //       'startDate': collection.date,
-        //       'endDate': collection.date,
-        //       'headline': collection.title,
-        //       'text': collection.description,
-        //       'asset': {
-        //         'media': collection.media,
-        //         'credit': collection.styleClass,
-        //         'caption': '',
-        //         'thumbnail': collection.thumbnail || collection.media,
-        //         'type': collection.styleClass,
-        //         'tag': collection.rid
-        //       }
-        //     }]
-        //   }
-        // };
-
-
-            angular.forEach(collection.roarlist, function(rid, key){
-              Collection(rid).$loaded().then(function(rvent){
-                var thisobj = {
-                  'startDate': rvent.date,
-                  'endDate': rvent.date,
-                  'headline': rvent.title,
-                  'text': rvent.description,
-                  'asset': {
-                    'media': rvent.media,
-                    'credit': rvent.styleClass,
-                    'caption': '',
-                    'thumbnail': rvent.thumbnail || rvent.media,
-                    'type': rvent.styleClass,
-                    'tag': rvent.rid
-                }};
-                toastr.info($filter('date')(rvent.date),rvent.title);
-                  vm.data.timeline.date.push(thisobj);
-
-                  storyjs.createStoryJS().then(function (createStoryJS) {
-                  vm.options = {
-                    type: 'timeline',
-                    width: 800,
-                    height: 600,
-                    source: vm.data,
-                    embed_id: 'timelinejs',
-                    hash_bookmark: false,
-                    debug: true,
-                    font: 'PTSerif-PTSans'
-                  }; createStoryJS(vm.options); });
-              });
-
-
-
-            });
-
-
+      dragging = true;
+      $('body').addClass('noselect');
     });
 
+    $(document).on(touch ? 'touchend' : 'mouseup', function () {
+      dragging = false;
+      $('body').removeClass('noselect');
+    });
+
+    $(document).on(touch ? 'touchmove' : 'mousemove', function (e) {
+      if (!dragging) return;
+
+      e.preventDefault();
+
+      var evt = touch ? e.originalEvent.touches[0] : e,
+        x = dragStart.x - evt.screenX,
+        y = dragStart.y - evt.screenY,
+        amp = 0.2;
 
 
+      curpos.x = x;
+      curpos.y = y;
+
+      $vp.find('.world').css(
+        Modernizr.prefixed('transform'),
+        ['rotateX(', y * amp, 'deg) rotateY(', -x * amp, 'deg)'].join('')
+      );
+    });
+  });
+}]).controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config', function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config) {
+  var vm = this;
+  vm.csssources = ['https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css', '/lexlab-starter/node_modules/reveal.js/css/reveal.css', '/lexlab-starter/node_modules/reveal.js/css/theme/black.css', '/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css']
+  config = config || $scope.$parent.config;
 
 
+  $scope.onSubmit = function(){
+    vm.updateConfig(vm.options);
+  };
+  vm.updateConfig = function(newconfig){
+    return Reveal.configure(newconfig);
+  };
+  vm.options = {
+    history: true,
+    controls: true,
+    progress: true,
+    slideNumber: false,
+    overview: true,
+    center: true,
+    touch: true,
+    loop: true,
+    rtl: false,
+    shuffle: false,
+    fragments: true,
+    embedded: true,
+    help: true,
+    showNotes: false,
+    autoSlide: 10000,
+    autoSlideStoppable: true,
+    autoSlideMethod: Reveal.navigateNext,
+    mouseWheel: true,
+    hideAddressBar: true,
+    previewLinks: true,
+    transition: 'concave',
+    transitionSpeed: 'slow',
+    backgroundTransition: 'convex',
+    viewDistance: 4,
+    parallaxBackgroundImage: 'https://lexlab.io/llp_core/img/lll3.svg',
+    parallaxBackgroundSize: '1500px 1500px',
+    parallaxBackgroundHorizontal: null,
+    parallaxBackgroundVertical: null,
+    	// Exposes the reveal.js API through window.postMessage
+	postMessage: true,
 
+	// Dispatches all reveal.js events to the parent window through postMessage
+	postMessageEvents: true,
+    dependencies: [
+      { src: '/lexlab-starter/node_modules/reveal.js/plugin/markdown/marked.js' },
+      { src: '/lexlab-starter/node_modules/reveal.js/plugin/markdown/markdown.js' },
+      { src: '/lexlab-starter/node_modules/reveal.js/plugin/notes/notes.js', async: true },
+      { src: '/lexlab-starter/node_modules/reveal.js/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
+      { src: '/lexlab-starter/node_modules/reveal.js/plugin/zoom-js/zoom.js', async: true }
+    /*{ src: '/lexlab-starter/node_modules/reveal.js/plugin/search/search.js', async: true},
+    { src: '/lexlab-starter/node_modules/reveal.js/plugin/print-pdf/print-pdf.js', async: true }*/
+    ]
+  }
 
-    }]);
+  revealjs.Reveal().then(function () {
+    window.Reveal.initialize(vm.options);
+
+  });
+}]).controller('TimeLineCtrl', ['$scope', '$stateParams', '$document', '$http', 'storyjs', 'config', 'Collection', 'toastr', '$filter', function ($scope, $stateParams, $document, $http, storyjs, config, Collection, toastr, $filter) {
+  var vm = this
+
+  config = config || $scope.$parent.config
+  vm.data = {
+    'timeline': {
+      'headline': 'Prosecution History Digest',
+      'type': 'default',
+      'text': 'US 8,382,656',
+      'asset': {
+        'media': '/patents/8382656/preview',
+        'credit': 'Lion Legal Products',
+        'caption': 'Master the Jungle of Legal Information'
+      },
+      'date': [{
+        'startDate': '2000-01-01',
+        'endDate': '2000-01-01',
+        'headline': 'Initial Entry',
+        'text': 'This is a poodle',
+        'asset': {
+          'media': '/llp_core/img/lll3.svg',
+          'credit': 'LLP',
+          'caption': '',
+          'thumbnail': '/files/public/uspto/patents/8382656.png',
+          'type': 'image/png',
+          'tag': 'test'
+        }
+      }]
+    }
+  }
+  Collection(config.id).$loaded().then(function (collection) {
+
+    // vm.data = {
+    //   'timeline': {
+    //     'headline': 'Prosecution History Digest',
+    //     'type': 'default',
+    //     'text': collection.id + ' - ' +  collection.title,
+    //     'asset': {
+    //       'media': '/patents/'+collection.id+'/preview',
+    //       'credit': 'Lion Legal Products',
+    //       'caption': 'Master the Jungle of Legal Information'
+    //     },
+    //     'date': [{
+    //       'startDate': collection.date,
+    //       'endDate': collection.date,
+    //       'headline': collection.title,
+    //       'text': collection.description,
+    //       'asset': {
+    //         'media': collection.media,
+    //         'credit': collection.styleClass,
+    //         'caption': '',
+    //         'thumbnail': collection.thumbnail || collection.media,
+    //         'type': collection.styleClass,
+    //         'tag': collection.rid
+    //       }
+    //     }]
+    //   }
+    // }
+
+    angular.forEach(collection.roarlist, function (rid, key) {
+      Collection(rid).$loaded().then(function (rvent) {
+        var thisobj = {
+          'startDate': rvent.date,
+          'endDate': rvent.date,
+          'headline': rvent.title,
+          'text': rvent.description,
+          'asset': {
+            'media': rvent.media,
+            'credit': rvent.styleClass,
+            'caption': '',
+            'thumbnail': rvent.thumbnail || rvent.media,
+            'type': rvent.styleClass,
+            'tag': rvent.rid
+        }}
+        toastr.info($filter('date')(rvent.date), rvent.title)
+        vm.data.timeline.date.push(thisobj)
+
+        storyjs.createStoryJS().then(function (createStoryJS) {
+          vm.options = {
+            type: 'timeline',
+            width: 800,
+            height: 600,
+            source: angular.toJson(vm.data),
+            embed_id: 'timelinejs',
+            hash_bookmark: false,
+            debug: true,
+            font: 'PTSerif-PTSans'
+          }; createStoryJS(vm.options); });
+      });
+    });
+  });
+}]);
 
 angular.module("adf.widget.treewidget").run(["$templateCache", function($templateCache) {$templateCache.put("{widgetsPath}/treewidget/src/edit.html","<form role=form><div class=form-group><label for=sample>Sample</label> <input type=url class=form-control id=sample ng-model=config.url placeholder=\"Enter sample\"> <input type=number class=form-control id=num ng-model=config.diameter></div></form>");
 $templateCache.put("{widgetsPath}/treewidget/src/view.html","<div class=container-fluid><div><h1 class=text-center>Architecture Tree</h1><div ng-controller=filterCtrl><ng-include src=\"\'filter.html\'\"></ng-include></div><div ng-controller=chartCtrl><tree-chart-widget data={{tree}} diameter=\"{{config.diameter || \'500\'}}\"></tree-chart-widget><d3pendingtree id=7654321 patent=7654321 pattern tree=tree></d3pendingtree></div><div ng-controller=panelCtrl><div id=panel><div ng-if=detail><ng-include src=\"\'panel-detail.html\'\"></ng-include></div><div ng-if=edit><ng-include src=\"\'panel-edit.html\'\"></ng-include></div></div></div><div ng-controller=undoCtrl><div ng-if=hasHistory() class=\"alert alert-success json-update-label bg-success\">Updated JSON <a ng-click=undo()>(undo)</a></div></div><div ng-controller=jsonDataCtrl><textarea id=json-data class=\"form-control card card-dark well\" style=margin-top:50%; ng-model=data ng-blur=updateData()></textarea></div></div></div><script src=/treewidget/src/d3.architectureTree.js></script><script src=/treewidget/src/app.js></script><script src=/treewidget/src/chart.js></script><script src=/treewidget/src/filter.js></script><script src=/treewidget/src/json-data.js></script><script src=/treewidget/src/panel.js></script><script src=/treewidget/src/undo.js></script><script src=/treewidget/src/tree-chart.js></script><script src=/treewidget/src/init-focus.js></script><script src=/treewidget/src/data.js></script><script src=/treewidget/src/bus.js></script><script src=/treewidget/src/data.json></script><script type=text/ng-template id=filter.html><div class=\"filters panel panel-default\"> <div class=\"panel-heading\">Search</div> <div class=\"panel-body\"> <form id=\"filter_form\"> <input name=\"name\" type=\"text\" class=\"form-control\" placeholder=\"Filter by name\" ng-model=\"$parent.nameFilter\" /> <div id=\"technos\"> <h5>Technos</h5> <a ng-repeat=\"techno in technos\" class=\"btn btn-default btn-xs\" ng-click=\"toggleTechnoFilter(techno)\" ng-class=\"{\'btn-primary\': isTechnoInFilter(techno) }\">{{ techno }}</a> </div> <div id=\"host\"> <h5>Host</h5> <a ng-repeat=\"host in hosts\" class=\"btn btn-default btn-xs\" ng-click=\"toggleHostFilter(host)\" ng-class=\"{\'btn-primary\': isHostInFilter(host) }\">{{ host }}</a> </div> </form> </div> </div></script><script type=text/ng-template id=panel-detail.html><div class=\"details panel panel-info\"> <div class=\"panel-heading\">{{ node.name }}</div> <div class=\"panel-body\"> <div class=\"url\" ng-if=\"node.url\"> <a href=\"{{ node.url }}\">{{ node.url }}</a> </div> <div class=\"comments panel panel-default\" ng-if=\"node.comments\"> <div class=\"panel-heading\">{{ node.comments }}</div> </div> <div class=\"properties\" ng-if=\"node.details.Dependencies\"> <h5>Depends on</h5> <ul> <li ng-repeat=\"dependency in node.details.Dependencies\"> {{ dependency }} </li> </ul> </div> <div class=\"properties\" ng-if=\"node.details.Dependents\"> <h5>Dependendents</h5> <ul> <li ng-repeat=\"dependent in node.details.Dependents\"> {{ dependent }} </li> </ul> </div> <div class=\"properties\" ng-if=\"node.details.Technos\"> <h5>Technos</h5> <ul> <li ng-repeat=\"techno in node.details.Technos\"> {{ techno }} </li> </ul> </div> <div class=\"properties\" ng-if=\"node.details.Host\"> <h5>Hosts</h5> <ul> <li ng-repeat=\"(hostName, servers) in node.host\"> {{ hostName }} <ul ng-if=\"servers\"> <li ng-repeat=\"server in servers\">{{ server }}</li> </ul> <span ng-if=\"detail.via\">({{ detail.via }})</span> </li> </ul> </div> </div> </div></script><script type=text/ng-template id=panel-edit.html><form name=\"editForm\" ng-submit=\"editNode(editForm, $event)\"> <div class=\"details panel panel-info\"> <div class=\"panel-heading\"> <input type=\"text\" ng-model=\"node.name\" class=\"form-control\" /> </div> <div class=\"panel-body\"> <div class=\"url\"> <h5>Url</h5> <input type=\"text\" ng-model=\"node.url\" class=\"form-control\" init-focus /> </div> <div class=\"comments\"> <h5>Comments</h5> <textarea ng-model=\"node.comments\" class=\"form-control\" init-focus></textarea> </div> <div class=\"properties edit\"> <h5>Depends on <span class=\"glyphicon glyphicon-plus\" ng-click=\"addDependency()\"></span></h5> <ul> <li ng-repeat=\"dependencies in node.dependsOn track by $index\"> <input type=\"text\" ng-model=\"node.dependsOn[$index]\" init-focus /> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteDependency($index)\"></span> </li> </ul> <h5>Technos <span class=\"glyphicon glyphicon-plus\" ng-click=\"addTechno()\"></span></h5> <ul> <li ng-repeat=\"techno in node.technos track by $index\"> <input type=\"text\" ng-model=\"node.technos[$index]\" init-focus /> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteTechno($index)\"></span> </li> </ul> <h5>Hosts <span class=\"glyphicon glyphicon-plus\" ng-click=\"addHostCategory()\"></span></h5> <ul> <li ng-repeat=\"(key, host) in node.host track by $index\"> <input type=\"text\" ng-model=\"hostKeys[key]\" init-focus /><span class=\"glyphicon glyphicon-plus\" ng-click=\"addHost(key)\"></span> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteHostCategory(key)\"></span> <ul> <li ng-repeat=\"test in node.host[key] track by $index\"> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteHost(key, $index)\"></span> <input type=\"text\" ng-model=\"node.host[key][$index]\" init-focus /> </li> </ul> </li> </ul> </div> </div> <div class=\"panel-footer\"> <button type=\"button\" ng-click=\"addNode()\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-plus\"></span> Add</button> <button type=\"button\" ng-click=\"moveNode()\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-share-alt\"></span> Move</button> <button type=\"button\" ng-click=\"deleteNode()\" class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-trash\"></span> Delete</button> </div> <div class=\"panel-footer\"> <button type=\"submit\" class=\"btn btn-primary\"><span class=\"glyphicon glyphicon-ok\"></span> Save</button> <button type=\"button\" ng-click=\"leaveEdit()\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-remove\"></span> Cancel</button> </div> </div> </form></script>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/hist_edit.html","<fieldset class=material><input type=text ng-model=config.id placeholder=\"Enter patent id number\"><hr><label class=\"label label-NOA\">Enter ID #</label></fieldset>");
-$templateCache.put("{widgetsPath}/treewidget/src/alt/histogram.html","<style>\n.viewport {\n    position: relative;\n    width: 100%;\n    padding-bottom: 100%;\n    cursor: move;\n\n    -webkit-perspective: 6000px;\n    -webkit-perspective-origin: 50% -100%;\n}\n.viewport .world {\n    position: absolute;\n    top:0;\n    left:0;\n    right:0;\n    bottom:0;\n    transition: all 0.2s ease;\n    border: 0px dotted\n    -webkit-transform: rotateX(-15deg) rotateY(-20deg);\n&:hover{\n  border: 1px dotted red;\n}\n}\n\n.viewport .world,\n.viewport .world * {\n    -webkit-transform-style: preserve-3d;\n}\n.viewport .ground {\n    position: absolute;\n    z-index: 1;\n    top: 50%;\n    left: 50%;\n    width: 90%;\n    height: 90%;\n    margin-left: -50%;\n    margin-top: -50%;\n    background: rgba(44,24,24,0.44);\n\n    -webkit-transform: rotateX(90deg);\n}\n.viewport .histogram-3d {\n    width: 80%;\n    height: 80%;\n    margin: 10% auto;\n    border-collapse: collapse;\n    border-style: solid;\n\n    /* make sure grid is raised above ground */\n    -webkit-transform: translateZ(1px);\n}\n\n.viewport .histogram-3d td {\n    position: relative;\n    width: 30%;\n    height: 30%;\n    padding: 10px;\n    border: 2px solid #555;\n    z-index: 0;\n}\n.viewport .bar {\n    position: relative;\n    width: 100%;\n    height: 100%;\n    z-index: 1;\n}\n\n.viewport .bar .face {\n    background: hsl(0, 100%, 50%);\n    position: absolute;\n    width: 100%;\n\n    overflow: hidden;\n    z-index: 1;\n}\n\n.viewport .bar .face.front {\n    background: hsl(0, 100%, 20%);\n    bottom: 0;\n    height: 1em;\n\n    -webkit-transform-origin: bottom center;\n    -webkit-transform: rotateX(-90deg);\n}\n\n.viewport .bar .face.right {\n    top: 0;\n    right: 0;\n    width: 1em;\n    height: 100%;\n\n    -webkit-transform-origin: center right;\n    -webkit-transform: rotateY(90deg);\n}\n\n.viewport .bar .face.left {\n    background: hsl(0, 100%, 45%);\n    top: 0;\n    left: 0;\n    width: 1em;\n    height: 100%;\n\n    -webkit-transform-origin: center left;\n    -webkit-transform: rotateY(-90deg);\n}\n\n.viewport .bar .face.back {\n    top: 0;\n    height: 1em;\n\n    -webkit-transform-origin: top center;\n    -webkit-transform: rotateX(90deg);\n}\n\n.viewport .bar .face.top {\n    background: hsl(0, 100%, 40%);\n    height: 100%;\n    width: 100%;\n    top: 0;\n\n    -webkit-transform: translateZ(1em);\n}\n</style><div class=viewport><div class=\"html2 world\" rotate3d><div class=ground><table class=histogram-3d ffbase={{histogram.col}}><tr ng-repeat=\"tab in item.roarlist\" ffbase={{tab}}><td>{{item.rid}}</td><td ng-repeat=\"thing in item.roarlist\" ffbase={{thing}} ng-include=\"\'bartpl\'\" ng-init=\"it = thing;\">{{item.rid}}</td></tr></table></div></div></div><script id=bartpl type=text/ng-template><div class=\"bar\" ffbase=\"{{it}}\" ng-style=\"font-size:{{item.rid}}\"> <div class=\"face top\" > <img width=\"100%\" height=\"100%\" ng-src=\"/patents/{{item.pnum}}/preview\"/> <d3pendingtree patent=\"{{item.pnum}}\" tree=\"trees[$index]\" pattern=\"{{config.pattern}}\"></d3pendingtree> </div> <div class=\"face front\"></div> <div class=\"face back\"></div> <div class=\"face left\"><img width=\"100%\" height=\"100%\" src=\"/llp_core/img/cannes_lion_logo.png\"></div> <div class=\"face right\"><img width=\"100%\" height=\"100%\" src=\"/llp_core/img/cannes_lion_logo.png\"></div> </div></script>");
-$templateCache.put("{widgetsPath}/treewidget/src/alt/reveal_index.html","<link rel=stylesheet href=/lexlab-starter/node_modules/reveal.js/css/reveal.css><link rel=stylesheet href=/lexlab-starter/node_modules/reveal.js/css/theme/black.css><link rel=stylesheet href=/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css><div class=reveal><div class=slides collection=\"{{reveal.col ||\'11745932\'}}\"><section ng-repeat=\"slide in reveal.slides||collection.roarlist\" class=\"convex slide\" ffbase={{slide.$id}}><section class=\"convex zoom slide\"><h2>{{item.rid}} - {{item.title}}</h2><hr><img ng-src={{item.media}} class=\"img img-thumbnail img-responsive\"></section><section ng-repeat=\"vslide in item.roarlist\" ffbase={{vslide}}>{{item.rid}} - {{item.title}}<hr><a ng-href={{item.media}} class=fragment><img ng-src={{item.media}} class=\"img img-thumbnail img-responsive\"></a></section></section><section>Slide 2</section></div></div>");
-$templateCache.put("{widgetsPath}/treewidget/src/alt/slide_edit.html","<fieldset class=material ng-repeat=\"(option, key) in reveal.options\"><label class=\"label label-NOA\">{{key}}</label><switch ng-model=option text={{key}} icon=\"fa fa-{{key}}\"><br><input ng-model=option></switch></fieldset>");
+$templateCache.put("{widgetsPath}/treewidget/src/alt/histogram.html","<style>\n.viewport {\n    position: relative;\n    width: 100%;\n    padding-bottom: 100%;\n    cursor: move;\n\n    -webkit-perspective: 6000px;\n    -webkit-perspective-origin: 50% -100%;\n}\n.viewport .world {\n    position: absolute;\n    top:0;\n    left:0;\n    right:0;\n    bottom:0;\n\n    -webkit-transform: rotateX(-15deg) rotateY(-20deg);\n\n}\n\n.viewport .world,\n.viewport .world * {\n    -webkit-transform-style: preserve-3d;\n}\n.viewport .ground {\n    position: absolute;\n    z-index: 1;\n    top: 50%;\n    left: 50%;\n    width: 90%;\n    height: 90%;\n    margin-left: -50%;\n    margin-top: -50%;\n    background: rgba(44,24,24,0.84);\n\n    -webkit-transform: rotateX(90deg);\n}\n.viewport .histogram-3d {\n    width: 80%;\n    height: 80%;\n    margin: 10% auto;\n    border-collapse: collapse;\n    border-style: double;\n\n    /* make sure grid is raised above ground */\n    -webkit-transform: translateZ(1px);\n}\n\n.viewport .histogram-3d td {\n    position: relative;\n    width: 30%;\n    height: 30%;\n    padding: 10px;\n    border: 2px solid #555;\n    z-index: 0;\n}\n.viewport .bar {\n    position: relative;\n    width: 100%;\n    height: 100%;\n    z-index: 1;\n}\n\n.viewport .bar .face {\n    background: hsl(0, 100%, 50%);\n    position: absolute;\n    width: 100%;\n    opacity:0.8;\n    overflow: hidden;\n    z-index: 1;\n}\n\n.viewport .bar .face.front {\n    background: hsl(0, 100%, 20%);\n    bottom: 0;\n    height: 1em;\n\n    -webkit-transform-origin: bottom center;\n    -webkit-transform: rotateX(-90deg);\n}\n\n.viewport .bar .face.right {\n    top: 0;\n    right: 0;\n    width: 1em;\n    height: 100%;\n\n    -webkit-transform-origin: center right;\n    -webkit-transform: rotateY(90deg);\n}\n\n.viewport .bar .face.left {\n    background: hsl(0, 100%, 45%);\n    top: 0;\n    left: 0;\n    width: 1em;\n    height: 100%;\n\n    -webkit-transform-origin: center left;\n    -webkit-transform: rotateY(-90deg);\n}\n\n.viewport .bar .face.back {\n    top: 0;\n    height: 1em;\n\n    -webkit-transform-origin: top center;\n    -webkit-transform: rotateX(90deg);\n}\n\n.viewport .bar .face.top {\n    background: hsl(0, 100%, 40%);\n    height: 100%;\n    width: 100%;\n    top: 0;\n\n    -webkit-transform: translateZ(1em);\n}\n</style><fieldset class=material><label>Search</label><hr><input type=text id=patterninput ng-model=config.pattern></fieldset><div class=viewport><div class=\"html2 world\" rotate3d><div class=ground><table class=histogram-3d ffbase={{histogram.col}}><tr ng-repeat=\"tab in item.roarlist\" ffbase={{tab}}><td>{{item.rid}} - {{item.title}}<br>{{item.description}}</td><td ng-repeat=\"thing in item.roarlist\" ffbase={{thing}} ng-include=\"\'bartpl\'\" ng-init=\"it = thing;\">{{item.rid}}</td><td>30</td><td>20</td><td>60</td></tr><tr><td>80</td><td>100</td><td>40</td></tr><tr><td>50</td><td>30</td></tr></table></div></div></div><script id=bartpl type=text/ng-template><div class=\"bar\" ffbase=\"{{it}}\" ng-style=\"font-size:{{item.rid||\'25\'}}\"> <div class=\"face top\" > <img width=\"100%\" height=\"100%\" ng-src=\"/patents/{{item.pnum || item.patent.id}}/preview\"/> <d3pendingtree patent=\"{{item.pnum || item.patent.id}}\" tree=\"trees[$index]\" pattern=\"{{config.pattern}}\"></d3pendingtree> </div> <div class=\"face front\"></div> <div class=\"face back\"></div> <div class=\"face left\"><img width=\"100%\" height=\"100%\" src=\"/llp_core/img/lll3.svg\"></div> <div class=\"face right\"><img width=\"100%\" height=\"100%\" src=\"/llp_core/img/lll3.svg\"></div> </div></script>");
+$templateCache.put("{widgetsPath}/treewidget/src/alt/reveal_index.html","<link rel=stylesheet href=/lexlab-starter/node_modules/reveal.js/css/reveal.css><link rel=stylesheet href=/lexlab-starter/node_modules/reveal.js/css/theme/black.css><link rel=stylesheet href=/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css><div class=reveal><div class=slides collection=\"{{config.id ||\'11745932\'}}\"><section ng-repeat=\"(slide,key) in collection.roarlist\" class=\"convex slide\" ffbase={{key}}><section class=\"convex zoom slide\"><h2>{{item.rid}} - {{item.title}}</h2><hr><img ng-src={{item.media}} class=\"img img-thumbnail img-responsive\"></section><section ng-repeat=\"(vslide,key) in item.roarlist\" ffbase={{key}}>{{item.rid}} - {{item.title}}<hr><a ng-href={{item.media}} class=fragment><img ng-src={{item.media}} class=\"img img-thumbnail img-responsive\"></a></section></section><section data-background=https://lexlab.io/llp_core/img/GoldLion.svg>Slide 2</section></div></div>");
+$templateCache.put("{widgetsPath}/treewidget/src/alt/slide_edit.html","<input ng-model=config.id><hr><label class=\"label material\" ng-repeat=\"(option, key) in reveal.options\">{{key}}<switch ng-model=option text={{key}} icon=\"fa fa-{{key}}\"><input ng-model=option> <textarea ng-model=option>\n</textarea></switch></label><hr>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/timeedit.html","<fieldset class=material><input type=text ng-model=config.id placeholder=\"Enter patent id number\"><hr><label class=\"label label-NOA\">Enter ID #</label></fieldset>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/timeline.html","<section id=timelinejs></section><script type=text/javascript src=./build/js/storyjs-embed.js></script>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/build/embed/index.html","<!DOCTYPE html><html lang=en><head><title>TimelineJS Embed</title><meta charset=utf-8><meta name=description content=\"TimelineJS Embed\"><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-touch-fullscreen content=yes><meta name=viewport content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0\"><style>\n      html, body {\n      height:100%;\n      padding: 0px;\n      margin: 0px;\n      }\n\n      #timeline-embed { height: 100%; }\n    </style></head></html><body><div id=timeline-embed></div><script type=text/javascript>\n    var trim_point = window.location.href.indexOf(\'embed/index.html\');\n    if (trim_point > 0) {\n      var embed_path = window.location.href.substring(0,trim_point); // supports https access via https://s3.amazonaws.com/cdn.knightlab.com/libs/timeline/latest/embed/index.html \n    } else {\n      var embed_path = \"http://cdn.knightlab.com/libs/timeline/latest/\";\n    }\n  </script><script type=text/javascript src=../js/storyjs-embed-cdn.js?v214></script></body>");}]);

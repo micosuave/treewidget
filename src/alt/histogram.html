@@ -15,12 +15,9 @@
     left:0;
     right:0;
     bottom:0;
-    transition: all 0.2s ease;
-    border: 0px dotted
+
     -webkit-transform: rotateX(-15deg) rotateY(-20deg);
-&:hover{
-  border: 1px dotted red;
-}
+
 }
 
 .viewport .world,
@@ -36,7 +33,7 @@
     height: 90%;
     margin-left: -50%;
     margin-top: -50%;
-    background: rgba(44,24,24,0.44);
+    background: rgba(44,24,24,0.84);
 
     -webkit-transform: rotateX(90deg);
 }
@@ -45,7 +42,7 @@
     height: 80%;
     margin: 10% auto;
     border-collapse: collapse;
-    border-style: solid;
+    border-style: double;
 
     /* make sure grid is raised above ground */
     -webkit-transform: translateZ(1px);
@@ -70,7 +67,7 @@
     background: hsl(0, 100%, 50%);
     position: absolute;
     width: 100%;
-
+    opacity:0.8;
     overflow: hidden;
     z-index: 1;
 }
@@ -122,16 +119,21 @@
     -webkit-transform: translateZ(1em);
 }
 </style>
+<fieldset class="material">
+<label>Search</label>
+<hr>
+<input type="text" id="patterninput" ng-model="config.pattern" />
+</fieldset>
 
 <div class=" viewport">
     <div class="html2 world" rotate3d>
         <div class="ground" >
 <table class="histogram-3d" ffbase="{{histogram.col}}">
 <tr ng-repeat="tab in item.roarlist" ffbase="{{tab}}">
-  <td> {{item.rid}}</td>
+  <td> {{item.rid}} - {{item.title}}<br>{{item.description}}</td>
                   <td ng-repeat="thing in item.roarlist" ffbase="{{thing}}" ng-include="'bartpl'" ng-init="it = thing;">{{item.rid}}</td>
-</tr>
-                    <!--<td>30</td>
+<!--</tr>-->
+                    <td>30</td>
                     <td>20</td>
                     <td>60</td>
                 </tr>
@@ -141,11 +143,9 @@
                     <td>40</td>
                 </tr>
                 <tr>
-<td >
-  <div ng-include="'bartpl'">{{$index}}</div></td>
                     <td>50</td>
                     <td>30</td>
-                </tr>-->
+                </tr>
             </table>
         </div>
     </div>
@@ -153,14 +153,14 @@
 
 <script id="bartpl" type="text/ng-template">
 
-<div class="bar" ffbase="{{it}}" ng-style="font-size:{{item.rid}}">
+<div class="bar" ffbase="{{it}}" ng-style="font-size:{{item.rid||'25'}}">
         <div class="face top" >
-        <img width="100%" height="100%" ng-src="/patents/{{item.pnum}}/preview"/>
-        <d3pendingtree patent="{{item.pnum}}" tree="trees[$index]" pattern="{{config.pattern}}"></d3pendingtree>
+        <img width="100%" height="100%" ng-src="/patents/{{item.pnum || item.patent.id}}/preview"/>
+        <d3pendingtree patent="{{item.pnum || item.patent.id}}" tree="trees[$index]" pattern="{{config.pattern}}"></d3pendingtree>
         </div>
         <div class="face front"></div>
         <div class="face back"></div>
-        <div class="face left"><img width="100%" height="100%" src="/llp_core/img/cannes_lion_logo.png"></div>
-        <div class="face right"><img width="100%" height="100%" src="/llp_core/img/cannes_lion_logo.png"></div>
+        <div class="face left"><img width="100%" height="100%" src="/llp_core/img/lll3.svg"></div>
+        <div class="face right"><img width="100%" height="100%" src="/llp_core/img/lll3.svg"></div>
     </div>
     </script>
