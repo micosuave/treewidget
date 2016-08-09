@@ -1,17 +1,18 @@
 
-<div class="row">
+<header class="bar bar-dark">
   <label ng-bind="options.selectedtheme"></label>
   <input ng-model="options.source" placeholder="SourceID" type="text" />
  <button class="fa fa-download btn btn-primary" ng-click="options.import(options.source)"></button>
 <button class="fa fa-gear btn btn-default" ng-click="options.configure()"></button>
 <button class="fa fa-play btn btn-warning" ng-click="options.initialize()"></button>
-</div>
-  <div ng-bind="options.slides" style="position:absolute;"></div>
-<aside class="window" ng-hide="options.hidethemes">
+</header>
+  <pre ng-bind="options.slides | json:2" style="position:absolute;"></pre>
+<aside class="window" ng-hide="options.hidethemes" style="position:absolute;right:10px;top:10px;">
 <h6 class="card-title">Themes</h6>
 <div class="input-group" ng-repeat="theme in options.themes">
-<label class="label">{{theme.name}}</label>
+<label class="label">{{theme.name}}
 <input type="radio" id="themename" name="themename" ng-model="options.selectedtheme" ng-value="theme.name" />
+</label>
 </div>
 
 </aside>

@@ -222,11 +222,11 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
       src = src || config.id;
         Collection(src).$loaded().then(function(data){
           var srcid = src.replace(/\D/,'');
-          if(angular.isUndefined(data.slide)){
+          //if(angular.isUndefined(data.slide)){
           vm.slides.push('<section data-background="url('+data.media ? data.media : ('https://lexlab.io/patents/'+srcid+'/preview')+')"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>');
-          }else{
-            vm.slides.push(data.slide);
-          }
+          //}else{
+            //vm.slides.push(data.slide);
+          //}
         angular.forEach(data.roarlist, function(rtd, key){
           recurdive(rtd);
       });
@@ -301,8 +301,8 @@ var recurdive = function(src){
       }else{
         vm.slides.push(data.slide);
         if(data.roarlist){
-          angular.forEach(data.roarlist, function(itd, key){
-            recurdive(itd);
+          angular.forEach(data.roarlist, function(ittd, key){
+            recurdive(ittd);
           });
         }
       }
@@ -316,7 +316,7 @@ var recurdive = function(src){
   vm.initialize = function(){
     var theme = '<link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/theme/' + vm.selectedtheme + '.css" id="theme">';
     
-    var newhtml = showheader + theme + showheaderone + vm.slides.join(' ') + showfooter;
+    var newhtml = showheader + theme + showheaderone + vm.slides.join('\n') + showfooter;
     vm.model.content = newhtml;
     vm.model.$save();
   };
