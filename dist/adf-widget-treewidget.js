@@ -221,8 +221,9 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
   vm.slides;
   vm.import = function(src){
         Collection(src).$loaded().then(function(data){
+          var srcid = src.replace(/\D/,'');
           if(angular.isUndefined(data.slide)){
-          vm.slides = '<section data-background="url('+data.media+')"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x'+data.icon+'"></span></section>';
+          vm.slides = '<section data-background="url('+data.media ? data.media : ('https://lexlab.io/patents/'+srcid+'/preview')+')"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>';
           }else{
             vm.slides = [data.slide];
           }
@@ -284,6 +285,13 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
       if(angular.isUndefined(data.slide)){
         
         vm.slides.push(templtr(data));
+        if(data.roarlist){
+          angular.forEach(data.roarlist, function(itd, key){
+            recurdive(itd);
+          });
+        }
+      }else{
+        vm.slides.push(data.slide);
         if(data.roarlist){
           angular.forEach(data.roarlist, function(itd, key){
             recurdive(itd);
