@@ -56,7 +56,7 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
       frameless: false,
       styleClass: 'NOA',
       controller: 'RevealCtrl',
-      controllerAs: 'reveal',
+      controllerAs: 'options',
       edit: {
         templateUrl: '{widgetsPath}/treewidget/src/alt/slide_edit.html',
         reload: true,
@@ -189,18 +189,121 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
       );
     });
   });
-}]).controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config', function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config) {
+}]).controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config','$compile','Collection', function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config, $compile, Collection) {
   var vm = this;
-  vm.csssources = ['https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css', '/lexlab-starter/node_modules/reveal.js/css/reveal.css', '/lexlab-starter/node_modules/reveal.js/css/theme/black.css', '/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css']
-  config = config || $scope.$parent.config;
+  vm.selectedtheme = 'league';
+  var showheader = '<!doctype html><html ng-app="revealjs" class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/app/" target="_blank"></base><link  href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/css/smoothness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" /><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" /><link rel="stylesheet" href="https://lexlab.io/llp_core/dist/app.full.min.css" /><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
+		
+   
+		
+  var showheaderone = '<!-- Theme used for syntax highlighting of code --><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css"><!-- Printing and PDF exports --><script>			var link = document.createElement( "link" );			link.rel = "stylesheet";			link.type = "text/css";			link.href = window.location.search.match( /print-pdf/gi ) ? "css/print/pdf.css" : "css/print/paper.css";			document.getElementsByTagName( "head" )[0].appendChild( link );		</script>		<!--[if lt IE 9]>		<script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/js/html5shiv.js"></script>		<![endif]-->	</head>	<body>		<div class="reveal">			<!-- Any section element inside of this container is displayed as a slide -->			<div class="slides">';
+var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/js/head.min.js"></script><script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/js/reveal.js"></script><script>			Reveal.initialize({history: true,controls: true,progress: true,slideNumber: true,overview: true,center: true,touch: true,loop: true,rtl: false,shuffle: false, fragments: true,embedded: true,help: true,showNotes: false, autoSlide: 10000,autoSlideStoppable: true,autoSlideMethod: Reveal.navigateNext,mouseWheel: true, hideAddressBar: true,previewLinks: false,transition: "slide",transitionSpeed: "slow",backgroundTransition: "convex",viewDistance: 2,parallaxBackgroundImage: "https://lexlab.io/llp_core/img/lll3.svg",parallaxBackgroundSize: "2500px 2500px",dependencies: [{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/markdown/marked.js" },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/markdown/markdown.js" },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/notes/notes.js", async: true },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/highlight/highlight.js", async: true, callback: function() { hljs.initHighlightingOnLoad(); } },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/zoom-js/zoom.js", async: true},/*{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/search/search.js", async: true},*/{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/print-pdf/print-pdf.js", async: true}]});</script></body></html>';
 
+ vm.themes = [
+    {name: 'beige'},
+    {name: 'black'},
+    {name: 'blood'},
+    {name: 'league'},
+    {name: 'moon'},
+    {name: 'night'},
+    {name: 'serif'},
+    {name: 'simple'},
+    {name: 'sky'},
+    {name: 'solarized'},
+    {name: 'white'}
+  ];
+  vm.hidethemes = false;
+  var config = config || $scope.$parent.config;
+  Collection(config.id).$loaded().then(function(resp){
+    vm.model = resp;
+  })
+  vm.slides;
+  vm.import = function(src){
+        Collection(src).$loaded().then(function(data){
+          if(angular.isUndefined(data.slide)){
+          vm.slides = '<section data-background="url('+data.media+')"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x'+data.icon+'"></span></section>';
+          }else{
+            vm.slides = [data.slide];
+          }
+        angular.forEach(data.roarlist, function(rtd, key){
+          recurdive(rtd);
+      });
+        })
+     
+  };
+  function templtr(roarevent){
+    var pups = this;
+    var tmple;
+    if(roarevent.styleClass === 'Applicant'){
+    var apptemplate =  '<div class="container-fluid two-col-right">' +
+            '<div class="row">' +
+            '<div class="col-xs-8"><div class="bs-callout bs-callout-Applicant"><h4>'+ roarevent.title+'</h4><p>Filed '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
+            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
+            '</div>' +
+            '</div><p>&nbsp;</p>';
+            temple = apptemplate;
+    }else if(roarevent.styleClass === 'PTO'){
+                     var ptotemplate = '<div class="container-fluid two-col-left">' +
+            '<div class="row">' +
+            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe><p><img src="https://placehold.it/250x208/640002/fff/&text='+ roarevent.rid + '" class="img img-responsive img-shadow"/></p></div>' +
+            '<div class="col-xs-8"><div class="bs-callout bs-callout-PTO bs-callout-reverse"><h4>'+ roarevent.title + '</h4><p>Filed '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
+            '</div>' +
+            '</div><p>&nbsp;</p>';
+            temple = ptotemplate;
+                }else if(roarevent.styleClass === 'NOA'){
+                    var noatemplate = '<div class="container-fluid two-col-left">' +
+            '<div class="row">' +
+            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe><p><img src="https://placehold.it/250x208/7c994f/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></p></div>' +
+            '<div class="col-xs-8"><div class="bs-callout bs-callout-NOA bs-callout-reverse"><h4>' + roarevent.title + '</h4><p>Filed '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
+            '</div>' +
+            '</div><p>&nbsp;</p>';
+            temple = noatemplate;
+                }else if(roarevent.styleClass === 'Petition'){
+                    var petitiontemplate = '<div class="container-fluid two-col-right">' +
+            '<div class="row">' +
+            '<div class="col-xs-8"><div class="bs-callout bs-callout-Petition"><h4>'+ roarevent.title + '</h4><p>Filed '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
+            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
+            '</div>' +
+            '</div><p>&nbsp;</p>';
+            temple = petitiontemplate;
+                }else if(roarevent.styleClass === 'Interview'){
+             var interviewtemplate = '<div class="container-fluid two-col-right">' +
+            '<div class="row">' +
+            '<div class="col-xs-8"><div class="bs-callout bs-callout-Interview"><h4>'+ roarevent.title + '</h4><p>Filed '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
+            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe><p><img src="https://placehold.it/250x208/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></p></div>' +
+            '</div>' +
+            '</div><p>&nbsp;</p>';
+            temple = interviewtemplate;
+                }
+               pups = '<section class="slide" data-background="'+roarevent.media+'">'+temple+'</section>';
+               return pups;
+};
+  function recurdive(src){
+    Collection(src).$loaded().then(function(data){
+      if(angular.isUndefined(data.slide)){
+        
+        vm.slides.push(templtr(data));
+        if(data.roarlist){
+          angular.forEach(data.roarlist, function(itd, key){
+            recurdive(itd);
+          });
+        }
+      }
+    });
+  };
+  vm.configure = function(){
+    vm.hidethemes = !vm.hidethemes;
+    vm.configureslides = !vm.configureslides;
 
-  $scope.onSubmit = function(){
-    vm.updateConfig(vm.options);
   };
-  vm.updateConfig = function(newconfig){
-    return Reveal.configure(newconfig);
+  vm.initialize = function(){
+    var theme = '<link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/theme/' + vm.selectedtheme + '.css" id="theme">';
+    
+    var newhtml = showheader + theme + showheaderone + vm.slides + showfooter;
+    vm.model.content = newhtml;
+    vm.model.$save();
   };
+
   vm.options = {
     history: true,
     controls: true,
@@ -245,11 +348,19 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
     { src: '/lexlab-starter/node_modules/reveal.js/plugin/print-pdf/print-pdf.js', async: true }*/
     ]
   }
+// $scope.initialize = function(){
+//   revealjs.Reveal().then(function () {
+//     window.Reveal.initialize(vm.options);
 
-  revealjs.Reveal().then(function () {
-    window.Reveal.initialize(vm.options);
+//   });
+// };
 
+function buildslides (slidearray){
+  angular.forEach(slidearray, function(slide, key){
+    var tmpl = '<section>' + slide.content + '</section>';
+    slideshow.push(tmpl);
   });
+}
 }]).controller('TimeLineCtrl', ['$scope', '$stateParams', '$document', '$http', 'storyjs', 'config', 'Collection', 'toastr', '$filter', function ($scope, $stateParams, $document, $http, storyjs, config, Collection, toastr, $filter) {
   var vm = this
 

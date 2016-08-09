@@ -57,7 +57,7 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
       frameless: false,
       styleClass: 'NOA',
       controller: 'RevealCtrl',
-      controllerAs: 'reveal',
+      controllerAs: 'options',
       edit: {
         templateUrl: '{widgetsPath}/treewidget/src/alt/slide_edit.html',
         reload: true,
@@ -190,18 +190,121 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
       );
     });
   });
-}]).controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config', function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config) {
+}]).controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config','$compile','Collection', function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config, $compile, Collection) {
   var vm = this;
-  vm.csssources = ['https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css', '/lexlab-starter/node_modules/reveal.js/css/reveal.css', '/lexlab-starter/node_modules/reveal.js/css/theme/black.css', '/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css']
-  config = config || $scope.$parent.config;
+  vm.selectedtheme = 'league';
+  var showheader = '<!doctype html><html ng-app="revealjs" class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/app/" target="_blank"></base><link  href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/css/smoothness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" /><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" /><link rel="stylesheet" href="https://lexlab.io/llp_core/dist/app.full.min.css" /><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
+		
+   
+		
+  var showheaderone = '<!-- Theme used for syntax highlighting of code --><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css"><!-- Printing and PDF exports --><script>			var link = document.createElement( "link" );			link.rel = "stylesheet";			link.type = "text/css";			link.href = window.location.search.match( /print-pdf/gi ) ? "css/print/pdf.css" : "css/print/paper.css";			document.getElementsByTagName( "head" )[0].appendChild( link );		</script>		<!--[if lt IE 9]>		<script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/js/html5shiv.js"></script>		<![endif]-->	</head>	<body>		<div class="reveal">			<!-- Any section element inside of this container is displayed as a slide -->			<div class="slides">';
+var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/js/head.min.js"></script><script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/js/reveal.js"></script><script>			Reveal.initialize({history: true,controls: true,progress: true,slideNumber: true,overview: true,center: true,touch: true,loop: true,rtl: false,shuffle: false, fragments: true,embedded: true,help: true,showNotes: false, autoSlide: 10000,autoSlideStoppable: true,autoSlideMethod: Reveal.navigateNext,mouseWheel: true, hideAddressBar: true,previewLinks: false,transition: "slide",transitionSpeed: "slow",backgroundTransition: "convex",viewDistance: 2,parallaxBackgroundImage: "https://lexlab.io/llp_core/img/lll3.svg",parallaxBackgroundSize: "2500px 2500px",dependencies: [{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/markdown/marked.js" },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/markdown/markdown.js" },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/notes/notes.js", async: true },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/highlight/highlight.js", async: true, callback: function() { hljs.initHighlightingOnLoad(); } },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/zoom-js/zoom.js", async: true},/*{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/search/search.js", async: true},*/{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/print-pdf/print-pdf.js", async: true}]});</script></body></html>';
 
+ vm.themes = [
+    {name: 'beige'},
+    {name: 'black'},
+    {name: 'blood'},
+    {name: 'league'},
+    {name: 'moon'},
+    {name: 'night'},
+    {name: 'serif'},
+    {name: 'simple'},
+    {name: 'sky'},
+    {name: 'solarized'},
+    {name: 'white'}
+  ];
+  vm.hidethemes = false;
+  var config = config || $scope.$parent.config;
+  Collection(config.id).$loaded().then(function(resp){
+    vm.model = resp;
+  })
+  vm.slides;
+  vm.import = function(src){
+        Collection(src).$loaded().then(function(data){
+          if(angular.isUndefined(data.slide)){
+          vm.slides = '<section data-background="url('+data.media+')"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x'+data.icon+'"></span></section>';
+          }else{
+            vm.slides = [data.slide];
+          }
+        angular.forEach(data.roarlist, function(rtd, key){
+          recurdive(rtd);
+      });
+        })
+     
+  };
+  function templtr(roarevent){
+    var pups = this;
+    var tmple;
+    if(roarevent.styleClass === 'Applicant'){
+    var apptemplate =  '<div class="container-fluid two-col-right">' +
+            '<div class="row">' +
+            '<div class="col-xs-8"><div class="bs-callout bs-callout-Applicant"><h4>'+ roarevent.title+'</h4><p>Filed '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
+            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
+            '</div>' +
+            '</div><p>&nbsp;</p>';
+            temple = apptemplate;
+    }else if(roarevent.styleClass === 'PTO'){
+                     var ptotemplate = '<div class="container-fluid two-col-left">' +
+            '<div class="row">' +
+            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe><p><img src="https://placehold.it/250x208/640002/fff/&text='+ roarevent.rid + '" class="img img-responsive img-shadow"/></p></div>' +
+            '<div class="col-xs-8"><div class="bs-callout bs-callout-PTO bs-callout-reverse"><h4>'+ roarevent.title + '</h4><p>Filed '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
+            '</div>' +
+            '</div><p>&nbsp;</p>';
+            temple = ptotemplate;
+                }else if(roarevent.styleClass === 'NOA'){
+                    var noatemplate = '<div class="container-fluid two-col-left">' +
+            '<div class="row">' +
+            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe><p><img src="https://placehold.it/250x208/7c994f/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></p></div>' +
+            '<div class="col-xs-8"><div class="bs-callout bs-callout-NOA bs-callout-reverse"><h4>' + roarevent.title + '</h4><p>Filed '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
+            '</div>' +
+            '</div><p>&nbsp;</p>';
+            temple = noatemplate;
+                }else if(roarevent.styleClass === 'Petition'){
+                    var petitiontemplate = '<div class="container-fluid two-col-right">' +
+            '<div class="row">' +
+            '<div class="col-xs-8"><div class="bs-callout bs-callout-Petition"><h4>'+ roarevent.title + '</h4><p>Filed '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
+            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
+            '</div>' +
+            '</div><p>&nbsp;</p>';
+            temple = petitiontemplate;
+                }else if(roarevent.styleClass === 'Interview'){
+             var interviewtemplate = '<div class="container-fluid two-col-right">' +
+            '<div class="row">' +
+            '<div class="col-xs-8"><div class="bs-callout bs-callout-Interview"><h4>'+ roarevent.title + '</h4><p>Filed '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
+            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe><p><img src="https://placehold.it/250x208/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></p></div>' +
+            '</div>' +
+            '</div><p>&nbsp;</p>';
+            temple = interviewtemplate;
+                }
+               pups = '<section class="slide" data-background="'+roarevent.media+'">'+temple+'</section>';
+               return pups;
+};
+  function recurdive(src){
+    Collection(src).$loaded().then(function(data){
+      if(angular.isUndefined(data.slide)){
+        
+        vm.slides.push(templtr(data));
+        if(data.roarlist){
+          angular.forEach(data.roarlist, function(itd, key){
+            recurdive(itd);
+          });
+        }
+      }
+    });
+  };
+  vm.configure = function(){
+    vm.hidethemes = !vm.hidethemes;
+    vm.configureslides = !vm.configureslides;
 
-  $scope.onSubmit = function(){
-    vm.updateConfig(vm.options);
   };
-  vm.updateConfig = function(newconfig){
-    return Reveal.configure(newconfig);
+  vm.initialize = function(){
+    var theme = '<link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/theme/' + vm.selectedtheme + '.css" id="theme">';
+    
+    var newhtml = showheader + theme + showheaderone + vm.slides + showfooter;
+    vm.model.content = newhtml;
+    vm.model.$save();
   };
+
   vm.options = {
     history: true,
     controls: true,
@@ -246,11 +349,19 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
     { src: '/lexlab-starter/node_modules/reveal.js/plugin/print-pdf/print-pdf.js', async: true }*/
     ]
   }
+// $scope.initialize = function(){
+//   revealjs.Reveal().then(function () {
+//     window.Reveal.initialize(vm.options);
 
-  revealjs.Reveal().then(function () {
-    window.Reveal.initialize(vm.options);
+//   });
+// };
 
+function buildslides (slidearray){
+  angular.forEach(slidearray, function(slide, key){
+    var tmpl = '<section>' + slide.content + '</section>';
+    slideshow.push(tmpl);
   });
+}
 }]).controller('TimeLineCtrl', ['$scope', '$stateParams', '$document', '$http', 'storyjs', 'config', 'Collection', 'toastr', '$filter', function ($scope, $stateParams, $document, $http, storyjs, config, Collection, toastr, $filter) {
   var vm = this
 
@@ -348,7 +459,7 @@ angular.module("adf.widget.treewidget").run(["$templateCache", function($templat
 $templateCache.put("{widgetsPath}/treewidget/src/view.html","<div class=container-fluid><div><h1 class=text-center>Architecture Tree</h1><div ng-controller=filterCtrl><ng-include src=\"\'filter.html\'\"></ng-include></div><div ng-controller=chartCtrl><tree-chart-widget data={{tree}} diameter=\"{{config.diameter || \'500\'}}\"></tree-chart-widget><d3pendingtree id=7654321 patent=7654321 pattern tree=tree></d3pendingtree></div><div ng-controller=panelCtrl><div id=panel><div ng-if=detail><ng-include src=\"\'panel-detail.html\'\"></ng-include></div><div ng-if=edit><ng-include src=\"\'panel-edit.html\'\"></ng-include></div></div></div><div ng-controller=undoCtrl><div ng-if=hasHistory() class=\"alert alert-success json-update-label bg-success\">Updated JSON <a ng-click=undo()>(undo)</a></div></div><div ng-controller=jsonDataCtrl><textarea id=json-data class=\"form-control card card-dark well\" style=margin-top:50%; ng-model=data ng-blur=updateData()></textarea></div></div></div><script src=/treewidget/src/d3.architectureTree.js></script><script src=/treewidget/src/app.js></script><script src=/treewidget/src/chart.js></script><script src=/treewidget/src/filter.js></script><script src=/treewidget/src/json-data.js></script><script src=/treewidget/src/panel.js></script><script src=/treewidget/src/undo.js></script><script src=/treewidget/src/tree-chart.js></script><script src=/treewidget/src/init-focus.js></script><script src=/treewidget/src/data.js></script><script src=/treewidget/src/bus.js></script><script src=/treewidget/src/data.json></script><script type=text/ng-template id=filter.html><div class=\"filters panel panel-default\"> <div class=\"panel-heading\">Search</div> <div class=\"panel-body\"> <form id=\"filter_form\"> <input name=\"name\" type=\"text\" class=\"form-control\" placeholder=\"Filter by name\" ng-model=\"$parent.nameFilter\" /> <div id=\"technos\"> <h5>Technos</h5> <a ng-repeat=\"techno in technos\" class=\"btn btn-default btn-xs\" ng-click=\"toggleTechnoFilter(techno)\" ng-class=\"{\'btn-primary\': isTechnoInFilter(techno) }\">{{ techno }}</a> </div> <div id=\"host\"> <h5>Host</h5> <a ng-repeat=\"host in hosts\" class=\"btn btn-default btn-xs\" ng-click=\"toggleHostFilter(host)\" ng-class=\"{\'btn-primary\': isHostInFilter(host) }\">{{ host }}</a> </div> </form> </div> </div></script><script type=text/ng-template id=panel-detail.html><div class=\"details panel panel-info\"> <div class=\"panel-heading\">{{ node.name }}</div> <div class=\"panel-body\"> <div class=\"url\" ng-if=\"node.url\"> <a href=\"{{ node.url }}\">{{ node.url }}</a> </div> <div class=\"comments panel panel-default\" ng-if=\"node.comments\"> <div class=\"panel-heading\">{{ node.comments }}</div> </div> <div class=\"properties\" ng-if=\"node.details.Dependencies\"> <h5>Depends on</h5> <ul> <li ng-repeat=\"dependency in node.details.Dependencies\"> {{ dependency }} </li> </ul> </div> <div class=\"properties\" ng-if=\"node.details.Dependents\"> <h5>Dependendents</h5> <ul> <li ng-repeat=\"dependent in node.details.Dependents\"> {{ dependent }} </li> </ul> </div> <div class=\"properties\" ng-if=\"node.details.Technos\"> <h5>Technos</h5> <ul> <li ng-repeat=\"techno in node.details.Technos\"> {{ techno }} </li> </ul> </div> <div class=\"properties\" ng-if=\"node.details.Host\"> <h5>Hosts</h5> <ul> <li ng-repeat=\"(hostName, servers) in node.host\"> {{ hostName }} <ul ng-if=\"servers\"> <li ng-repeat=\"server in servers\">{{ server }}</li> </ul> <span ng-if=\"detail.via\">({{ detail.via }})</span> </li> </ul> </div> </div> </div></script><script type=text/ng-template id=panel-edit.html><form name=\"editForm\" ng-submit=\"editNode(editForm, $event)\"> <div class=\"details panel panel-info\"> <div class=\"panel-heading\"> <input type=\"text\" ng-model=\"node.name\" class=\"form-control\" /> </div> <div class=\"panel-body\"> <div class=\"url\"> <h5>Url</h5> <input type=\"text\" ng-model=\"node.url\" class=\"form-control\" init-focus /> </div> <div class=\"comments\"> <h5>Comments</h5> <textarea ng-model=\"node.comments\" class=\"form-control\" init-focus></textarea> </div> <div class=\"properties edit\"> <h5>Depends on <span class=\"glyphicon glyphicon-plus\" ng-click=\"addDependency()\"></span></h5> <ul> <li ng-repeat=\"dependencies in node.dependsOn track by $index\"> <input type=\"text\" ng-model=\"node.dependsOn[$index]\" init-focus /> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteDependency($index)\"></span> </li> </ul> <h5>Technos <span class=\"glyphicon glyphicon-plus\" ng-click=\"addTechno()\"></span></h5> <ul> <li ng-repeat=\"techno in node.technos track by $index\"> <input type=\"text\" ng-model=\"node.technos[$index]\" init-focus /> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteTechno($index)\"></span> </li> </ul> <h5>Hosts <span class=\"glyphicon glyphicon-plus\" ng-click=\"addHostCategory()\"></span></h5> <ul> <li ng-repeat=\"(key, host) in node.host track by $index\"> <input type=\"text\" ng-model=\"hostKeys[key]\" init-focus /><span class=\"glyphicon glyphicon-plus\" ng-click=\"addHost(key)\"></span> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteHostCategory(key)\"></span> <ul> <li ng-repeat=\"test in node.host[key] track by $index\"> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteHost(key, $index)\"></span> <input type=\"text\" ng-model=\"node.host[key][$index]\" init-focus /> </li> </ul> </li> </ul> </div> </div> <div class=\"panel-footer\"> <button type=\"button\" ng-click=\"addNode()\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-plus\"></span> Add</button> <button type=\"button\" ng-click=\"moveNode()\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-share-alt\"></span> Move</button> <button type=\"button\" ng-click=\"deleteNode()\" class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-trash\"></span> Delete</button> </div> <div class=\"panel-footer\"> <button type=\"submit\" class=\"btn btn-primary\"><span class=\"glyphicon glyphicon-ok\"></span> Save</button> <button type=\"button\" ng-click=\"leaveEdit()\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-remove\"></span> Cancel</button> </div> </div> </form></script>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/hist_edit.html","<fieldset class=material><input type=text ng-model=config.id placeholder=\"Enter patent id number\"><hr><label class=\"label label-NOA\">Enter ID #</label></fieldset>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/histogram.html","<style>\n.viewport {\n    position: relative;\n    width: 100%;\n    padding-bottom: 100%;\n    cursor: move;\n\n    -webkit-perspective: 6000px;\n    -webkit-perspective-origin: 50% -100%;\n}\n.viewport .world {\n    position: absolute;\n    top:0;\n    left:0;\n    right:0;\n    bottom:0;\n\n    -webkit-transform: rotateX(-15deg) rotateY(-20deg);\n\n}\n\n.viewport .world,\n.viewport .world * {\n    -webkit-transform-style: preserve-3d;\n}\n.viewport .ground {\n    position: absolute;\n    z-index: 1;\n    top: 50%;\n    left: 50%;\n    width: 90%;\n    height: 90%;\n    margin-left: -50%;\n    margin-top: -50%;\n    background: rgba(44,24,24,0.84);\n\n    -webkit-transform: rotateX(90deg);\n}\n.viewport .histogram-3d {\n    width: 80%;\n    height: 80%;\n    margin: 10% auto;\n    border-collapse: collapse;\n    border-style: double;\n\n    /* make sure grid is raised above ground */\n    -webkit-transform: translateZ(1px);\n}\n\n.viewport .histogram-3d td {\n    position: relative;\n    width: 30%;\n    height: 30%;\n    padding: 10px;\n    border: 2px solid #555;\n    z-index: 0;\n}\n.viewport .bar {\n    position: relative;\n    width: 100%;\n    height: 100%;\n    z-index: 1;\n}\n\n.viewport .bar .face {\n    background: hsl(0, 100%, 50%);\n    position: absolute;\n    width: 100%;\n    opacity:0.8;\n    overflow: hidden;\n    z-index: 1;\n}\n\n.viewport .bar .face.front {\n    background: hsl(0, 100%, 20%);\n    bottom: 0;\n    height: 1em;\n\n    -webkit-transform-origin: bottom center;\n    -webkit-transform: rotateX(-90deg);\n}\n\n.viewport .bar .face.right {\n    top: 0;\n    right: 0;\n    width: 1em;\n    height: 100%;\n\n    -webkit-transform-origin: center right;\n    -webkit-transform: rotateY(90deg);\n}\n\n.viewport .bar .face.left {\n    background: hsl(0, 100%, 45%);\n    top: 0;\n    left: 0;\n    width: 1em;\n    height: 100%;\n\n    -webkit-transform-origin: center left;\n    -webkit-transform: rotateY(-90deg);\n}\n\n.viewport .bar .face.back {\n    top: 0;\n    height: 1em;\n\n    -webkit-transform-origin: top center;\n    -webkit-transform: rotateX(90deg);\n}\n\n.viewport .bar .face.top {\n    background: hsl(0, 100%, 40%);\n    height: 100%;\n    width: 100%;\n    top: 0;\n\n    -webkit-transform: translateZ(1em);\n}\n</style><fieldset class=material><label>Search</label><hr><input type=text id=patterninput ng-model=config.pattern></fieldset><div class=viewport><div class=\"html2 world\" rotate3d><div class=ground><table class=histogram-3d ffbase={{histogram.col}}><tr ng-repeat=\"tab in item.roarlist\" ffbase={{tab}}><td>{{item.rid}} - {{item.title}}<br>{{item.description}}</td><td ng-repeat=\"thing in item.roarlist\" ffbase={{thing}} ng-include=\"\'bartpl\'\" ng-init=\"it = thing;\">{{item.rid}}</td><td>30</td><td>20</td><td>60</td></tr><tr><td>80</td><td>100</td><td>40</td></tr><tr><td>50</td><td>30</td></tr></table></div></div></div><script id=bartpl type=text/ng-template><div class=\"bar\" ffbase=\"{{it}}\" ng-style=\"font-size:{{item.rid||\'25\'}}\"> <div class=\"face top\" > <img width=\"100%\" height=\"100%\" ng-src=\"/patents/{{item.pnum || item.patent.id}}/preview\"/> <d3pendingtree patent=\"{{item.pnum || item.patent.id}}\" tree=\"trees[$index]\" pattern=\"{{config.pattern}}\"></d3pendingtree> </div> <div class=\"face front\"></div> <div class=\"face back\"></div> <div class=\"face left\"><img width=\"100%\" height=\"100%\" src=\"/llp_core/img/lll3.svg\"></div> <div class=\"face right\"><img width=\"100%\" height=\"100%\" src=\"/llp_core/img/lll3.svg\"></div> </div></script>");
-$templateCache.put("{widgetsPath}/treewidget/src/alt/reveal_index.html","<link rel=stylesheet href=/lexlab-starter/node_modules/reveal.js/css/reveal.css><link rel=stylesheet href=/lexlab-starter/node_modules/reveal.js/css/theme/black.css><link rel=stylesheet href=/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css><div class=reveal><div class=slides collection=\"{{config.id ||\'11745932\'}}\"><section ng-repeat=\"(slide,key) in collection.roarlist\" class=\"convex slide\" ffbase={{key}}><section class=\"convex zoom slide\"><h2>{{item.rid}} - {{item.title}}</h2><hr><img ng-src={{item.media}} class=\"img img-thumbnail img-responsive\"></section><section ng-repeat=\"(vslide,key) in item.roarlist\" ffbase={{key}}>{{item.rid}} - {{item.title}}<hr><a ng-href={{item.media}} class=fragment><img ng-src={{item.media}} class=\"img img-thumbnail img-responsive\"></a></section></section><section data-background=https://lexlab.io/llp_core/img/GoldLion.svg>Slide 2</section></div></div>");
+$templateCache.put("{widgetsPath}/treewidget/src/alt/reveal_index.html","<div class=row><label ng-bind=options.selectedtheme></label> <input ng-model=options.source placeholder=SourceID type=text> <button class=\"fa fa-download btn btn-primary\" ng-click=options.import(options.source)></button> <button class=\"fa fa-gear btn btn-default\" ng-click=options.configure()></button> <button class=\"fa fa-play btn btn-warning\" ng-click=options.initialize()></button></div><div ng-bind=options.slides style=position:absolute;></div><aside class=window ng-hide=options.hidethemes><h6 class=card-title>Themes</h6><div class=input-group ng-repeat=\"theme in options.themes\"><label class=label>{{theme.name}}</label> <input type=radio id=themename name=themename ng-model=options.selectedtheme ng-value=theme.name></div></aside>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/slide_edit.html","<input ng-model=config.id><hr><label class=\"label material\" ng-repeat=\"(option, key) in reveal.options\">{{key}}<switch ng-model=option text={{key}} icon=\"fa fa-{{key}}\"><input ng-model=option> <textarea ng-model=option>\n</textarea></switch></label><hr>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/timeedit.html","<fieldset class=material><input type=text ng-model=config.id placeholder=\"Enter patent id number\"><hr><label class=\"label label-NOA\">Enter ID #</label></fieldset>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/timeline.html","<section id=timelinejs></section><script type=text/javascript src=./build/js/storyjs-embed.js></script>");

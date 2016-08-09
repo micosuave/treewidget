@@ -1,27 +1,18 @@
-<link rel="stylesheet" href="/lexlab-starter/node_modules/reveal.js/css/reveal.css" />
-<link rel="stylesheet" href="/lexlab-starter/node_modules/reveal.js/css/theme/black.css" />
-<!-- Theme used for syntax highlighting of code -->
-<link rel="stylesheet" href="/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css" />
 
-<div class="reveal">
-  <div class="slides" collection="{{config.id ||'11745932'}}">
-    <section ng-repeat="(slide,key) in collection.roarlist" class="convex slide" ffbase="{{key}}">
-
-      <section class="convex zoom slide">
-        <h2>{{item.rid}} - {{item.title}}</h2>
-        <hr><img ng-src="{{item.media}}" class="img img-thumbnail img-responsive" /></section>
-
-
-      <section ng-repeat="(vslide,key) in item.roarlist" ffbase="{{key}}">
-
-        {{item.rid}} - {{item.title}}
-        <hr>
-        <a ng-href="{{item.media}}" class="fragment"><img ng-src="{{item.media}}" class="img img-thumbnail img-responsive" /></a>
-
-      </section>
-
-    </section>
-    <section data-background="https://lexlab.io/llp_core/img/GoldLion.svg">Slide 2</section>
-
-  </div>
+<div class="row">
+  <label ng-bind="options.selectedtheme"></label>
+  <input ng-model="options.source" placeholder="SourceID" type="text" />
+ <button class="fa fa-download btn btn-primary" ng-click="options.import(options.source)"></button>
+<button class="fa fa-gear btn btn-default" ng-click="options.configure()"></button>
+<button class="fa fa-play btn btn-warning" ng-click="options.initialize()"></button>
 </div>
+  <div ng-bind="options.slides" style="position:absolute;"></div>
+<aside class="window" ng-hide="options.hidethemes">
+<h6 class="card-title">Themes</h6>
+<div class="input-group" ng-repeat="theme in options.themes">
+<label class="label">{{theme.name}}</label>
+<input type="radio" id="themename" name="themename" ng-model="options.selectedtheme" ng-value="theme.name" />
+</div>
+
+</aside>
+
