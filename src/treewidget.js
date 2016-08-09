@@ -234,7 +234,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
   };
   function templtr(roarevent){
     var pups = this;
-    var tmple;
+    var temple;
     if(roarevent.styleClass === 'Applicant'){
     var apptemplate =  '<div class="container-fluid two-col-right">' +
             '<div class="row">' +
