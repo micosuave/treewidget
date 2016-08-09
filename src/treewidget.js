@@ -219,6 +219,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
   })
   vm.slides = [];
   vm.import = function(src){
+      src = src || config.id;
         Collection(src).$loaded().then(function(data){
           var srcid = src.replace(/\D/,'');
           if(angular.isUndefined(data.slide)){
@@ -232,7 +233,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
         });
      
   };
-  function templtr(roarevent){
+  var templtr = function(roarevent){
     var pups = this;
     var temple;
     if(roarevent.styleClass === 'Applicant'){
@@ -275,15 +276,23 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
             '</div>' +
             '</div><p>&nbsp;</p>';
             temple = interviewtemplate;
-                }
+                }else{
+    var apptemplate =  '<div class="container-fluid two-col-right">' +
+            '<div class="row">' +
+            '<div class="col-xs-8"><div class="bs-callout bs-callout-Applicant"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
+            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
+            '</div>' +
+            '</div><p>&nbsp;</p>';
+            temple = apptemplate;
+    }
                pups = '<section class="slide" data-background="'+roarevent.media+'">'+temple+'</section>';
                return pups;
 };
-  function recurdive(src){
+var recurdive = function(src){
     Collection(src).$loaded().then(function(data){
       if(angular.isUndefined(data.slide)){
         
-        vm.slides.push(templtr(data));
+        vm.slides.push(new templtr(data));
         if(data.roarlist){
           angular.forEach(data.roarlist, function(itd, key){
             recurdive(itd);
