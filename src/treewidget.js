@@ -395,7 +395,12 @@ function buildslides (slidearray){
   var vm = this;
 
   var config = config || $scope.$parent.config;
-  vm.data = {
+  
+  Collection(config.id).$loaded().then(function(lesource){
+        if(angular.isDefined(lesource.timeline)){
+          vm.data = lesource.timeline;
+        }else{
+            vm.data = {
     'timeline': {
       'headline': 'Prosecution History Digest',
       'type': 'default',
@@ -421,6 +426,9 @@ function buildslides (slidearray){
       }]
     }
   };
+        }
+  });
+
   var iteratey = function(collection){
     return angular.forEach(collection.roarlist, function (rid, key) {
       Collection(rid).$loaded().then(function (rvent) {
@@ -483,7 +491,7 @@ function buildslides (slidearray){
           vm.options = {
             type: 'timeline',
             width: 1000,
-            height: 750,
+            height: 550,
             source: angular.fromJson(vm.data),
             embed_id: 'timeline',
             hash_bookmark: false,
@@ -493,8 +501,14 @@ function buildslides (slidearray){
           }; 
           createStoryJS(vm.options); });
       };
+      vm.save = function(){
+        Collection(config.id).$loaded().then(function(vmodel){
+          vmodel.timeline = vm.data;
+          vmodel.$save();
+        });
+      };
       
-}]).directive('timelinejs',function(){
+}]).directive('timelinejs',function(Collection){
   return {
     restrict: 'E',
     templateUrl: '/treewidget/src/alt/timeline.html',
@@ -503,7 +517,10 @@ function buildslides (slidearray){
       controller: 'TimeLineCtrl',
       controllerAs: 'time',
       link: function($scope, $element, $attr, $ctrl){
-        
+          Collection($attr.source).$loaded().then(function(sourcedata){
+            $ctrl.data = sourcedata.timeline;
+            $ctrl.initialize();
+          });
       }
   }
 });

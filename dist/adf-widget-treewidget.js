@@ -396,7 +396,12 @@ function buildslides (slidearray){
   var vm = this;
 
   var config = config || $scope.$parent.config;
-  vm.data = {
+  
+  Collection(config.id).$loaded().then(function(lesource){
+        if(angular.isDefined(lesource.timeline)){
+          vm.data = lesource.timeline;
+        }else{
+            vm.data = {
     'timeline': {
       'headline': 'Prosecution History Digest',
       'type': 'default',
@@ -422,6 +427,9 @@ function buildslides (slidearray){
       }]
     }
   };
+        }
+  });
+
   var iteratey = function(collection){
     return angular.forEach(collection.roarlist, function (rid, key) {
       Collection(rid).$loaded().then(function (rvent) {
@@ -484,7 +492,7 @@ function buildslides (slidearray){
           vm.options = {
             type: 'timeline',
             width: 1000,
-            height: 750,
+            height: 550,
             source: angular.fromJson(vm.data),
             embed_id: 'timeline',
             hash_bookmark: false,
@@ -494,8 +502,14 @@ function buildslides (slidearray){
           }; 
           createStoryJS(vm.options); });
       };
+      vm.save = function(){
+        Collection(config.id).$loaded().then(function(vmodel){
+          vmodel.timeline = vm.data;
+          vmodel.$save();
+        });
+      };
       
-}]).directive('timelinejs',function(){
+}]).directive('timelinejs',["Collection", function(Collection){
   return {
     restrict: 'E',
     templateUrl: '/treewidget/src/alt/timeline.html',
@@ -504,10 +518,13 @@ function buildslides (slidearray){
       controller: 'TimeLineCtrl',
       controllerAs: 'time',
       link: function($scope, $element, $attr, $ctrl){
-        
+          Collection($attr.source).$loaded().then(function(sourcedata){
+            $ctrl.data = sourcedata.timeline;
+            $ctrl.initialize();
+          });
       }
   }
-});
+}]);
 
 angular.module("adf.widget.treewidget").run(["$templateCache", function($templateCache) {$templateCache.put("{widgetsPath}/treewidget/src/edit.html","<form role=form><div class=form-group><label for=sample>Sample</label> <input type=url class=form-control id=sample ng-model=config.url placeholder=\"Enter sample\"> <input type=number class=form-control id=num ng-model=config.diameter></div></form>");
 $templateCache.put("{widgetsPath}/treewidget/src/view.html","<div class=container-fluid><div><h1 class=text-center>Architecture Tree</h1><div ng-controller=filterCtrl><ng-include src=\"\'filter.html\'\"></ng-include></div><div ng-controller=chartCtrl><tree-chart-widget data={{tree}} diameter=\"{{config.diameter || \'500\'}}\"></tree-chart-widget><d3pendingtree id=7654321 patent=7654321 pattern tree=tree></d3pendingtree></div><div ng-controller=panelCtrl><div id=panel><div ng-if=detail><ng-include src=\"\'panel-detail.html\'\"></ng-include></div><div ng-if=edit><ng-include src=\"\'panel-edit.html\'\"></ng-include></div></div></div><div ng-controller=undoCtrl><div ng-if=hasHistory() class=\"alert alert-success json-update-label bg-success\">Updated JSON <a ng-click=undo()>(undo)</a></div></div><div ng-controller=jsonDataCtrl><textarea id=json-data class=\"form-control card card-dark well\" style=margin-top:50%; ng-model=data ng-blur=updateData()></textarea></div></div></div><script src=/treewidget/src/d3.architectureTree.js></script><script src=/treewidget/src/app.js></script><script src=/treewidget/src/chart.js></script><script src=/treewidget/src/filter.js></script><script src=/treewidget/src/json-data.js></script><script src=/treewidget/src/panel.js></script><script src=/treewidget/src/undo.js></script><script src=/treewidget/src/tree-chart.js></script><script src=/treewidget/src/init-focus.js></script><script src=/treewidget/src/data.js></script><script src=/treewidget/src/bus.js></script><script src=/treewidget/src/data.json></script><script type=text/ng-template id=filter.html><div class=\"filters panel panel-default\"> <div class=\"panel-heading\">Search</div> <div class=\"panel-body\"> <form id=\"filter_form\"> <input name=\"name\" type=\"text\" class=\"form-control\" placeholder=\"Filter by name\" ng-model=\"$parent.nameFilter\" /> <div id=\"technos\"> <h5>Technos</h5> <a ng-repeat=\"techno in technos\" class=\"btn btn-default btn-xs\" ng-click=\"toggleTechnoFilter(techno)\" ng-class=\"{\'btn-primary\': isTechnoInFilter(techno) }\">{{ techno }}</a> </div> <div id=\"host\"> <h5>Host</h5> <a ng-repeat=\"host in hosts\" class=\"btn btn-default btn-xs\" ng-click=\"toggleHostFilter(host)\" ng-class=\"{\'btn-primary\': isHostInFilter(host) }\">{{ host }}</a> </div> </form> </div> </div></script><script type=text/ng-template id=panel-detail.html><div class=\"details panel panel-info\"> <div class=\"panel-heading\">{{ node.name }}</div> <div class=\"panel-body\"> <div class=\"url\" ng-if=\"node.url\"> <a href=\"{{ node.url }}\">{{ node.url }}</a> </div> <div class=\"comments panel panel-default\" ng-if=\"node.comments\"> <div class=\"panel-heading\">{{ node.comments }}</div> </div> <div class=\"properties\" ng-if=\"node.details.Dependencies\"> <h5>Depends on</h5> <ul> <li ng-repeat=\"dependency in node.details.Dependencies\"> {{ dependency }} </li> </ul> </div> <div class=\"properties\" ng-if=\"node.details.Dependents\"> <h5>Dependendents</h5> <ul> <li ng-repeat=\"dependent in node.details.Dependents\"> {{ dependent }} </li> </ul> </div> <div class=\"properties\" ng-if=\"node.details.Technos\"> <h5>Technos</h5> <ul> <li ng-repeat=\"techno in node.details.Technos\"> {{ techno }} </li> </ul> </div> <div class=\"properties\" ng-if=\"node.details.Host\"> <h5>Hosts</h5> <ul> <li ng-repeat=\"(hostName, servers) in node.host\"> {{ hostName }} <ul ng-if=\"servers\"> <li ng-repeat=\"server in servers\">{{ server }}</li> </ul> <span ng-if=\"detail.via\">({{ detail.via }})</span> </li> </ul> </div> </div> </div></script><script type=text/ng-template id=panel-edit.html><form name=\"editForm\" ng-submit=\"editNode(editForm, $event)\"> <div class=\"details panel panel-info\"> <div class=\"panel-heading\"> <input type=\"text\" ng-model=\"node.name\" class=\"form-control\" /> </div> <div class=\"panel-body\"> <div class=\"url\"> <h5>Url</h5> <input type=\"text\" ng-model=\"node.url\" class=\"form-control\" init-focus /> </div> <div class=\"comments\"> <h5>Comments</h5> <textarea ng-model=\"node.comments\" class=\"form-control\" init-focus></textarea> </div> <div class=\"properties edit\"> <h5>Depends on <span class=\"glyphicon glyphicon-plus\" ng-click=\"addDependency()\"></span></h5> <ul> <li ng-repeat=\"dependencies in node.dependsOn track by $index\"> <input type=\"text\" ng-model=\"node.dependsOn[$index]\" init-focus /> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteDependency($index)\"></span> </li> </ul> <h5>Technos <span class=\"glyphicon glyphicon-plus\" ng-click=\"addTechno()\"></span></h5> <ul> <li ng-repeat=\"techno in node.technos track by $index\"> <input type=\"text\" ng-model=\"node.technos[$index]\" init-focus /> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteTechno($index)\"></span> </li> </ul> <h5>Hosts <span class=\"glyphicon glyphicon-plus\" ng-click=\"addHostCategory()\"></span></h5> <ul> <li ng-repeat=\"(key, host) in node.host track by $index\"> <input type=\"text\" ng-model=\"hostKeys[key]\" init-focus /><span class=\"glyphicon glyphicon-plus\" ng-click=\"addHost(key)\"></span> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteHostCategory(key)\"></span> <ul> <li ng-repeat=\"test in node.host[key] track by $index\"> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteHost(key, $index)\"></span> <input type=\"text\" ng-model=\"node.host[key][$index]\" init-focus /> </li> </ul> </li> </ul> </div> </div> <div class=\"panel-footer\"> <button type=\"button\" ng-click=\"addNode()\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-plus\"></span> Add</button> <button type=\"button\" ng-click=\"moveNode()\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-share-alt\"></span> Move</button> <button type=\"button\" ng-click=\"deleteNode()\" class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-trash\"></span> Delete</button> </div> <div class=\"panel-footer\"> <button type=\"submit\" class=\"btn btn-primary\"><span class=\"glyphicon glyphicon-ok\"></span> Save</button> <button type=\"button\" ng-click=\"leaveEdit()\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-remove\"></span> Cancel</button> </div> </div> </form></script>");
