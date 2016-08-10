@@ -194,9 +194,9 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
   var vm = this;
   vm.selectedtheme = 'league';
   var showheader = '<!doctype html><html ng-app="revealjs" class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/" target="_blank"></base><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
-		
-   
-		
+
+
+
   var showheaderone = '<!-- Theme used for syntax highlighting of code --><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css"><!-- Printing and PDF exports --><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/css/print/print.css"	</head>	<body>		<div class="reveal">			<!-- Any section element inside of this container is displayed as a slide -->			<div class="slides">';
 var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/js/head.min.js"></script><script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/js/reveal.js"></script><script>			Reveal.initialize({history: true,controls: true,progress: true,slideNumber: true,overview: true,center: true,touch: true,loop: true,rtl: false,shuffle: false, fragments: true,embedded: true,help: true,showNotes: false, autoSlide: 10000,autoSlideStoppable: true,autoSlideMethod: Reveal.navigateNext,mouseWheel: true, hideAddressBar: true,previewLinks: true,transition: "slide",transitionSpeed: "slow",backgroundTransition: "convex",viewDistance: 4,parallaxBackgroundImage: "https://lexlab.io/llp_core/img/lll3.svg",parallaxBackgroundSize: "2500px 1500px",dependencies: [{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/markdown/marked.js" },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/markdown/markdown.js" },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/notes/notes.js", async: true },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/highlight/highlight.js", async: true, callback: function() { hljs.initHighlightingOnLoad(); } },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/zoom-js/zoom.js", async: true},/*{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/search/search.js", async: true},*/{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/print-pdf/print-pdf.js", async: true}]});</script></body></html>';
 
@@ -232,7 +232,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
           recurdive(rtd);
       });
         });
-     
+
   };
   var templtr = function(roarevent){
     var pups;
@@ -286,29 +286,29 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
             '</div><p>&nbsp;</p>';
             temple = apptemplate;
     }
-    
+
                return '<section class="slide" data-background="'+roarevent.media+'">'+temple+'</section>';
                //return pups;
 };
 
 var recurdive = function(src){
     Collection(src).$loaded().then(function(roarevent){
-      
-      
+
+
       if(angular.isUndefined(roarevent.slide)){
-        
+
         vm.slides = vm.slides + templtr(roarevent)
-    
+
     toastr.info(roarevent.styleClass);
 
-      
+
         // if(data.roarlist){
           angular.forEach(roarevent.roarlist, function(itd, key){
             recurdive(itd);
           });
       //   }
        }else{
-         vm.slides = vm.slides + roarevent.slide;
+         vm.slides.push(roarevent.slide);
          angular.forEach(roarevent.roarlist, function(ittd, key){
            recurdive(ittd);
          });
@@ -328,7 +328,7 @@ var recurdive = function(src){
   };
   vm.initialize = function(){
     var theme = '<link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/theme/' + vm.selectedtheme + '.css" id="theme">';
-    
+
     var newhtml = showheader + theme + showheaderone + (angular.isArray(vm.slides) ? vm.slides.join('\n') : vm.slides) + showfooter;
     vm.model.content = newhtml;
     vm.model.$save();
@@ -395,7 +395,7 @@ function buildslides (slidearray){
   var vm = this;
 
   var config = config || $scope.$parent.config;
-  
+
   Collection(config.id).$loaded().then(function(lesource){
         if(angular.isDefined(lesource.timeline)){
           vm.data = lesource.timeline;
@@ -406,20 +406,20 @@ function buildslides (slidearray){
       'type': 'default',
       'text': 'US 8,382,656',
       'asset': {
-        'media': '/files/public/uspto/patents/8382656/8382656.png',
+        'media': 'https://lexlab.io/patents/8382656/preview',
         'credit': 'Lion Legal Products',
         'caption': 'Master the Jungle of Legal Information'
       },
       'date': [{
-        'startDate': '2000,1,1',
-        'endDate': '2020,1,1',
-        'headline': 'Initial Entry',
-        'text': 'This is a poodle',
+        'startDate': '1899,12,31',
+        'endDate': '1900,1,1',
+        'headline': 'End of an Era',
+        'text': '<strong>This</strong> is a <em>poodle</em>',
         'asset': {
-          'media': '/lexlab-starter/public/claimtree/?8382656',
+          'media': 'https://lexlab.io/patents/8382656/preview',
           'credit': 'LLP',
           'caption': '',
-          'thumbnail': '/lexlab-starter/public/claimtree/?8382656',
+          'thumbnail': 'https://lexlab.io/patents/8382656/preview',
           'type': 'image/png',
           'tag': 'test'
         }
@@ -427,6 +427,7 @@ function buildslides (slidearray){
     }
   };
         }
+
   });
 
   var iteratey = function(collection){
@@ -435,16 +436,16 @@ function buildslides (slidearray){
         var thisobj = {
           'startDate': rvent.date ? rvent.date.replace(/-/g,',') : '2000,1,1',
           'endDate': rvent.date ? rvent.date.replace(/-/g,',') : '2000,1,1',
-          'headline': rvent.title,
-          'text': rvent.text || rvent.description,
+          'headline': rvent.title || '',
+          'text': rvent.text || rvent.description || '',
           'asset': {
-            'media': rvent.media,
-            'credit': rvent.styleClass,
-            'caption': rvent.description,
+            'media': rvent.media || '',
+            'credit': rvent.styleClass || '',
+            'caption': rvent.description || '',
             'thumbnail': '/llp_core/img/lll3.svg',
             'type': 'pdf',
-            'tag': rvent.styleClass
-        }}
+            'tag': rvent.styleClass || ''
+        }};
         toastr.info($filter('date')(rvent.date), rvent.title);
         vm.data.timeline.date.push(thisobj);
         if(rvent.roarlist){
@@ -477,7 +478,7 @@ function buildslides (slidearray){
             'credit': collection.styleClass,
             'caption': '',
             'thumbnail': 'https://lexlab.io/llp_core/img/GoldLion.svg',
-            'type': 'tweet',
+            'type': 'pdf',
             'tag': collection.rid
           }
         }]
@@ -498,7 +499,7 @@ function buildslides (slidearray){
             debug: true,
             theme: 'dark',
             font: 'Georgia-Helvetica'
-          }; 
+          };
           createStoryJS(vm.options); });
       };
       vm.save = function(){
@@ -507,7 +508,7 @@ function buildslides (slidearray){
           vmodel.$save();
         });
       };
-      
+
 }]).directive('timelinejs',function(Collection){
   return {
     restrict: 'E',

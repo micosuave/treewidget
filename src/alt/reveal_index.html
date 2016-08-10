@@ -6,15 +6,29 @@
 <button class="fa fa-gear btn btn-default" ng-click="options.configure()"></button>
 <button class="fa fa-play btn btn-warning" ng-click="options.initialize()"></button>
 </header>
+   <div class="card card-fancy">
   <pre ng-bind="options.slides | json:2" style="position:absolute;"></pre>
+ 
+  <dir-pagination-controls pagination-id="timeline" template-url="/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html"
+            class=""></dir-pagination-controls>
+  <div dir-paginate="slide in options.slides" pagination-id="timeline" class="card">
+    <h5><label class="label badge">$index</label><span ng-bind="slide.title"></span><a class="pull-right" ng-click="remove(slide)"><i class="fa fa-close text-muted"></i></a></h5>
+    <div class="card-block" ng-bind-html="slide.slide | trustAsHTML"></div> 
+  <div class="card-footer">
+    <a class="card-link" ng-click="options(slide)">options</a>
+    <a class="card-link" ng-click="edit(slide)">edit</a>
+    
+  </div>
+  </div>
+   </div>
 <article class="window" ng-hide="options.hidethemes" style="position:absolute;right:10px;">
 <h6 class="card-title">Themes</h6>
-<div class="input-group" ng-repeat="theme in options.themes">
+<div class="list-group-item" ng-repeat="theme in options.themes">
 <label class="label">{{theme.name}}
 <input type="radio" id="themename" name="themename" ng-model="options.selectedtheme" ng-value="theme.name" />
 </label>
 </div>
-<div class="tabbable tabs-right" style="">
+<div class="tabbable tabs-right" style="max-width:48%;">
     <nav class="nav nav-tabs ">
 
         <ul class="right-tabs" style="height:79vh;max-height:79vh;">
@@ -41,4 +55,4 @@
 
 </li>-->
 </article>
-<timelinejs></timelinejs>
+<!--<timelinejs></timelinejs>-->
