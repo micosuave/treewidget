@@ -24,6 +24,7 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
       reload: true,
       frameless: false,
       styleClass: 'NOA',
+      css: ['/treewidget/src/alt/build/css/themes/dark.css','/treewidget/src/alt/build/css/timeline.css'],
       controller: 'TimeLineCtrl',
       controllerAs: 'time',
       edit: {
@@ -219,11 +220,11 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
   });
   vm.slides = [];
   vm.import = function(src){
-      //src = src || config.id;
+        src = angular.isDefined(src) ? src : config.id;
         Collection(src).$loaded().then(function(data){
           var srcid = src.replace(/\D/,'');
           //if(angular.isUndefined(data.slide)){
-          vm.slides = '<section data-background="url(https://lexlab.io/patents/8382656/preview)"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>';
+          vm.slides.push('<section data-background="url(https://lexlab.io/patents/8382656/preview)"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>');
           //}else{
             //vm.slides.push(data.slide);
           //}
@@ -405,22 +406,47 @@ function buildslides (slidearray){
         'caption': 'Master the Jungle of Legal Information'
       },
       'date': [{
-        'startDate': '2000-01-01',
-        'endDate': '2000-01-01',
+        'startDate': '2000,1,1',
+        'endDate': '2020,1,1',
         'headline': 'Initial Entry',
         'text': 'This is a poodle',
         'asset': {
-          'media': '/files/public/uspto/patents/8382656/8382656.png',
+          'media': '/lexlab-starter/public/claimtree/?8382656',
           'credit': 'LLP',
           'caption': '',
-          'thumbnail': '/files/public/uspto/patents/8382656/8382656.png',
+          'thumbnail': '/lexlab-starter/public/claimtree/?8382656',
           'type': 'image/png',
           'tag': 'test'
         }
       }]
     }
-  }
+  };
+  var iteratey = function(collection){
+    return angular.forEach(collection.roarlist, function (rid, key) {
+      Collection(rid).$loaded().then(function (rvent) {
+        var thisobj = {
+          'startDate': rvent.date ? rvent.date.replace(/-/g,',') : '2000,1,1',
+          'endDate': rvent.date ? rvent.date.replace(/-/g,',') : '2000,1,1',
+          'headline': rvent.title,
+          'text': rvent.text || rvent.description,
+          'asset': {
+            'media': rvent.media,
+            'credit': rvent.styleClass,
+            'caption': rvent.description,
+            'thumbnail': '/llp_core/img/lll3.svg',
+            'type': 'pdf',
+            'tag': rvent.styleClass
+        }}
+        toastr.info($filter('date')(rvent.date), rvent.title);
+        vm.data.timeline.date.push(thisobj);
+        if(rvent.roarlist){
+          iteratey(rvent);
+        }
+      });
+    });
+};
   vm.import = function(src){
+    src = src || config.id;
     Collection(src).$loaded().then(function (collection) {
 
     vm.data = {
@@ -429,60 +455,55 @@ function buildslides (slidearray){
         'type': 'default',
         'text': collection.id + ' - ' +  collection.title,
         'asset': {
-          'media': '/patents/'+collection.id+'/preview',
+          'media': collection.media,
           'credit': 'Lion Legal Products',
           'caption': 'Master the Jungle of Legal Information'
         },
         'date': [{
-          'startDate': collection.date,
-          'endDate': collection.date,
+          'startDate': collection.date ? collection.date.replace(/-/g,',') : '2000,1,1',
+          'endDate': collection.date ? collection.date.replace(/-/g,',') : '2000,1,1',
           'headline': collection.title,
           'text': collection.description,
           'asset': {
             'media': collection.media,
             'credit': collection.styleClass,
             'caption': '',
-            'thumbnail': collection.thumbnail || collection.media,
-            'type': collection.styleClass,
+            'thumbnail': 'https://lexlab.io/llp_core/img/GoldLion.svg',
+            'type': 'tweet',
             'tag': collection.rid
           }
         }]
       }
-    }
-
-    angular.forEach(collection.roarlist, function (rid, key) {
-      Collection(rid).$loaded().then(function (rvent) {
-        var thisobj = {
-          'startDate': rvent.date,
-          'endDate': rvent.date,
-          'headline': rvent.title,
-          'text': rvent.description,
-          'asset': {
-            'media': rvent.media,
-            'credit': rvent.styleClass,
-            'caption': '',
-            'thumbnail': rvent.thumbnail || rvent.media,
-            'type': rvent.styleClass,
-            'tag': rvent.rid
-        }}
-        toastr.info($filter('date')(rvent.date), rvent.title)
-        vm.data.timeline.date.push(thisobj)
-      });
+    };
+    iteratey(collection);
+    });
+  };
       vm.initialize = function(){
         storyjs.createStoryJS().then(function (createStoryJS) {
           vm.options = {
             type: 'timeline',
-            width: 900,
-            height: 500,
-            source: vm.data,
-            embed_id: 'timelinejs',
+            width: 1000,
+            height: 750,
+            source: angular.fromJson(vm.data),
+            embed_id: 'timeline',
             hash_bookmark: false,
             debug: true,
-            font: 'PTSerif-PTSans'
+            theme: 'dark',
+            font: 'Georgia-Helvetica'
           }; 
           createStoryJS(vm.options); });
       };
-      });
-    });
-  };
-}]);
+      
+}]).directive('timelinejs',function(){
+  return {
+    restrict: 'E',
+    templateUrl: '/treewidget/src/alt/timeline.html',
+      scope:{},
+      css: ['/treewidget/src/alt/build/css/themes/dark.css','/treewidget/src/alt/build/css/timeline.css'],
+      controller: 'TimeLineCtrl',
+      controllerAs: 'time',
+      link: function($scope, $element, $attr, $ctrl){
+        
+      }
+  }
+});

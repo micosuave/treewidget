@@ -25,6 +25,7 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
       reload: true,
       frameless: false,
       styleClass: 'NOA',
+      css: ['/treewidget/src/alt/build/css/themes/dark.css','/treewidget/src/alt/build/css/timeline.css'],
       controller: 'TimeLineCtrl',
       controllerAs: 'time',
       edit: {
@@ -220,11 +221,11 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
   });
   vm.slides = [];
   vm.import = function(src){
-      //src = src || config.id;
+        src = angular.isDefined(src) ? src : config.id;
         Collection(src).$loaded().then(function(data){
           var srcid = src.replace(/\D/,'');
           //if(angular.isUndefined(data.slide)){
-          vm.slides = '<section data-background="url(https://lexlab.io/patents/8382656/preview)"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>';
+          vm.slides.push('<section data-background="url(https://lexlab.io/patents/8382656/preview)"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>');
           //}else{
             //vm.slides.push(data.slide);
           //}
@@ -406,22 +407,47 @@ function buildslides (slidearray){
         'caption': 'Master the Jungle of Legal Information'
       },
       'date': [{
-        'startDate': '2000-01-01',
-        'endDate': '2000-01-01',
+        'startDate': '2000,1,1',
+        'endDate': '2020,1,1',
         'headline': 'Initial Entry',
         'text': 'This is a poodle',
         'asset': {
-          'media': '/files/public/uspto/patents/8382656/8382656.png',
+          'media': '/lexlab-starter/public/claimtree/?8382656',
           'credit': 'LLP',
           'caption': '',
-          'thumbnail': '/files/public/uspto/patents/8382656/8382656.png',
+          'thumbnail': '/lexlab-starter/public/claimtree/?8382656',
           'type': 'image/png',
           'tag': 'test'
         }
       }]
     }
-  }
+  };
+  var iteratey = function(collection){
+    return angular.forEach(collection.roarlist, function (rid, key) {
+      Collection(rid).$loaded().then(function (rvent) {
+        var thisobj = {
+          'startDate': rvent.date ? rvent.date.replace(/-/g,',') : '2000,1,1',
+          'endDate': rvent.date ? rvent.date.replace(/-/g,',') : '2000,1,1',
+          'headline': rvent.title,
+          'text': rvent.text || rvent.description,
+          'asset': {
+            'media': rvent.media,
+            'credit': rvent.styleClass,
+            'caption': rvent.description,
+            'thumbnail': '/llp_core/img/lll3.svg',
+            'type': 'pdf',
+            'tag': rvent.styleClass
+        }}
+        toastr.info($filter('date')(rvent.date), rvent.title);
+        vm.data.timeline.date.push(thisobj);
+        if(rvent.roarlist){
+          iteratey(rvent);
+        }
+      });
+    });
+};
   vm.import = function(src){
+    src = src || config.id;
     Collection(src).$loaded().then(function (collection) {
 
     vm.data = {
@@ -430,72 +456,67 @@ function buildslides (slidearray){
         'type': 'default',
         'text': collection.id + ' - ' +  collection.title,
         'asset': {
-          'media': '/patents/'+collection.id+'/preview',
+          'media': collection.media,
           'credit': 'Lion Legal Products',
           'caption': 'Master the Jungle of Legal Information'
         },
         'date': [{
-          'startDate': collection.date,
-          'endDate': collection.date,
+          'startDate': collection.date ? collection.date.replace(/-/g,',') : '2000,1,1',
+          'endDate': collection.date ? collection.date.replace(/-/g,',') : '2000,1,1',
           'headline': collection.title,
           'text': collection.description,
           'asset': {
             'media': collection.media,
             'credit': collection.styleClass,
             'caption': '',
-            'thumbnail': collection.thumbnail || collection.media,
-            'type': collection.styleClass,
+            'thumbnail': 'https://lexlab.io/llp_core/img/GoldLion.svg',
+            'type': 'tweet',
             'tag': collection.rid
           }
         }]
       }
-    }
-
-    angular.forEach(collection.roarlist, function (rid, key) {
-      Collection(rid).$loaded().then(function (rvent) {
-        var thisobj = {
-          'startDate': rvent.date,
-          'endDate': rvent.date,
-          'headline': rvent.title,
-          'text': rvent.description,
-          'asset': {
-            'media': rvent.media,
-            'credit': rvent.styleClass,
-            'caption': '',
-            'thumbnail': rvent.thumbnail || rvent.media,
-            'type': rvent.styleClass,
-            'tag': rvent.rid
-        }}
-        toastr.info($filter('date')(rvent.date), rvent.title)
-        vm.data.timeline.date.push(thisobj)
-      });
+    };
+    iteratey(collection);
+    });
+  };
       vm.initialize = function(){
         storyjs.createStoryJS().then(function (createStoryJS) {
           vm.options = {
             type: 'timeline',
-            width: 900,
-            height: 500,
-            source: vm.data,
-            embed_id: 'timelinejs',
+            width: 1000,
+            height: 750,
+            source: angular.fromJson(vm.data),
+            embed_id: 'timeline',
             hash_bookmark: false,
             debug: true,
-            font: 'PTSerif-PTSans'
+            theme: 'dark',
+            font: 'Georgia-Helvetica'
           }; 
           createStoryJS(vm.options); });
       };
-      });
-    });
-  };
-}]);
+      
+}]).directive('timelinejs',function(){
+  return {
+    restrict: 'E',
+    templateUrl: '/treewidget/src/alt/timeline.html',
+      scope:{},
+      css: ['/treewidget/src/alt/build/css/themes/dark.css','/treewidget/src/alt/build/css/timeline.css'],
+      controller: 'TimeLineCtrl',
+      controllerAs: 'time',
+      link: function($scope, $element, $attr, $ctrl){
+        
+      }
+  }
+});
 
 angular.module("adf.widget.treewidget").run(["$templateCache", function($templateCache) {$templateCache.put("{widgetsPath}/treewidget/src/edit.html","<form role=form><div class=form-group><label for=sample>Sample</label> <input type=url class=form-control id=sample ng-model=config.url placeholder=\"Enter sample\"> <input type=number class=form-control id=num ng-model=config.diameter></div></form>");
 $templateCache.put("{widgetsPath}/treewidget/src/view.html","<div class=container-fluid><div><h1 class=text-center>Architecture Tree</h1><div ng-controller=filterCtrl><ng-include src=\"\'filter.html\'\"></ng-include></div><div ng-controller=chartCtrl><tree-chart-widget data={{tree}} diameter=\"{{config.diameter || \'500\'}}\"></tree-chart-widget><d3pendingtree id=7654321 patent=7654321 pattern tree=tree></d3pendingtree></div><div ng-controller=panelCtrl><div id=panel><div ng-if=detail><ng-include src=\"\'panel-detail.html\'\"></ng-include></div><div ng-if=edit><ng-include src=\"\'panel-edit.html\'\"></ng-include></div></div></div><div ng-controller=undoCtrl><div ng-if=hasHistory() class=\"alert alert-success json-update-label bg-success\">Updated JSON <a ng-click=undo()>(undo)</a></div></div><div ng-controller=jsonDataCtrl><textarea id=json-data class=\"form-control card card-dark well\" style=margin-top:50%; ng-model=data ng-blur=updateData()></textarea></div></div></div><script src=/treewidget/src/d3.architectureTree.js></script><script src=/treewidget/src/app.js></script><script src=/treewidget/src/chart.js></script><script src=/treewidget/src/filter.js></script><script src=/treewidget/src/json-data.js></script><script src=/treewidget/src/panel.js></script><script src=/treewidget/src/undo.js></script><script src=/treewidget/src/tree-chart.js></script><script src=/treewidget/src/init-focus.js></script><script src=/treewidget/src/data.js></script><script src=/treewidget/src/bus.js></script><script src=/treewidget/src/data.json></script><script type=text/ng-template id=filter.html><div class=\"filters panel panel-default\"> <div class=\"panel-heading\">Search</div> <div class=\"panel-body\"> <form id=\"filter_form\"> <input name=\"name\" type=\"text\" class=\"form-control\" placeholder=\"Filter by name\" ng-model=\"$parent.nameFilter\" /> <div id=\"technos\"> <h5>Technos</h5> <a ng-repeat=\"techno in technos\" class=\"btn btn-default btn-xs\" ng-click=\"toggleTechnoFilter(techno)\" ng-class=\"{\'btn-primary\': isTechnoInFilter(techno) }\">{{ techno }}</a> </div> <div id=\"host\"> <h5>Host</h5> <a ng-repeat=\"host in hosts\" class=\"btn btn-default btn-xs\" ng-click=\"toggleHostFilter(host)\" ng-class=\"{\'btn-primary\': isHostInFilter(host) }\">{{ host }}</a> </div> </form> </div> </div></script><script type=text/ng-template id=panel-detail.html><div class=\"details panel panel-info\"> <div class=\"panel-heading\">{{ node.name }}</div> <div class=\"panel-body\"> <div class=\"url\" ng-if=\"node.url\"> <a href=\"{{ node.url }}\">{{ node.url }}</a> </div> <div class=\"comments panel panel-default\" ng-if=\"node.comments\"> <div class=\"panel-heading\">{{ node.comments }}</div> </div> <div class=\"properties\" ng-if=\"node.details.Dependencies\"> <h5>Depends on</h5> <ul> <li ng-repeat=\"dependency in node.details.Dependencies\"> {{ dependency }} </li> </ul> </div> <div class=\"properties\" ng-if=\"node.details.Dependents\"> <h5>Dependendents</h5> <ul> <li ng-repeat=\"dependent in node.details.Dependents\"> {{ dependent }} </li> </ul> </div> <div class=\"properties\" ng-if=\"node.details.Technos\"> <h5>Technos</h5> <ul> <li ng-repeat=\"techno in node.details.Technos\"> {{ techno }} </li> </ul> </div> <div class=\"properties\" ng-if=\"node.details.Host\"> <h5>Hosts</h5> <ul> <li ng-repeat=\"(hostName, servers) in node.host\"> {{ hostName }} <ul ng-if=\"servers\"> <li ng-repeat=\"server in servers\">{{ server }}</li> </ul> <span ng-if=\"detail.via\">({{ detail.via }})</span> </li> </ul> </div> </div> </div></script><script type=text/ng-template id=panel-edit.html><form name=\"editForm\" ng-submit=\"editNode(editForm, $event)\"> <div class=\"details panel panel-info\"> <div class=\"panel-heading\"> <input type=\"text\" ng-model=\"node.name\" class=\"form-control\" /> </div> <div class=\"panel-body\"> <div class=\"url\"> <h5>Url</h5> <input type=\"text\" ng-model=\"node.url\" class=\"form-control\" init-focus /> </div> <div class=\"comments\"> <h5>Comments</h5> <textarea ng-model=\"node.comments\" class=\"form-control\" init-focus></textarea> </div> <div class=\"properties edit\"> <h5>Depends on <span class=\"glyphicon glyphicon-plus\" ng-click=\"addDependency()\"></span></h5> <ul> <li ng-repeat=\"dependencies in node.dependsOn track by $index\"> <input type=\"text\" ng-model=\"node.dependsOn[$index]\" init-focus /> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteDependency($index)\"></span> </li> </ul> <h5>Technos <span class=\"glyphicon glyphicon-plus\" ng-click=\"addTechno()\"></span></h5> <ul> <li ng-repeat=\"techno in node.technos track by $index\"> <input type=\"text\" ng-model=\"node.technos[$index]\" init-focus /> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteTechno($index)\"></span> </li> </ul> <h5>Hosts <span class=\"glyphicon glyphicon-plus\" ng-click=\"addHostCategory()\"></span></h5> <ul> <li ng-repeat=\"(key, host) in node.host track by $index\"> <input type=\"text\" ng-model=\"hostKeys[key]\" init-focus /><span class=\"glyphicon glyphicon-plus\" ng-click=\"addHost(key)\"></span> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteHostCategory(key)\"></span> <ul> <li ng-repeat=\"test in node.host[key] track by $index\"> <span class=\"remove glyphicon glyphicon-remove\" ng-click=\"deleteHost(key, $index)\"></span> <input type=\"text\" ng-model=\"node.host[key][$index]\" init-focus /> </li> </ul> </li> </ul> </div> </div> <div class=\"panel-footer\"> <button type=\"button\" ng-click=\"addNode()\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-plus\"></span> Add</button> <button type=\"button\" ng-click=\"moveNode()\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-share-alt\"></span> Move</button> <button type=\"button\" ng-click=\"deleteNode()\" class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-trash\"></span> Delete</button> </div> <div class=\"panel-footer\"> <button type=\"submit\" class=\"btn btn-primary\"><span class=\"glyphicon glyphicon-ok\"></span> Save</button> <button type=\"button\" ng-click=\"leaveEdit()\" class=\"btn btn-default\"><span class=\"glyphicon glyphicon-remove\"></span> Cancel</button> </div> </div> </form></script>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/hist_edit.html","<fieldset class=material><input type=text ng-model=config.id placeholder=\"Enter patent id number\"><hr><label class=\"label label-NOA\">Enter ID #</label></fieldset>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/histogram.html","<style>\n.viewport {\n    position: relative;\n    width: 100%;\n    padding-bottom: 100%;\n    cursor: move;\n\n    -webkit-perspective: 6000px;\n    -webkit-perspective-origin: 50% -100%;\n}\n.viewport .world {\n    position: absolute;\n    top:0;\n    left:0;\n    right:0;\n    bottom:0;\n\n    -webkit-transform: rotateX(-15deg) rotateY(-20deg);\n\n}\n\n.viewport .world,\n.viewport .world * {\n    -webkit-transform-style: preserve-3d;\n}\n.viewport .ground {\n    position: absolute;\n    z-index: 1;\n    top: 50%;\n    left: 50%;\n    width: 90%;\n    height: 90%;\n    margin-left: -50%;\n    margin-top: -50%;\n    background: rgba(44,24,24,0.84);\n\n    -webkit-transform: rotateX(90deg);\n}\n.viewport .histogram-3d {\n    width: 80%;\n    height: 80%;\n    margin: 10% auto;\n    border-collapse: collapse;\n    border-style: double;\n\n    /* make sure grid is raised above ground */\n    -webkit-transform: translateZ(1px);\n}\n\n.viewport .histogram-3d td {\n    position: relative;\n    width: 30%;\n    height: 30%;\n    padding: 10px;\n    border: 2px solid #555;\n    z-index: 0;\n}\n.viewport .bar {\n    position: relative;\n    width: 100%;\n    height: 100%;\n    z-index: 1;\n}\n\n.viewport .bar .face {\n    background: hsl(0, 100%, 50%);\n    position: absolute;\n    width: 100%;\n    opacity:0.8;\n    overflow: hidden;\n    z-index: 1;\n}\n\n.viewport .bar .face.front {\n    background: hsl(0, 100%, 20%);\n    bottom: 0;\n    height: 1em;\n\n    -webkit-transform-origin: bottom center;\n    -webkit-transform: rotateX(-90deg);\n}\n\n.viewport .bar .face.right {\n    top: 0;\n    right: 0;\n    width: 1em;\n    height: 100%;\n\n    -webkit-transform-origin: center right;\n    -webkit-transform: rotateY(90deg);\n}\n\n.viewport .bar .face.left {\n    background: hsl(0, 100%, 45%);\n    top: 0;\n    left: 0;\n    width: 1em;\n    height: 100%;\n\n    -webkit-transform-origin: center left;\n    -webkit-transform: rotateY(-90deg);\n}\n\n.viewport .bar .face.back {\n    top: 0;\n    height: 1em;\n\n    -webkit-transform-origin: top center;\n    -webkit-transform: rotateX(90deg);\n}\n\n.viewport .bar .face.top {\n    background: hsl(0, 100%, 40%);\n    height: 100%;\n    width: 100%;\n    top: 0;\n\n    -webkit-transform: translateZ(1em);\n}\n</style><fieldset class=material><label>Search</label><hr><input type=text id=patterninput ng-model=config.pattern></fieldset><div class=viewport><div class=\"html2 world\" rotate3d><div class=ground><table class=histogram-3d ffbase={{histogram.col}}><tr ng-repeat=\"tab in item.roarlist\" ffbase={{tab}}><td>{{item.rid}} - {{item.title}}<br>{{item.description}}</td><td ng-repeat=\"thing in item.roarlist\" ffbase={{thing}} ng-include=\"\'bartpl\'\" ng-init=\"it = thing;\">{{item.rid}}</td><td>30</td><td>20</td><td>60</td></tr><tr><td>80</td><td>100</td><td>40</td></tr><tr><td>50</td><td>30</td></tr></table></div></div></div><script id=bartpl type=text/ng-template><div class=\"bar\" ffbase=\"{{it}}\" ng-style=\"font-size:{{item.rid||\'25\'}}\"> <div class=\"face top\" > <img width=\"100%\" height=\"100%\" ng-src=\"/patents/{{item.pnum || item.patent.id}}/preview\"/> <d3pendingtree patent=\"{{item.pnum || item.patent.id}}\" tree=\"trees[$index]\" pattern=\"{{config.pattern}}\"></d3pendingtree> </div> <div class=\"face front\"></div> <div class=\"face back\"></div> <div class=\"face left\"><img width=\"100%\" height=\"100%\" src=\"/llp_core/img/lll3.svg\"></div> <div class=\"face right\"><img width=\"100%\" height=\"100%\" src=\"/llp_core/img/lll3.svg\"></div> </div></script>");
-$templateCache.put("{widgetsPath}/treewidget/src/alt/reveal_index.html","<header class=\"bar bar-dark\"><label ng-bind=options.selectedtheme></label> <input ng-model=options.source placeholder=SourceID type=text> <button class=\"fa fa-download btn btn-primary\" ng-click=options.import(options.source)></button> <button class=\"fa fa-gear btn btn-default\" ng-click=options.configure()></button> <button class=\"fa fa-play btn btn-warning\" ng-click=options.initialize()></button></header><pre ng-bind=\"options.slides | json:2\" style=position:absolute;></pre><article class=window ng-hide=options.hidethemes style=position:absolute;right:10px;><h6 class=card-title>Themes</h6><div class=input-group ng-repeat=\"theme in options.themes\"><label class=label>{{theme.name}} <input type=radio id=themename name=themename ng-model=options.selectedtheme ng-value=theme.name></label></div><div class=\"tabbable tabs-right\"><nav class=\"nav nav-tabs\"><ul class=right-tabs style=height:79vh;max-height:79vh;><li class=\"row {{item.styleClass}}\" ng-repeat=\"ts in options.model.roarlist\" ffbase={{ts}} ng-cloak ng-click=\"$parent.options.source = key\"><div uib-dropdown uib-keyboard-nav dropdown-append-to-body><a uib-dropdown-toggle class=\"vcenter pull-left\"><label class=\"label label-pill badge label-{{item.styleClass}}\" style=cursor:pointer;>{{tab.rid || item.rid || \' - \'}}</label></a><ul class=uib-dropdown-menu><li class={{menuitem.styleClass}} ng-repeat=\"menuitem in rightmenu.items\"><a ng-click=\"menuitem.onClick(item.$id, key)\" class=\"fa fa-fw {{menuitem.icon}} {{menuitem.styleClass}}\">&nbsp;&nbsp;&nbsp;&nbsp;{{menuitem.label}}</a></li></ul></div>&nbsp&nbsp{{item.title || item.name}}&nbsp&nbsp <a class=\"fa fa-3x btn btn-default btn-xs\" ng-class=\"{\'fa-check\':($parent.options.source === item.$id )}\" ng-click=\"$parent.options.source = item.$id\"></a></li></ul></nav></div></article>");
+$templateCache.put("{widgetsPath}/treewidget/src/alt/reveal_index.html","<header class=\"bar bar-dark\"><label ng-bind=options.selectedtheme></label> <input ng-model=options.source placeholder=SourceID type=text> <button class=\"fa fa-download btn btn-primary\" ng-click=options.import(options.source)></button> <button class=\"fa fa-gear btn btn-default\" ng-click=options.configure()></button> <button class=\"fa fa-play btn btn-warning\" ng-click=options.initialize()></button></header><pre ng-bind=\"options.slides | json:2\" style=position:absolute;></pre><article class=window ng-hide=options.hidethemes style=position:absolute;right:10px;><h6 class=card-title>Themes</h6><div class=input-group ng-repeat=\"theme in options.themes\"><label class=label>{{theme.name}} <input type=radio id=themename name=themename ng-model=options.selectedtheme ng-value=theme.name></label></div><div class=\"tabbable tabs-right\"><nav class=\"nav nav-tabs\"><ul class=right-tabs style=height:79vh;max-height:79vh;><li class=\"row {{item.styleClass}}\" ng-repeat=\"ts in options.model.roarlist\" ffbase={{ts}} ng-cloak ng-click=\"$parent.options.source = key\"><div uib-dropdown uib-keyboard-nav dropdown-append-to-body><a uib-dropdown-toggle class=\"vcenter pull-left\"><label class=\"label label-pill badge label-{{item.styleClass}}\" style=cursor:pointer;>{{tab.rid || item.rid || \' - \'}}</label></a><ul class=uib-dropdown-menu><li class={{menuitem.styleClass}} ng-repeat=\"menuitem in rightmenu.items\"><a ng-click=\"menuitem.onClick(item.$id, key)\" class=\"fa fa-fw {{menuitem.icon}} {{menuitem.styleClass}}\">&nbsp;&nbsp;&nbsp;&nbsp;{{menuitem.label}}</a></li></ul></div>&nbsp&nbsp{{item.title || item.name}}&nbsp&nbsp <a class=\"fa fa-3x btn btn-default btn-xs\" ng-class=\"{\'fa-check\':($parent.options.source === item.$id )}\" ng-click=\"$parent.options.source = item.$id\"></a></li></ul></nav></div></article><timelinejs></timelinejs>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/slide_edit.html","<input ng-model=config.id><hr><label class=\"label material\" ng-repeat=\"(option, key) in reveal.options\">{{key}}<switch ng-model=option text={{key}} icon=\"fa fa-{{key}}\"><input ng-model=option> <textarea ng-model=option>\n</textarea></switch></label><hr>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/timeedit.html","<fieldset class=material><input type=text ng-model=config.id placeholder=\"Enter patent id number\"><hr><label class=\"label label-NOA\">Enter ID #</label></fieldset>");
-$templateCache.put("{widgetsPath}/treewidget/src/alt/timeline.html","<header class=\"bar bar-dark\"><label ng-bind=time.selectedtheme></label> <input ng-model=time.source placeholder=SourceID type=text> <button class=\"fa fa-download btn btn-primary\" ng-click=time.import(time.source)></button> <button class=\"fa fa-gear btn btn-default\" ng-click=time.configure()></button> <button class=\"fa fa-play btn btn-warning\" ng-click=time.initialize()></button></header><section id=timelinejs></section><script type=text/javascript src=./build/js/storyjs-embed.js></script>");
+$templateCache.put("{widgetsPath}/treewidget/src/alt/timeline.html","<header class=\"bar bar-dark\"><label ng-bind=time.selectedtheme></label> <input ng-model=time.source placeholder=SourceID type=text> <button class=\"fa fa-download btn btn-primary\" ng-click=time.import(time.source)></button> <button class=\"fa fa-gear btn btn-default\" ng-click=time.configure()></button> <button class=\"fa fa-play btn btn-warning\" ng-click=time.initialize()></button></header><section id=timeline></section><script type=text/javascript src=./build/js/storyjs-embed.js></script>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/build/embed/index.html","<!DOCTYPE html><html lang=en><head><title>TimelineJS Embed</title><meta charset=utf-8><meta name=description content=\"TimelineJS Embed\"><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-touch-fullscreen content=yes><meta name=viewport content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0\"><style>\n      html, body {\n      height:100%;\n      padding: 0px;\n      margin: 0px;\n      }\n\n      #timeline-embed { height: 100%; }\n    </style></head></html><body><div id=timeline-embed></div><script type=text/javascript>\n    var trim_point = window.location.href.indexOf(\'embed/index.html\');\n    if (trim_point > 0) {\n      var embed_path = window.location.href.substring(0,trim_point); // supports https access via https://s3.amazonaws.com/cdn.knightlab.com/libs/timeline/latest/embed/index.html \n    } else {\n      var embed_path = \"http://cdn.knightlab.com/libs/timeline/latest/\";\n    }\n  </script><script type=text/javascript src=../js/storyjs-embed-cdn.js?v214></script></body>");}]);
 /*
     TimelineJS - ver. 2.32.0 - 2014-05-08
