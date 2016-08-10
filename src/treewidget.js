@@ -192,12 +192,12 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
 }]).controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config','$compile','Collection', function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config, $compile, Collection) {
   var vm = this;
   vm.selectedtheme = 'league';
-  var showheader = '<!doctype html><html ng-app="revealjs" class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/app/" target="_blank"></base><link  href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/css/smoothness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" /><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet" /><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" /><link rel="stylesheet" href="https://lexlab.io/llp_core/dist/app.full.min.css" /><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
+  var showheader = '<!doctype html><html ng-app="revealjs" class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/" target="_blank"></base><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
 		
    
 		
-  var showheaderone = '<!-- Theme used for syntax highlighting of code --><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css"><!-- Printing and PDF exports --><script>			var link = document.createElement( "link" );			link.rel = "stylesheet";			link.type = "text/css";			link.href = window.location.search.match( /print-pdf/gi ) ? "css/print/pdf.css" : "css/print/paper.css";			document.getElementsByTagName( "head" )[0].appendChild( link );		</script>		<!--[if lt IE 9]>		<script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/js/html5shiv.js"></script>		<![endif]-->	</head>	<body>		<div class="reveal">			<!-- Any section element inside of this container is displayed as a slide -->			<div class="slides">';
-var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/js/head.min.js"></script><script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/js/reveal.js"></script><script>			Reveal.initialize({history: true,controls: true,progress: true,slideNumber: true,overview: true,center: true,touch: true,loop: true,rtl: false,shuffle: false, fragments: true,embedded: true,help: true,showNotes: false, autoSlide: 10000,autoSlideStoppable: true,autoSlideMethod: Reveal.navigateNext,mouseWheel: true, hideAddressBar: true,previewLinks: false,transition: "slide",transitionSpeed: "slow",backgroundTransition: "convex",viewDistance: 2,parallaxBackgroundImage: "https://lexlab.io/llp_core/img/lll3.svg",parallaxBackgroundSize: "2500px 2500px",dependencies: [{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/markdown/marked.js" },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/markdown/markdown.js" },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/notes/notes.js", async: true },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/highlight/highlight.js", async: true, callback: function() { hljs.initHighlightingOnLoad(); } },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/zoom-js/zoom.js", async: true},/*{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/search/search.js", async: true},*/{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/print-pdf/print-pdf.js", async: true}]});</script></body></html>';
+  var showheaderone = '<!-- Theme used for syntax highlighting of code --><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css"><!-- Printing and PDF exports --><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/css/print/print.css"	</head>	<body>		<div class="reveal">			<!-- Any section element inside of this container is displayed as a slide -->			<div class="slides">';
+var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/js/head.min.js"></script><script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/js/reveal.js"></script><script>			Reveal.initialize({history: true,controls: true,progress: true,slideNumber: true,overview: true,center: true,touch: true,loop: true,rtl: false,shuffle: false, fragments: true,embedded: true,help: true,showNotes: false, autoSlide: 10000,autoSlideStoppable: true,autoSlideMethod: Reveal.navigateNext,mouseWheel: true, hideAddressBar: true,previewLinks: true,transition: "slide",transitionSpeed: "slow",backgroundTransition: "convex",viewDistance: 4,parallaxBackgroundImage: "https://lexlab.io/llp_core/img/lll3.svg",parallaxBackgroundSize: "2500px 1500px",dependencies: [{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/markdown/marked.js" },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/markdown/markdown.js" },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/notes/notes.js", async: true },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/highlight/highlight.js", async: true, callback: function() { hljs.initHighlightingOnLoad(); } },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/zoom-js/zoom.js", async: true},/*{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/search/search.js", async: true},*/{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/print-pdf/print-pdf.js", async: true}]});</script></body></html>';
 
  vm.themes = [
     {name: 'beige'},
@@ -216,14 +216,14 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
   var config = config || $scope.$parent.config;
   Collection(config.id).$loaded().then(function(resp){
     vm.model = resp;
-  })
+  });
   vm.slides = [];
   vm.import = function(src){
-      src = src || config.id;
+      //src = src || config.id;
         Collection(src).$loaded().then(function(data){
           var srcid = src.replace(/\D/,'');
           //if(angular.isUndefined(data.slide)){
-          vm.slides.push('<section data-background="url('+data.media ? data.media : ('https://lexlab.io/patents/'+srcid+'/preview')+')"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>');
+          vm.slides = '<section data-background="url(https://lexlab.io/patents/8382656/preview)"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>';
           //}else{
             //vm.slides.push(data.slide);
           //}
@@ -234,7 +234,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
      
   };
   var templtr = function(roarevent){
-    var pups = this;
+    var pups;
     var temple;
     if(roarevent.styleClass === 'Applicant'){
     var apptemplate =  '<div class="container-fluid two-col-right">' +
@@ -285,27 +285,39 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
             '</div><p>&nbsp;</p>';
             temple = apptemplate;
     }
-               pups = '<section class="slide" data-background="'+roarevent.media+'">'+temple+'</section>';
-               return pups;
+    
+               return '<section class="slide" data-background="'+roarevent.media+'">'+temple+'</section>';
+               //return pups;
 };
+
 var recurdive = function(src){
-    Collection(src).$loaded().then(function(data){
-      if(angular.isUndefined(data.slide)){
+    Collection(src).$loaded().then(function(roarevent){
+      
+      
+      if(angular.isUndefined(roarevent.slide)){
         
-        vm.slides.push(new templtr(data));
-        if(data.roarlist){
-          angular.forEach(data.roarlist, function(itd, key){
+        vm.slides = vm.slides + templtr(roarevent)
+    
+    toastr.info(roarevent.styleClass);
+
+      
+        // if(data.roarlist){
+          angular.forEach(roarevent.roarlist, function(itd, key){
             recurdive(itd);
           });
-        }
-      }else{
-        vm.slides.push(data.slide);
-        if(data.roarlist){
-          angular.forEach(data.roarlist, function(ittd, key){
-            recurdive(ittd);
-          });
-        }
-      }
+      //   }
+       }else{
+         vm.slides = vm.slides + roarevent.slide;
+         angular.forEach(roarevent.roarlist, function(ittd, key){
+           recurdive(ittd);
+         });
+       }
+      //   if(data.roarlist){
+      //     angular.forEach(data.roarlist, function(ittd, key){
+      //       recurdive(ittd);
+      //     });
+      //   }
+      // }
     });
   };
   vm.configure = function(){
@@ -316,7 +328,7 @@ var recurdive = function(src){
   vm.initialize = function(){
     var theme = '<link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/theme/' + vm.selectedtheme + '.css" id="theme">';
     
-    var newhtml = showheader + theme + showheaderone + vm.slides.join('\n') + showfooter;
+    var newhtml = showheader + theme + showheaderone + (angular.isArray(vm.slides) ? vm.slides.join('\n') : vm.slides) + showfooter;
     vm.model.content = newhtml;
     vm.model.$save();
   };
@@ -379,16 +391,16 @@ function buildslides (slidearray){
   });
 }
 }]).controller('TimeLineCtrl', ['$scope', '$stateParams', '$document', '$http', 'storyjs', 'config', 'Collection', 'toastr', '$filter', function ($scope, $stateParams, $document, $http, storyjs, config, Collection, toastr, $filter) {
-  var vm = this
+  var vm = this;
 
-  config = config || $scope.$parent.config
+  var config = config || $scope.$parent.config;
   vm.data = {
     'timeline': {
       'headline': 'Prosecution History Digest',
       'type': 'default',
       'text': 'US 8,382,656',
       'asset': {
-        'media': '/patents/8382656/preview',
+        'media': '/files/public/uspto/patents/8382656/8382656.png',
         'credit': 'Lion Legal Products',
         'caption': 'Master the Jungle of Legal Information'
       },
@@ -398,44 +410,45 @@ function buildslides (slidearray){
         'headline': 'Initial Entry',
         'text': 'This is a poodle',
         'asset': {
-          'media': '/llp_core/img/lll3.svg',
+          'media': '/files/public/uspto/patents/8382656/8382656.png',
           'credit': 'LLP',
           'caption': '',
-          'thumbnail': '/files/public/uspto/patents/8382656.png',
+          'thumbnail': '/files/public/uspto/patents/8382656/8382656.png',
           'type': 'image/png',
           'tag': 'test'
         }
       }]
     }
   }
-  Collection(config.id).$loaded().then(function (collection) {
+  vm.import = function(src){
+    Collection(src).$loaded().then(function (collection) {
 
-    // vm.data = {
-    //   'timeline': {
-    //     'headline': 'Prosecution History Digest',
-    //     'type': 'default',
-    //     'text': collection.id + ' - ' +  collection.title,
-    //     'asset': {
-    //       'media': '/patents/'+collection.id+'/preview',
-    //       'credit': 'Lion Legal Products',
-    //       'caption': 'Master the Jungle of Legal Information'
-    //     },
-    //     'date': [{
-    //       'startDate': collection.date,
-    //       'endDate': collection.date,
-    //       'headline': collection.title,
-    //       'text': collection.description,
-    //       'asset': {
-    //         'media': collection.media,
-    //         'credit': collection.styleClass,
-    //         'caption': '',
-    //         'thumbnail': collection.thumbnail || collection.media,
-    //         'type': collection.styleClass,
-    //         'tag': collection.rid
-    //       }
-    //     }]
-    //   }
-    // }
+    vm.data = {
+      'timeline': {
+        'headline': 'Prosecution History Digest',
+        'type': 'default',
+        'text': collection.id + ' - ' +  collection.title,
+        'asset': {
+          'media': '/patents/'+collection.id+'/preview',
+          'credit': 'Lion Legal Products',
+          'caption': 'Master the Jungle of Legal Information'
+        },
+        'date': [{
+          'startDate': collection.date,
+          'endDate': collection.date,
+          'headline': collection.title,
+          'text': collection.description,
+          'asset': {
+            'media': collection.media,
+            'credit': collection.styleClass,
+            'caption': '',
+            'thumbnail': collection.thumbnail || collection.media,
+            'type': collection.styleClass,
+            'tag': collection.rid
+          }
+        }]
+      }
+    }
 
     angular.forEach(collection.roarlist, function (rid, key) {
       Collection(rid).$loaded().then(function (rvent) {
@@ -454,19 +467,22 @@ function buildslides (slidearray){
         }}
         toastr.info($filter('date')(rvent.date), rvent.title)
         vm.data.timeline.date.push(thisobj)
-
+      });
+      vm.initialize = function(){
         storyjs.createStoryJS().then(function (createStoryJS) {
           vm.options = {
             type: 'timeline',
-            width: 800,
-            height: 600,
-            source: angular.toJson(vm.data),
+            width: 900,
+            height: 500,
+            source: vm.data,
             embed_id: 'timelinejs',
             hash_bookmark: false,
             debug: true,
             font: 'PTSerif-PTSans'
-          }; createStoryJS(vm.options); });
+          }; 
+          createStoryJS(vm.options); });
+      };
       });
     });
-  });
+  };
 }]);

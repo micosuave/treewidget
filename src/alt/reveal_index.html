@@ -7,13 +7,38 @@
 <button class="fa fa-play btn btn-warning" ng-click="options.initialize()"></button>
 </header>
   <pre ng-bind="options.slides | json:2" style="position:absolute;"></pre>
-<aside class="window" ng-hide="options.hidethemes" style="position:absolute;right:10px;top:10px;">
+<article class="window" ng-hide="options.hidethemes" style="position:absolute;right:10px;">
 <h6 class="card-title">Themes</h6>
 <div class="input-group" ng-repeat="theme in options.themes">
 <label class="label">{{theme.name}}
 <input type="radio" id="themename" name="themename" ng-model="options.selectedtheme" ng-value="theme.name" />
 </label>
 </div>
+<div class="tabbable tabs-right" style="">
+    <nav class="nav nav-tabs ">
 
-</aside>
+        <ul class="right-tabs" style="height:79vh;max-height:79vh;">
+<li class=" row {{item.styleClass}}" ng-repeat="ts in options.model.roarlist" ffbase="{{ts}}" ng-cloak ng-click="$parent.options.source = key">
+                <div id="" uib-dropdown uib-keyboard-nav dropdown-append-to-body>
+                    <a uib-dropdown-toggle class="vcenter pull-left">
+                        <label class="label label-pill badge label-{{item.styleClass}}" style="cursor:pointer;">{{tab.rid || item.rid || ' - '}}</label>
+
+                    </a>
+                    <ul class="uib-dropdown-menu">
+                        <li class="{{menuitem.styleClass}}" ng-repeat="menuitem in rightmenu.items">
+                            <a ng-click="menuitem.onClick(item.$id, key)" class="fa fa-fw {{menuitem.icon}} {{menuitem.styleClass}}">&nbsp;&nbsp;&nbsp;&nbsp;{{menuitem.label}}</a>
+                        </li>
+                    </ul>
+                </div>
+
+                &nbsp&nbsp{{item.title || item.name}}&nbsp&nbsp
+               <a class="fa fa-3x btn btn-default btn-xs" ng-class="{'fa-check':($parent.options.source === item.$id )}" ng-click="$parent.options.source = item.$id"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<!--<li ng-repeat="(ts,key) in options.model.roarlist" ffbase="{{ts||key}}" class="list-group-item btn ">
+
+</li>-->
+</article>
 

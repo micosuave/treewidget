@@ -1,3 +1,10 @@
+<header class="bar bar-dark">
+  <label ng-bind="time.selectedtheme"></label>
+  <input ng-model="time.source" placeholder="SourceID" type="text" />
+ <button class="fa fa-download btn btn-primary" ng-click="time.import(time.source)"></button>
+<button class="fa fa-gear btn btn-default" ng-click="time.configure()"></button>
+<button class="fa fa-play btn btn-warning" ng-click="time.initialize()"></button>
+</header>
 <section id="timelinejs"></section>
 
 <script type="text/javascript" src="./build/js/storyjs-embed.js"></script>
