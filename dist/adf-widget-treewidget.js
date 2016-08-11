@@ -520,7 +520,7 @@ function buildslides (slidearray){
       };
       vm.save = function(){
         var ref = Collection(config.id).$ref();
-        ref.child('timeline').update(angular.toJson(vm.data));
+        ref.update({'timeline': angular.toJson(vm.data)});
         // Collection(config.id).$loaded().then(function(vmodel){
         //   vmodel.timeline = vm.data;
         //   vmodel.$save();
