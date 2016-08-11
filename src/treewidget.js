@@ -335,7 +335,7 @@ var recurdive = function(src){
     var serialtree = function(){
       var thishtml='';
       angular.forEach(vm.slides, function(slide, key){
-        if(slide.roarlist.length > 0){
+        if(slide.roarlist && slide.roarlist.length > 0){
           thishtml = thishtml + angular.element(slide.slide).wrap('<section>');
         }
         else{
