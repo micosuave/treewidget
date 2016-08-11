@@ -7,27 +7,29 @@
 <button class="fa fa-play btn btn-warning" ng-click="options.initialize()"></button>
 </header>
    <div class="card card-fancy">
-  <pre ng-bind="options.slides | json:2" style="position:absolute;"></pre>
- 
+  <pre ng-bind="options.slides | json:2" style="position:relative;"></pre>
+
   <dir-pagination-controls pagination-id="timeline" template-url="/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html"
             class=""></dir-pagination-controls>
-  <div dir-paginate="slide in options.slides" pagination-id="timeline" class="card">
-    <h5><label class="label badge">$index</label><span ng-bind="slide.title"></span><a class="pull-right" ng-click="remove(slide)"><i class="fa fa-close text-muted"></i></a></h5>
-    <div class="card-block" ng-bind-html="slide.slide | trustAsHTML"></div> 
+  <div dir-paginate="slide in options.slides | itemsPerPage: 5" pagination-id="timeline" class="card">
+    <h5><label class="label badge">{{$index}}</label><span ng-bind="slide.title"></span><a class="pull-right" ng-click="options.remove(slide)"><i class="fa fa-close text-muted"></i></a></h5>
+    <div class="card-block" ng-bind-html="slide.slide | trustAsHTML"></div>
   <div class="card-footer">
-    <a class="card-link" ng-click="options(slide)">options</a>
-    <a class="card-link" ng-click="edit(slide)">edit</a>
-    
+    <a class="card-link" ng-click="options.slideoptions(slide)">options</a>
+    <a class="card-link" ng-click="options.editslide(slide)">edit</a>
+
   </div>
   </div>
    </div>
 <article class="window" ng-hide="options.hidethemes" style="position:absolute;right:10px;">
 <h6 class="card-title">Themes</h6>
-<div class="list-group-item" ng-repeat="theme in options.themes">
+<nav class="nav nav-dark" >
+  <li ng-repeat="theme in options.themes" class="btn-glass btn-info">
 <label class="label">{{theme.name}}
 <input type="radio" id="themename" name="themename" ng-model="options.selectedtheme" ng-value="theme.name" />
 </label>
-</div>
+</li>
+</nav>
 <div class="tabbable tabs-right" style="max-width:48%;">
     <nav class="nav nav-tabs ">
 

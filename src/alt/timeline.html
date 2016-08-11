@@ -11,9 +11,9 @@
          <dir-pagination-controls pagination-id="timeline" template-url="/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html"
             class=""></dir-pagination-controls>
         <div class="bs-callout " dir-paginate="rvent in time.data.timeline.date | itemsPerPage: 10" pagination-id="timeline">
-            <img ng-src="{{rvent.asset.thumbnail}}" style="max-height:100px;" class="img img-thumbnail">
-            <h4>{{rvent.headline}}<small class="text-muted">{{rvent.startdate | date}}</small></h4>
-            <p ng-bind-html="rvent.text | trustAsHTML"></p>
+            <img ng-src="{{rvent.asset.thumbnail}}" style="max-height:100px;" editable-text="rvent.asset.thumbnail" class="img img-thumbnail">
+            <h4><span editable-text="rvent.headline">{{rvent.headline}}</span><small class="text-muted" editable-date="{{rvent.startdate}}">{{rvent.startdate | date}}</small></h4>
+            <p ng-bind-html="rvent.text | trustAsHTML" editable-textarea="rvent.text" e-ckeditor="ckdefault"></p>
         </div>
    </div>
 
