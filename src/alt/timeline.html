@@ -2,7 +2,7 @@
   <label ng-bind="time.selectedtheme"></label>
   <input ng-model="time.source" placeholder="SourceID" type="text" />
  <button class="fa fa-download btn btn-primary" ng-click="time.import(time.source)"></button>
-<button class="fa fa-save btn btn-success" ng-click="time.configure()"></button>
+<button class="fa fa-save btn btn-success" ng-click="time.save()"></button>
 <button class="fa fa-play btn btn-warning" ng-click="time.initialize()"></button>
 </header>
 <section id="timeline" fullscreen="{{openup}}" ng-dblclick="openup = !openup"></section>
@@ -12,7 +12,7 @@
             class=""></dir-pagination-controls>
         <div class="card img-hover img-shadow bs-callout bs-callout-Applicant" dir-paginate="rvent in time.data.timeline.date | itemsPerPage: 10" pagination-id="timeline">
             <h4><img ng-src="{{rvent.asset.thumbnail}}" style="max-height:100px;" editable-text="rvent.asset.thumbnail" class="img img-thumbnail">
-            <span editable-text="rvent.headline">{{rvent.headline}}</span><small class="text-muted" editable-date="{{rvent.startdate}}">{{rvent.startdate | date}}</small></h4>
+            <span editable-text="rvent.headline">{{rvent.headline}}</span><small class="text-muted" editable-date="rvent.startdate}}">{{rvent.startdate | date}}</small></h4>
             <p ng-bind-html="rvent.text | trustAsHTML" editable-textarea="rvent.text" e-ckeditor="ckdefault"></p>
         </div>
    </div>

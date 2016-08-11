@@ -344,7 +344,7 @@ var recurdive = function(src){
       })
       return thishtml;
     };
-    var newhtml = showheader + theme + showheaderone + serialtree() + showfooter;
+    var newhtml = showheader + theme + showheaderone + vm.slides.join('\n') + showfooter;
     vm.model.content = newhtml;
     vm.model.$save();
   };
@@ -515,13 +515,15 @@ function buildslides (slidearray){
             theme: 'dark',
             font: 'Georgia-Helvetica'
           };
-          createStoryJS(vm.options); });
+          createStoryJS(vm.options); vm.save(); });
       };
       vm.save = function(){
-        Collection(config.id).$loaded().then(function(vmodel){
-          vmodel.timeline = vm.data;
-          vmodel.$save();
-        });
+        var ref = Collection(config.id).$ref();
+        ref.child('timeline').set(vm.data);
+        // Collection(config.id).$loaded().then(function(vmodel){
+        //   vmodel.timeline = vm.data;
+        //   vmodel.$save();
+        // });
       };
 
 }]).directive('timelinejs',function(Collection){
