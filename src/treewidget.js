@@ -336,10 +336,10 @@ var recurdive = function(src){
       var thishtml='';
       angular.forEach(vm.slides, function(slide, key){
         if(slide.roarlist && slide.roarlist.length > 0){
-          thishtml = thishtml + angular.element(slide.slide).wrap('<section>');
+          thishtml = thishtml + angular.element(slide.slide).wrap('<section>').toString();
         }
         else{
-          thishtml = thishtml + angular.element(slide.slide);
+          thishtml = thishtml + angular.element(slide.slide).toString();
         }
       })
       return thishtml;
