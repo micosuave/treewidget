@@ -11,9 +11,9 @@
          <dir-pagination-controls pagination-id="timeline" template-url="/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html"
             class=""></dir-pagination-controls>
         <div class="card img-hover img-shadow bs-callout bs-callout-Applicant" dir-paginate="rvent in time.data.timeline.date | itemsPerPage: 10" pagination-id="timeline">
-            <h4><img ng-src="{{rvent.asset.thumbnail}}" style="max-height:100px;" editable-text="rvent.asset.thumbnail" class="img img-thumbnail">
-            <span editable-text="rvent.headline">{{rvent.headline}}</span><small class="text-muted" editable-date="rvent.startdate}}">{{rvent.startdate | date}}</small></h4>
-            <p ng-bind-html="rvent.text | trustAsHTML" editable-textarea="rvent.text" e-ckeditor="ckdefault"></p>
+            <h4><img ng-src="{{rvent.asset.thumbnail}}" style="max-height:100px;" onaftersave="time.save()" editable-text="rvent.asset.thumbnail" class="img img-thumbnail">
+            <span editable-text="rvent.headline" onaftersave="time.save()">{{rvent.headline}}</span><small class="text-muted" onaftersave="time.save()" editable-date="rvent.startdate">{{rvent.startdate | date}}</small> <a class="pull-right" ng-click="time.remove(slide)"><i class="fa fa-close text-muted"></i></a></h4>
+            <p ng-bind-html="rvent.text | trustAsHTML" editable-textarea="rvent.text" onaftersave="time.save()" e-ckeditor="ckdefault"></p>
         </div>
    </div>
 

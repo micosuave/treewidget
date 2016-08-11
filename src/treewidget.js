@@ -406,11 +406,11 @@ function buildslides (slidearray){
     slideshow.push(tmpl);
   });
 }
-}]).controller('TimeLineCtrl', ['$scope', '$stateParams', '$document', '$http', 'storyjs', 'config', 'Collection', 'toastr', '$filter', function ($scope, $stateParams, $document, $http, storyjs, config, Collection, toastr, $filter) {
+}]).controller('TimeLineCtrl', ['$scope', '$stateParams', '$document', '$http', 'storyjs', 'config', 'Collection', 'toastr', '$filter','ckdefault', function ($scope, $stateParams, $document, $http, storyjs, config, Collection, toastr, $filter, ckdefault) {
   var vm = this;
 
   var config = config || $scope.$parent.config;
-
+  $scope.ckdefault  = ckdefault;
   Collection(config.id).$loaded().then(function(lesource){
         if(angular.isDefined(lesource.timeline)){
           vm.data = lesource.timeline;
@@ -506,8 +506,8 @@ function buildslides (slidearray){
         storyjs.createStoryJS().then(function (createStoryJS) {
           vm.options = {
             type: 'timeline',
-            width: 1000,
-            height: 550,
+            width: 950,
+            height: 650,
             source: angular.fromJson(vm.data),
             embed_id: 'timeline',
             hash_bookmark: false,
@@ -519,7 +519,7 @@ function buildslides (slidearray){
       };
       vm.save = function(){
         var ref = Collection(config.id).$ref();
-        ref.child('timeline').update({'timeline': angular.toJson(vm.data)});
+        ref.child('timeline').update({'data': angular.toJson(vm.data)});
         // Collection(config.id).$loaded().then(function(vmodel){
         //   vmodel.timeline = vm.data;
         //   vmodel.$save();
