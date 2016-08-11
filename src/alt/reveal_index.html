@@ -6,7 +6,7 @@
 <button class="fa fa-gear btn btn-default" ng-click="options.configure()"></button>
 <button class="fa fa-play btn btn-warning" ng-click="options.initialize()"></button>
 </header>
-   <div class="card card-fancy">
+   <div class="card card-fancy" id="{{options.selectedtheme}}">
   <pre ng-bind="options.slides | json:2" style="position:relative;"></pre>
 
   <dir-pagination-controls pagination-id="timeline" template-url="/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html"
@@ -21,10 +21,10 @@
   </div>
   </div>
    </div>
-<article class="window" ng-hide="options.hidethemes" style="position:absolute;right:10px;">
+<article class="window clearfix" ng-hide="options.hidethemes" style="position:absolute;right:10px;">
 <h6 class="card-title">Themes</h6>
 <nav class="nav nav-dark" >
-  <li ng-repeat="theme in options.themes" class="btn-glass btn-info">
+  <li ng-repeat="theme in options.themes" id="{{theme.name}}" class="btn-glass btn-info">
 <label class="label">{{theme.name}}
 <input type="radio" id="themename" name="themename" ng-model="options.selectedtheme" ng-value="theme.name" />
 </label>

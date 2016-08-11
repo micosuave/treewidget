@@ -5,14 +5,14 @@
 <button class="fa fa-save btn btn-success" ng-click="time.configure()"></button>
 <button class="fa fa-play btn btn-warning" ng-click="time.initialize()"></button>
 </header>
-<section id="timeline"></section>
+<section id="timeline" fullscreen="{{openup}}" ng-dblclick="openup = !openup"></section>
     <json-formatter json="time.data"></json-formatter>
    <div class="card card-fancy card-block">
          <dir-pagination-controls pagination-id="timeline" template-url="/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html"
             class=""></dir-pagination-controls>
-        <div class="bs-callout " dir-paginate="rvent in time.data.timeline.date | itemsPerPage: 10" pagination-id="timeline">
-            <img ng-src="{{rvent.asset.thumbnail}}" style="max-height:100px;" editable-text="rvent.asset.thumbnail" class="img img-thumbnail">
-            <h4><span editable-text="rvent.headline">{{rvent.headline}}</span><small class="text-muted" editable-date="{{rvent.startdate}}">{{rvent.startdate | date}}</small></h4>
+        <div class="card img-hover img-shadow bs-callout bs-callout-Applicant" dir-paginate="rvent in time.data.timeline.date | itemsPerPage: 10" pagination-id="timeline">
+            <h4><img ng-src="{{rvent.asset.thumbnail}}" style="max-height:100px;" editable-text="rvent.asset.thumbnail" class="img img-thumbnail">
+            <span editable-text="rvent.headline">{{rvent.headline}}</span><small class="text-muted" editable-date="{{rvent.startdate}}">{{rvent.startdate | date}}</small></h4>
             <p ng-bind-html="rvent.text | trustAsHTML" editable-textarea="rvent.text" e-ckeditor="ckdefault"></p>
         </div>
    </div>
