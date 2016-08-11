@@ -480,7 +480,7 @@ function buildslides (slidearray){
         'type': 'default',
         'text': collection.id + ' - ' +  collection.title,
         'asset': {
-          'media': collection.media,
+          'media': collection.media || 'https://lexlab.io/llp_core/img/GoldLion.svg',
           'credit': 'Lion Legal Products',
           'caption': 'Master the Jungle of Legal Information'
         },
@@ -490,7 +490,7 @@ function buildslides (slidearray){
           'headline': collection.title || '&nbsp;',
           'text': collection.description || '&nbsp;',
           'asset': {
-            'media': collection.media || '&nbsp;',
+            'media': collection.media || 'https://lexlab.io/llp_core/img/GoldLion.svg',
             'credit': collection.styleClass || '&nbsp;',
             'caption': '&nbsp;',
             'thumbnail': 'https://lexlab.io/llp_core/img/GoldLion.svg',
