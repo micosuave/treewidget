@@ -434,7 +434,7 @@ function buildslides (slidearray){
         'asset': {
           'media': 'https://lexlab.io/patents/8382656/preview',
           'credit': 'LLP',
-          'caption': '',
+          'caption': ' ',
           'thumbnail': 'https://lexlab.io/patents/8382656/preview',
           'type': 'image/png',
           'tag': 'test'
@@ -452,15 +452,15 @@ function buildslides (slidearray){
         var thisobj = {
           'startDate': rvent.date ? rvent.date.replace(/-/g,',') : '2000,1,1',
           'endDate': rvent.date ? rvent.date.replace(/-/g,',') : '2000,1,1',
-          'headline': rvent.title || '',
-          'text': rvent.text || rvent.description || '',
+          'headline': rvent.title || '&nbsp;',
+          'text': rvent.text || rvent.description || '&nbsp;',
           'asset': {
-            'media': rvent.media || '',
-            'credit': rvent.styleClass || '',
-            'caption': rvent.description || '',
-            'thumbnail': '/llp_core/img/lll3.svg',
-            'type': 'pdf',
-            'tag': rvent.styleClass || ''
+            'media': rvent.media || '&nbsp;',
+            'credit': rvent.styleClass || '&nbsp;',
+            'caption': rvent.description || '&nbsp;',
+            'thumbnail': rvent.thumnail || '/llp_core/apple-touch-icon.png',
+            'type': 'default',
+            'tag': rvent.styleClass || '&nbsp;'
         }};
         toastr.info($filter('date')(rvent.date), rvent.title);
         vm.data.timeline.date.push(thisobj);
@@ -487,15 +487,15 @@ function buildslides (slidearray){
         'date': [{
           'startDate': collection.date ? collection.date.replace(/-/g,',') : '2000,1,1',
           'endDate': collection.date ? collection.date.replace(/-/g,',') : '2000,1,1',
-          'headline': collection.title,
-          'text': collection.description,
+          'headline': collection.title || '&nbsp;',
+          'text': collection.description || '&nbsp;',
           'asset': {
-            'media': collection.media,
-            'credit': collection.styleClass,
-            'caption': '',
+            'media': collection.media || '&nbsp;',
+            'credit': collection.styleClass || '&nbsp;',
+            'caption': '&nbsp;',
             'thumbnail': 'https://lexlab.io/llp_core/img/GoldLion.svg',
-            'type': 'pdf',
-            'tag': collection.rid
+            'type': 'default',
+            'tag': collection.rid || '&nbsp;'
           }
         }]
       }
