@@ -193,7 +193,7 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
 }]).controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config','$compile','Collection', function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config, $compile, Collection) {
   var vm = this;
   vm.selectedtheme = 'league';
-  var showheader = '<!doctype html><html ng-app="revealjs" class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/" target="_blank"></base><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
+  var showheader = '<!doctype html><html ng-app="revealjs" class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/" target="_blank"></base><link  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet"/><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
 
 
 
@@ -225,7 +225,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
         Collection(src).$loaded().then(function(data){
           var srcid = src.replace(/\D/,'');
           //if(angular.isUndefined(data.slide)){
-          var slider = '<section data-background="url(https://lexlab.io/patents/8382656/preview)"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>';
+          var slider = '<section data-background="url(https://lexlab.io/patents/'+srcid+'/preview)"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>';
           data.slide = slider;
           vm.slides = data.slide = slider
           //}else{
@@ -291,9 +291,10 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
     }
 var ert ='<section class="slide phd" data-background="'+roarevent.media+'">><div id="docheader" class="container-fluid two-col-right"  roarid="' + roarevent.id + '">' +
            '<div class="row">' +
-           '<div class="col-xs-8"><div class="bs-callout bs-callout-'+roarevent.styleClass+'><h4>'+ roarevent.title+'</h4><p>Dated '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" pop="true" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>'+
-          '<div class="col-xs-4 col-sm-3 card card-'+roarevent.styleClass+'"><img src="https://placehold.it/250x150/4682b4/fff/&text='+roarevent.rid+'" class="img img-hover img-responsive img-shadow"/> <p class="card-text">' +roarevent.text+
-          '<div class="col-xs-4"><iframe src="' + roarevent.media + '" class="img img-hover img-responsive img-shadow"></iframe></div>' +
+           '<div class="col-xs-7"><div class="bs-callout bs-callout-'+roarevent.styleClass+'><h4>'+ roarevent.title+'</h4><p>Dated '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" pop="true" target="fframe">'+
+           '<i class="fa fa-external-link"></i></a></cite></div><iframe src="' + roarevent.media + '" class="card img img-hover img-responsive img-shadow"></iframe></div>'+
+          '<div class="col-xs-5 slide  card card-'+roarevent.styleClass+'"><img src="https://placehold.it/250x150/4682b4/fff/&text='+roarevent.rid+'" class="img img-hover img-responsive img-shadow"/> <p class="card-text">' +roarevent.text+
+          '</div>' +
            '</div>' +
           '</div></section>';
 //               return '<section class="slide phd" data-background="'+roarevent.media+'">'+temple+'</section>';
@@ -302,35 +303,38 @@ var ert ='<section class="slide phd" data-background="'+roarevent.media+'">><div
 
 var recurdive = function(src){
     Collection(src).$loaded().then(function(roarevent){
+var  slide = templtr(roarevent);
+        roarevent.slide= slide;
 
-
-  //    if(angular.isUndefined(roarevent.slide)){
+      if(angular.isUndefined(roarevent.slide)){
         var  slide = templtr(roarevent);
         roarevent.slide= slide;
         vm.slides = vm.slides +roarevent.slide;
-        angular.forEach(roarevent.roarlist, function(ittd, key){
-            recurdive(ittd);
-          });
-    // toastr.info(roarevent.styleClass, roarevent.title);
-
-
-    //     // if(data.roarlist){
-    //       angular.forEach(roarevent.roarlist, function(itd, key){
-    //         recurdive(itd);
-    //       });
-    //   //   }
-    //    }else{
-    //      vm.slides = vm.slides + '<section>'+roarevent.slide + '</section>';
-    //      angular.forEach(roarevent.roarlist, function(ittd, key){
-    //        recurdive(ittd);
-    //      });
-    //    }
-      //   if(data.roarlist){
-      //     angular.forEach(data.roarlist, function(ittd, key){
+      //   if(roarevent.roarlist){
+      //   angular.forEach(roarevent.roarlist, function(ittd, key){
       //       recurdive(ittd);
       //     });
       //   }
-      // }
+      toastr.info(roarevent.styleClass, roarevent.title);
+
+
+        // if(data.roarlist){
+          // angular.forEach(roarevent.roarlist, function(itd, key){
+            // recurdive(itd);
+          // });
+      //   }
+       }else{
+         vm.slides = vm.slides + '<section>'+roarevent.slide + '</section>';
+         angular.forEach(roarevent.roarlist, function(ittd, key){
+           recurdive(ittd);
+         });
+       }
+        // if(data.roarlist){
+        //   angular.forEach(data.roarlist, function(ittd, key){
+        //     recurdive(ittd);
+        //   });
+       // }
+      //}
     });
   };
   vm.configure = function(){
@@ -354,7 +358,7 @@ var recurdive = function(src){
       })
       return thishtml;
     };
-    var newhtml = showheader + theme + showheaderone +'<section>' +vm.slides+'</section>' + showfooter;
+    var newhtml = showheader + theme + showheaderone + vm.slides + showfooter;
     vm.model.content = newhtml;
     vm.model.$save();
   };
@@ -468,7 +472,7 @@ function buildslides (slidearray){
             'credit': rvent.styleClass || '&nbsp;',
             'caption': rvent.description || '&nbsp;',
             'thumbnail': rvent.thumnail || '/llp_core/apple-touch-icon.png',
-            'type': 'document',
+            'type': 'defaultt',
             'tag': rvent.styleClass || '&nbsp;'
         }};
         toastr.info($filter('date')(rvent.date), rvent.title);
@@ -501,7 +505,7 @@ function buildslides (slidearray){
           'asset': {
             'media': collection.media || 'https://lexlab.io/llp_core/img/GoldLion.svg',
             'credit': collection.styleClass || '&nbsp;',
-            'caption': 'fcku',
+            'caption': ' ',
             'thumbnail': 'https://lexlab.io/llp_core/img/GoldLion.svg',
             'type': 'default',
             'tag': collection.rid || '&nbsp;'
@@ -520,7 +524,7 @@ function buildslides (slidearray){
             type: 'timeline',
             width: 950,
             height: 650,
-            source: angular.toJson(vm.data),
+            source: angular.toJson(vm.data).toString(),
             embed_id: 'timeline',
             hash_bookmark: false,
             debug: true,
@@ -531,7 +535,7 @@ function buildslides (slidearray){
       };
       vm.save = function(){
         Collection(config.id).$loaded().then(function(data){
-          data.timeline = angular.toJson(vm.data);
+          data.timeline = angular.toJson(vm.data.timeline);
           data.$save();
          });
       };
