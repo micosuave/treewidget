@@ -501,7 +501,7 @@ function buildslides (slidearray){
     };
     iteratey(collection);
     });
-  };
+
       vm.initialize = function(){
         storyjs.createStoryJS().then(function (createStoryJS) {
           vm.options = {
@@ -516,6 +516,7 @@ function buildslides (slidearray){
             font: 'Georgia-Helvetica'
           };
           createStoryJS(vm.options); vm.save(); });
+      };
       };
       vm.save = function(){
         Collection(config.id).$loaded().then(function(data){
