@@ -227,7 +227,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
           //if(angular.isUndefined(data.slide)){
           var slider = '<section data-background="url(https://lexlab.io/patents/8382656/preview)"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>';
           data.slide = slider;
-          vm.slides.push(data);
+          vm.slides = data.slide = slider
           //}else{
             //vm.slides.push(data.slide);
           //}
@@ -301,7 +301,7 @@ var recurdive = function(src){
       if(angular.isUndefined(roarevent.slide)){
         var  slide = templtr(roarevent);
         roarevent.slide= slide;
-        vm.slides.push(roarevent)
+        vm.slides = vm.slides +roarevent.slide;
 
     toastr.info(roarevent.styleClass, roarevent.title);
 
@@ -312,7 +312,7 @@ var recurdive = function(src){
           });
       //   }
        }else{
-         vm.slides.push(roarevent.slide);
+         vm.slides = vm.slides + roarevent.slide;
          angular.forEach(roarevent.roarlist, function(ittd, key){
            recurdive(ittd);
          });
@@ -344,7 +344,7 @@ var recurdive = function(src){
       })
       return thishtml;
     };
-    var newhtml = showheader + theme + showheaderone + vm.slides.join('\n') + showfooter;
+    var newhtml = showheader + theme + showheaderone +'<section>' +vm.slides+'</section>' + showfooter;
     vm.model.content = newhtml;
     vm.model.$save();
   };
@@ -479,7 +479,7 @@ function buildslides (slidearray){
         'type': 'document',
         'text': collection.rid + ' - ' +  collection.title,
         'asset': {
-          'media': collection.media ||'https://lexlab.io/files/public/uspto/patents/'+ collection.$id+'/'+collection.$id+'.png' ||'https://lexlab.io/llp_core/img/GoldLion.svg',
+          'media': collection.media ||'https://lexlab.io/files/public/uspto/patents/'+ collection.$id.replace(/\D/g,'')+'/'+collection.$id.replace(/\D/g,'')+'.png' ||'https://lexlab.io/llp_core/img/GoldLion.svg',
           'credit': 'Lion Legal Products',
           'caption': 'Master the Jungle of Legal Information'
         },
@@ -491,7 +491,7 @@ function buildslides (slidearray){
           'asset': {
             'media': collection.media || 'https://lexlab.io/llp_core/img/GoldLion.svg',
             'credit': collection.styleClass || '&nbsp;',
-            'caption': '&nbsp;',
+            'caption': 'fcku',
             'thumbnail': 'https://lexlab.io/llp_core/img/GoldLion.svg',
             'type': 'default',
             'tag': collection.rid || '&nbsp;'
@@ -502,21 +502,22 @@ function buildslides (slidearray){
     iteratey(collection);
     });
 
+
+      };
       vm.initialize = function(){
         storyjs.createStoryJS().then(function (createStoryJS) {
           vm.options = {
             type: 'timeline',
             width: 950,
             height: 650,
-            source: angular.fromJson(vm.data),
+            source: angular.copy(vm.data),
             embed_id: 'timeline',
             hash_bookmark: false,
             debug: true,
             theme: 'dark',
             font: 'Georgia-Helvetica'
           };
-          createStoryJS(vm.options); vm.save(); });
-      };
+          createStoryJS(vm.options); });
       };
       vm.save = function(){
         Collection(config.id).$loaded().then(function(data){

@@ -228,7 +228,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
           //if(angular.isUndefined(data.slide)){
           var slider = '<section data-background="url(https://lexlab.io/patents/8382656/preview)"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>';
           data.slide = slider;
-          vm.slides.push(data);
+          vm.slides = data.slide = slider
           //}else{
             //vm.slides.push(data.slide);
           //}
@@ -302,7 +302,7 @@ var recurdive = function(src){
       if(angular.isUndefined(roarevent.slide)){
         var  slide = templtr(roarevent);
         roarevent.slide= slide;
-        vm.slides.push(roarevent)
+        vm.slides = vm.slides +roarevent.slide;
 
     toastr.info(roarevent.styleClass, roarevent.title);
 
@@ -313,7 +313,7 @@ var recurdive = function(src){
           });
       //   }
        }else{
-         vm.slides.push(roarevent.slide);
+         vm.slides = vm.slides + roarevent.slide;
          angular.forEach(roarevent.roarlist, function(ittd, key){
            recurdive(ittd);
          });
@@ -345,7 +345,7 @@ var recurdive = function(src){
       })
       return thishtml;
     };
-    var newhtml = showheader + theme + showheaderone + vm.slides.join('\n') + showfooter;
+    var newhtml = showheader + theme + showheaderone +'<section>' +vm.slides+'</section>' + showfooter;
     vm.model.content = newhtml;
     vm.model.$save();
   };
@@ -480,7 +480,7 @@ function buildslides (slidearray){
         'type': 'document',
         'text': collection.rid + ' - ' +  collection.title,
         'asset': {
-          'media': collection.media ||'https://lexlab.io/files/public/uspto/patents/'+ collection.$id+'/'+collection.$id+'.png' ||'https://lexlab.io/llp_core/img/GoldLion.svg',
+          'media': collection.media ||'https://lexlab.io/files/public/uspto/patents/'+ collection.$id.replace(/\D/g,'')+'/'+collection.$id.replace(/\D/g,'')+'.png' ||'https://lexlab.io/llp_core/img/GoldLion.svg',
           'credit': 'Lion Legal Products',
           'caption': 'Master the Jungle of Legal Information'
         },
@@ -492,7 +492,7 @@ function buildslides (slidearray){
           'asset': {
             'media': collection.media || 'https://lexlab.io/llp_core/img/GoldLion.svg',
             'credit': collection.styleClass || '&nbsp;',
-            'caption': '&nbsp;',
+            'caption': 'fcku',
             'thumbnail': 'https://lexlab.io/llp_core/img/GoldLion.svg',
             'type': 'default',
             'tag': collection.rid || '&nbsp;'
@@ -503,21 +503,22 @@ function buildslides (slidearray){
     iteratey(collection);
     });
 
+
+      };
       vm.initialize = function(){
         storyjs.createStoryJS().then(function (createStoryJS) {
           vm.options = {
             type: 'timeline',
             width: 950,
             height: 650,
-            source: angular.fromJson(vm.data),
+            source: angular.copy(vm.data),
             embed_id: 'timeline',
             hash_bookmark: false,
             debug: true,
             theme: 'dark',
             font: 'Georgia-Helvetica'
           };
-          createStoryJS(vm.options); vm.save(); });
-      };
+          createStoryJS(vm.options); });
       };
       vm.save = function(){
         Collection(config.id).$loaded().then(function(data){
@@ -569,7 +570,7 @@ $templateCache.put("{widgetsPath}/treewidget/src/alt/histogram.html","<style>\n.
 $templateCache.put("{widgetsPath}/treewidget/src/alt/reveal_index.html","<header class=\"bar bar-dark\"><label ng-bind=options.selectedtheme></label> <input ng-model=options.source placeholder=SourceID type=text> <button class=\"fa fa-download btn btn-primary\" ng-click=options.import(options.source)></button> <button class=\"fa fa-gear btn btn-default\" ng-click=options.configure()></button> <button class=\"fa fa-play btn btn-warning\" ng-click=options.initialize()></button></header><div class=\"card card-fancy\" id={{options.selectedtheme}} colorkey={{options.selectedtheme}}><json-formatter json=options.slides style=position:relative;></json-formatter><dir-pagination-controls pagination-id=timeline template-url=/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html></dir-pagination-controls><div dir-paginate=\"slide in options.slides | itemsPerPage: 5\" pagination-id=timeline class=card><h5><label class=\"label badge\">{{$index}}</label><span ng-bind=slide.title></span><a class=pull-right ng-click=options.remove(slide)><i class=\"fa fa-close text-muted\"></i></a></h5><div class=card-block ng-bind-html=\"slide.slide | trustAsHTML\"></div><div class=card-footer><a class=card-link ng-click=options.slideoptions(slide)>options</a> <a class=card-link ng-click=options.editslide(slide)>edit</a></div></div></div><article class=\"window clearfix\" ng-hide=options.hidethemes style=position:absolute;right:10px;><h6 class=card-title>Themes</h6><nav class=\"nav nav-dark\"><li ng-repeat=\"theme in options.themes\" id={{theme.name}}{{theme.name}} class=\"btn-glass btn-info\" colorkey={{theme.name}}><label class=label>{{theme.name}} <input type=radio id=themename name=themename ng-model=options.selectedtheme ng-value=theme.name></label></li></nav><div class=tabbable><nav class=\"nav nav-tabs\"><ul class=right-tabs style=height:79vh;max-height:79vh;><li class=\"row {{item.styleClass}}\" ng-repeat=\"ts in options.model.roarlist\" ffbase={{ts}} ng-cloak ng-click=\"$parent.options.source = key\"><div uib-dropdown uib-keyboard-nav dropdown-append-to-body><a uib-dropdown-toggle class=\"vcenter pull-left\"><label class=\"label label-pill badge label-{{item.styleClass}}\" style=cursor:pointer;>{{tab.rid || item.rid || \' - \'}}</label></a><ul class=uib-dropdown-menu><li class={{menuitem.styleClass}} ng-repeat=\"menuitem in rightmenu.items\"><a ng-click=\"menuitem.onClick(item.$id, key)\" class=\"fa fa-fw {{menuitem.icon}} {{menuitem.styleClass}}\">&nbsp;&nbsp;&nbsp;&nbsp;{{menuitem.label}}</a></li></ul></div>&nbsp&nbsp{{item.title || item.name}}&nbsp&nbsp <a class=\"fa fa-3x btn btn-default btn-xs\" ng-class=\"{\'fa-check\':($parent.options.source === item.$id )}\" ng-click=\"$parent.options.source = item.$id\"></a></li></ul></nav></div></article>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/slide_edit.html","<input ng-model=config.id><hr><label class=\"label material\" ng-repeat=\"(option, key) in reveal.options\">{{key}}<switch ng-model=option text={{key}} icon=\"fa fa-{{key}}\"><input ng-model=option> <textarea ng-model=option>\n</textarea></switch></label><hr>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/timeedit.html","<fieldset class=material><input type=text ng-model=config.id placeholder=\"Enter patent id number\"><hr><label class=\"label label-NOA\">Enter ID #</label></fieldset>");
-$templateCache.put("{widgetsPath}/treewidget/src/alt/timeline.html","<header class=\"bar bar-dark\" style=display:flex;justify-content:space-around;><label ng-bind=time.selectedtheme></label> <input ng-model=time.source placeholder=SourceID type=text> <button class=\"fa fa-download btn btn-primary\" ng-click=time.import(time.source)></button> <button class=\"fa fa-save btn btn-success\" ng-click=time.save()></button> <button class=\"fa fa-play btn btn-warning\" ng-click=time.initialize()></button></header><section id=timeline fullscreen={{openup}} ng-dblclick=\"openup = !openup\"></section><json-formatter json=time.data></json-formatter><div class=\"card card-fancy card-block\"><dir-pagination-controls pagination-id=timeline template-url=/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html></dir-pagination-controls><div class=\"card img-hover img-shadow bs-callout bs-callout-Applicant\" dir-paginate=\"rvent in time.data.timeline.date | itemsPerPage: 10\" pagination-id=timeline><h4 class=card-title><img ng-src={{rvent.asset.thumbnail}} style=max-height:100px; onaftersave=time.save() editable-text=rvent.asset.thumbnail class=\"img img-thumbnail img-hover pull-left\"> <span editable-text=rvent.headline onaftersave=time.save()>{{rvent.headline}}</span><select ng-model=rvent.asset.type><option ng-repeat=\"type in time.eventtypes\" value={{type.value}} label={{type.label}}></option></select><small class=text-muted onaftersave=time.save() editable-date=rvent.startdate>{{rvent.startdate | date}}</small> <a class=pull-right ng-click=time.remove(slide)><i class=\"fa fa-close text-muted\"></i></a></h4><p ng-bind-html=\"rvent.text | trustAsHTML\" editable-textarea=rvent.text onaftersave=time.save() e-ckeditor=ckdefault></p></div></div><script type=text/javascript src=./build/js/storyjs-embed.js></script>");
+$templateCache.put("{widgetsPath}/treewidget/src/alt/timeline.html","<header class=\"bar bar-dark\" style=display:flex;justify-content:space-around;><label ng-bind=time.selectedtheme></label> <input ng-model=time.source placeholder=SourceID type=text> <button class=\"fa fa-download btn btn-primary\" ng-click=time.import(time.source)></button> <button class=\"fa fa-save btn btn-success\" ng-click=time.save()></button> <button class=\"fa fa-play btn btn-warning\" ng-click=time.initialize()></button></header><section id=timeline fullscreen={{openup}} ng-dblclick=\"openup = !openup\"></section><json-formatter json=time.data></json-formatter><div class=\"card card-fancy card-block\"><dir-pagination-controls pagination-id=timeline template-url=/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html></dir-pagination-controls><div class=\"card card-Applicant img-hover img-shadow bs-callout bs-callout-Applicant\" dir-paginate=\"rvent in time.data.timeline.date | itemsPerPage: 10\" pagination-id=timeline><h4 class=card-title><img ng-src={{rvent.asset.thumbnail}} style=max-height:100px; onaftersave=time.save() editable-text=rvent.asset.thumbnail class=\"img img-thumbnail img-hover pull-left\"> <span editable-text=rvent.headline onaftersave=time.save()>{{rvent.headline}}</span><select ng-model=rvent.asset.type><option ng-repeat=\"type in time.eventtypes\" value={{type.value}} label={{type.label}}></option></select><small class=text-muted onaftersave=time.save() editable-date=rvent.startdate>{{rvent.startdate | date}}</small> <a class=pull-right ng-click=time.remove(slide)><i class=\"fa fa-close text-muted\"></i></a></h4><p ng-bind-html=\"rvent.text | trustAsHTML\" editable-textarea=rvent.text onaftersave=time.save() e-ckeditor=ckdefault></p></div></div><script type=text/javascript src=./build/js/storyjs-embed.js></script>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/build/embed/index.html","<!DOCTYPE html><html lang=en><head><title>TimelineJS Embed</title><meta charset=utf-8><meta name=description content=\"TimelineJS Embed\"><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-touch-fullscreen content=yes><meta name=viewport content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0\"><style>\n      html, body {\n      height:100%;\n      padding: 0px;\n      margin: 0px;\n      }\n\n      #timeline-embed { height: 100%; }\n    </style></head></html><body><div id=timeline-embed></div><script type=text/javascript>\n    var trim_point = window.location.href.indexOf(\'embed/index.html\');\n    if (trim_point > 0) {\n      var embed_path = window.location.href.substring(0,trim_point); // supports https access via https://s3.amazonaws.com/cdn.knightlab.com/libs/timeline/latest/embed/index.html \n    } else {\n      var embed_path = \"http://cdn.knightlab.com/libs/timeline/latest/\";\n    }\n  </script><script type=text/javascript src=../js/storyjs-embed-cdn.js?v214></script></body>");}]);
 /*
     TimelineJS - ver. 2.32.0 - 2014-05-08

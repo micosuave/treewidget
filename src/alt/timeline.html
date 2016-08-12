@@ -10,7 +10,7 @@
    <div class="card card-fancy card-block">
          <dir-pagination-controls pagination-id="timeline" template-url="/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html"
             class=""></dir-pagination-controls>
-        <div class="card img-hover img-shadow bs-callout bs-callout-Applicant" dir-paginate="rvent in time.data.timeline.date | itemsPerPage: 10" pagination-id="timeline">
+        <div class="card card-Applicant img-hover img-shadow bs-callout bs-callout-Applicant" dir-paginate="rvent in time.data.timeline.date | itemsPerPage: 10" pagination-id="timeline">
             <h4 class="card-title"><img ng-src="{{rvent.asset.thumbnail}}" style="max-height:100px;" onaftersave="time.save()" editable-text="rvent.asset.thumbnail" class="img img-thumbnail img-hover pull-left">
             <span editable-text="rvent.headline" onaftersave="time.save()">{{rvent.headline}}</span>
             <select ng-model="rvent.asset.type">
