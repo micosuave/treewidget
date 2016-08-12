@@ -289,34 +289,42 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
             '</div><p>&nbsp;</p>';
             temple = apptemplate;
     }
-
-               return '<section class="slide phd" data-background="'+roarevent.media+'">'+temple+'</section>';
-               //return pups;
+var ert ='<section class="slide phd" data-background="'+roarevent.media+'">><div id="docheader" class="container-fluid two-col-right"  roarid="' + roarevent.id + '">' +
+           '<div class="row">' +
+           '<div class="col-xs-8"><div class="bs-callout bs-callout-'+roarevent.styleClass+'><h4>'+ roarevent.title+'</h4><p>Dated '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" pop="true" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>'+
+          '<div class="col-xs-4 col-sm-3 card card-'+roarevent.styleClass+'"><img src="https://placehold.it/250x150/4682b4/fff/&text='+roarevent.rid+'" class="img img-hover img-responsive img-shadow"/> <p class="card-text">' +roarevent.text+
+          '<div class="col-xs-4"><iframe src="' + roarevent.media + '" class="img img-hover img-responsive img-shadow"></iframe></div>' +
+           '</div>' +
+          '</div></section>';
+//               return '<section class="slide phd" data-background="'+roarevent.media+'">'+temple+'</section>';
+               return ert;
 };
 
 var recurdive = function(src){
     Collection(src).$loaded().then(function(roarevent){
 
 
-      if(angular.isUndefined(roarevent.slide)){
+  //    if(angular.isUndefined(roarevent.slide)){
         var  slide = templtr(roarevent);
         roarevent.slide= slide;
         vm.slides = vm.slides +roarevent.slide;
-
-    toastr.info(roarevent.styleClass, roarevent.title);
-
-
-        // if(data.roarlist){
-          angular.forEach(roarevent.roarlist, function(itd, key){
-            recurdive(itd);
+        angular.forEach(roarevent.roarlist, function(ittd, key){
+            recurdive(ittd);
           });
-      //   }
-       }else{
-         vm.slides = vm.slides + '<section>'+roarevent.slide + '</section>';
-         angular.forEach(roarevent.roarlist, function(ittd, key){
-           recurdive(ittd);
-         });
-       }
+    // toastr.info(roarevent.styleClass, roarevent.title);
+
+
+    //     // if(data.roarlist){
+    //       angular.forEach(roarevent.roarlist, function(itd, key){
+    //         recurdive(itd);
+    //       });
+    //   //   }
+    //    }else{
+    //      vm.slides = vm.slides + '<section>'+roarevent.slide + '</section>';
+    //      angular.forEach(roarevent.roarlist, function(ittd, key){
+    //        recurdive(ittd);
+    //      });
+    //    }
       //   if(data.roarlist){
       //     angular.forEach(data.roarlist, function(ittd, key){
       //       recurdive(ittd);
@@ -330,13 +338,7 @@ var recurdive = function(src){
     vm.configureslides = !vm.configureslides;
 
   };
-  // var apptemplate = showheader + theme + showheaderone + '<section class="slide phd" style=""><div id="docheader" class="container-fluid two-col-right"  roarid="' + roarevent.id + '">' +
-  //          '<div class="row">' +
-  //          '<div class="col-xs-8"><div class="bs-callout bs-callout-Applicant"><h4>'+ roarevent.title+'</h4><p>Dated '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" pop="true" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>'+
-  //         '<div class="col-xs-4 col-sm-3 card card-'+roarevent.styleClass+'"><img src="https://placehold.it/250x150/4682b4/fff/&text='+roarevent.rid+'" class="img img-hover img-responsive img-shadow"/> <p class="card-text">' +
-  //         '<div class="col-xs-4"><iframe src="' + roarevent.media + '" class="img img-hover img-responsive img-shadow"></iframe></div>' +
-  //          '</div>' +
-  //         '</div></section>'
+  // var apptemplate = showheader + theme + showheaderone +
   //         + showfooter;
   vm.initialize = function(){
     var theme = '<link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/theme/' + vm.selectedtheme + '.css" id="theme">';
