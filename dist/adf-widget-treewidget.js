@@ -1,5 +1,4 @@
 (function(window, undefined) {'use strict';
-'use strict'
 
 angular.module('adf.widget.treewidget', ['adf.provider'])
   .config(["dashboardProvider", function (dashboardProvider) {

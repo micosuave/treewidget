@@ -1,5 +1,4 @@
-'use strict'
-
+'use strict';
 angular.module('adf.widget.treewidget', ['adf.provider'])
   .config(function (dashboardProvider) {
     dashboardProvider
