@@ -193,7 +193,7 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
 }]).controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config','$compile','Collection', function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config, $compile, Collection) {
   var vm = this;
   vm.selectedtheme = 'league';
-  var showheader = '<!doctype html><html ng-app="revealjs" class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/" target="_blank"></base><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/reveal.css" /><link rel="stylesheet" href="https://lexlab.io/llp_core/dist/app.full.min.css" />';
+  var showheader = '<!doctype html><html ng-app="revealjs" class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/" target="_blank"></base><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
 
 
 
@@ -290,7 +290,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
             temple = apptemplate;
     }
 
-               return '<section class="slide" data-background="'+roarevent.media+'">'+temple+'</section>';
+               return '<section class="slide phd" data-background="'+roarevent.media+'">'+temple+'</section>';
                //return pups;
 };
 
@@ -312,7 +312,7 @@ var recurdive = function(src){
           });
       //   }
        }else{
-         vm.slides = vm.slides + roarevent.slide;
+         vm.slides = vm.slides + '<section>'+roarevent.slide + '</section>';
          angular.forEach(roarevent.roarlist, function(ittd, key){
            recurdive(ittd);
          });
@@ -330,6 +330,14 @@ var recurdive = function(src){
     vm.configureslides = !vm.configureslides;
 
   };
+  var apptemplate = showheader + theme + showheaderone + '<section class="slide phd" style=""><div id="docheader" class="container-fluid two-col-right"  roarid="' + roarevent.id + '">' +
+           '<div class="row">' +
+           '<div class="col-xs-8"><div class="bs-callout bs-callout-Applicant"><h4>'+ roarevent.title+'</h4><p>Dated '+roardate+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" pop="true" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>'+
+          '<div class="col-xs-4 col-sm-3 card card-'+roarevent.styleClass+'"><img src="https://placehold.it/250x150/4682b4/fff/&text='+roarevent.rid+'" class="img img-hover img-responsive img-shadow"/> <p class="card-text">' +
+          '<div class="col-xs-4"><iframe src="' + roarevent.media + '" class="img img-hover img-responsive img-shadow"></iframe></div>' +
+           '</div>' +
+          '</div></section>'
+          + showfooter;
   vm.initialize = function(){
     var theme = '<link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/theme/' + vm.selectedtheme + '.css" id="theme">';
     var serialtree = function(){
@@ -510,7 +518,7 @@ function buildslides (slidearray){
             type: 'timeline',
             width: 950,
             height: 650,
-            source: angular.copy(vm.data),
+            source: angular.toJson(vm.data),
             embed_id: 'timeline',
             hash_bookmark: false,
             debug: true,
@@ -521,7 +529,7 @@ function buildslides (slidearray){
       };
       vm.save = function(){
         Collection(config.id).$loaded().then(function(data){
-          data.timeline = vm.data;
+          data.timeline = angular.toJson(vm.data);
           data.$save();
          });
       };
