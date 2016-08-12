@@ -190,7 +190,7 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
       );
     });
   });
-}]).controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config','$compile','Collection', function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config, $compile, Collection) {
+}]).controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config','$compile','Collection', function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config, $compile, Collection){
   var vm = this;
   vm.selectedtheme = 'league';
   var showheader = '<!doctype html><html ng-app="revealjs" class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/" target="_blank"></base><link  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet"/><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
@@ -241,44 +241,57 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
     var pups;
     var temple;
     if(roarevent.styleClass === 'Applicant'){
-    var apptemplate =  '<div class="container-fluid two-col-right">' +
+    var apptemplate =  '<section class="slide phd" data-background-image="url('+roarevent.file.mimetype.indexOf('image') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'")"><div class="container-fluid two-col-right">' +
             '<div class="row">' +
-            '<div class="col-xs-8"><div class="bs-callout bs-callout-Applicant"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
-            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
+            '<div class="col-xs-6"><div class="bs-callout bs-callout-Applicant"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite><p class="text-muted">'+ roarevent.text ? roarevent.text : roarevent.description + '</p></div></div>' +
+            '<div class="col-xs-6"><iframe src="' + roarevent.media + '" class="card card-block slide-left" style="width:100%;min-height:400px;"></iframe><img src="https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
             '</div>' +
-            '</div><p>&nbsp;</p>';
+            '</div></section>';
             temple = apptemplate;
     }else if(roarevent.styleClass === 'PTO'){
-                     var ptotemplate = '<div class="container-fluid two-col-left">' +
+                     var ptotemplate = '<section class="slide phd" data-background-image="url('+roarevent.file.mimetype.indexOf('image') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'")"><div class="container-fluid two-col-right">' +
             '<div class="row">' +
-            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe><p><img src="https://placehold.it/250x208/640002/fff/&text='+ roarevent.rid + '" class="img img-responsive img-shadow"/></p></div>' +
+            '<div class="col-xs-6"><div class="bs-callout bs-callout-PTO"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite><p class="text-muted">'+ roarevent.text ? roarevent.text : roarevent.description + '</p></div></div>' +
+            '<div class="col-xs-6"><iframe src="' + roarevent.media + '" class="card card-block slide-left" style="width:100%;min-height:400px;"></iframe><img src="https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
+            '</div>' +
+            '</div></section>';
+            /*'<div class="container-fluid two-col-left">' +
+            '<div class="row">' +
+            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe><p>
+            <img src="https://placehold.it/250x208/640002/fff/&text='+ roarevent.rid + '" class="img img-responsive img-shadow"/></p></div>' +
             '<div class="col-xs-8"><div class="bs-callout bs-callout-PTO bs-callout-reverse"><h4>'+ roarevent.title + '</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
             '</div>' +
-            '</div><p>&nbsp;</p>';
+            '</div><p>&nbsp;</p>';*/
             temple = ptotemplate;
                 }else if(roarevent.styleClass === 'NOA'){
-                    var noatemplate = '<div class="container-fluid two-col-left">' +
+                     var noatemplate = '<section class="slide phd" data-background-image="url('+roarevent.file.mimetype.indexOf('image') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'")"><div class="container-fluid two-col-right">' +
             '<div class="row">' +
-            '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe><p><img src="https://placehold.it/250x208/7c994f/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></p></div>' +
-            '<div class="col-xs-8"><div class="bs-callout bs-callout-NOA bs-callout-reverse"><h4>' + roarevent.title + '</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
+            '<div class="col-xs-6"><div class="bs-callout bs-callout-NOA"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite><p class="text-muted">'+ roarevent.text ? roarevent.text : roarevent.description + '</p></div></div>' +
+            '<div class="col-xs-6"><iframe src="' + roarevent.media + '" class="card card-block slide-left" style="width:100%;min-height:400px;"></iframe><img src="https://placehold.it/350x480/7c994f/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
             '</div>' +
-            '</div><p>&nbsp;</p>';
+            '</div></section>';
+            //         var noatemplate = '<div class="container-fluid two-col-left">' +
+            // '<div class="row">' +
+            // '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe><p><img src="https://placehold.it/250x208/7c994f/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></p></div>' +
+            // '<div class="col-xs-8"><div class="bs-callout bs-callout-NOA bs-callout-reverse"><h4>' + roarevent.title + '</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
+            // '</div>' +
+            // '</div><p>&nbsp;</p>';
             temple = noatemplate;
                 }else if(roarevent.styleClass === 'Petition'){
-                    var petitiontemplate = '<div class="container-fluid two-col-right">' +
+                    var petitiontemplate = '<section class="slide phd" data-background-image="url('+roarevent.file.mimetype.indexOf('image') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'")"><div class="container-fluid two-col-right">' +
             '<div class="row">' +
             '<div class="col-xs-8"><div class="bs-callout bs-callout-Petition"><h4>'+ roarevent.title + '</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
             '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
             '</div>' +
-            '</div><p>&nbsp;</p>';
+            '</div><p>&nbsp;</p></section>';
             temple = petitiontemplate;
                 }else if(roarevent.styleClass === 'Interview'){
-             var interviewtemplate = '<div class="container-fluid two-col-right">' +
+             var interviewtemplate = '<section class="slide phd" data-background-image="url('+roarevent.file.mimetype.indexOf('image') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'")"><div class="container-fluid two-col-right">' +
             '<div class="row">' +
             '<div class="col-xs-8"><div class="bs-callout bs-callout-Interview"><h4>'+ roarevent.title + '</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
             '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe><p><img src="https://placehold.it/250x208/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></p></div>' +
             '</div>' +
-            '</div><p>&nbsp;</p>';
+            '</div><p>&nbsp;</p></section>';
             temple = interviewtemplate;
                 }else{
     var apptemplate =  '<div class="container-fluid two-col-right">' +
@@ -289,16 +302,16 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
             '</div><p>&nbsp;</p>';
             temple = apptemplate;
     }
-var ert ='<section class="slide phd" data-background-image="url('+roarevent.media+')"><div id="docheader" class="container-fluid two-col-right" >' +
-           '<div class="row">' +
-           '<div class="col-xs-7"><div class="bs-callout bs-callout-'+roarevent.styleClass+'><h4>'+ roarevent.title+'</h4><p>Dated '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" pop="true" target="fframe">'+
-           '<i class="fa fa-external-link"></i></a></cite></div><iframe src="' + roarevent.media + '" class="card card-block" style="width:100%;min-height:400px;"></iframe></div>'+
-          '<div class="col-xs-5 slide  card card-'+roarevent.styleClass+'"><img src="https://placehold.it/250x150/4682b4/fff/&text='+roarevent.rid+'" class="img img-hover img-responsive img-shadow"/> <p class="card-text">' +roarevent.text+
-          '</div>' +
-           '</div>' +
-          '</div></section>';
-//               return '<section class="slide phd" data-background="'+roarevent.media+'">'+temple+'</section>';
-               return ert;
+// var ert ='<section class="slide phd" data-background-image="url('+roarevent.media+')"><div id="docheader" class="container-fluid two-col-right" >' +
+//            '<div class="row">' +
+//            '<div class="col-xs-7"><div class="bs-callout bs-callout-'+roarevent.styleClass+'><h4>'+ roarevent.title+'</h4><p>Dated '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" pop="true" target="fframe">'+
+//            '<i class="fa fa-external-link"></i></a></cite></div><iframe src="' + roarevent.media + '" class="card card-block" style="width:100%;min-height:400px;"></iframe></div>'+
+//           '<div class="col-xs-5 slide  card card-'+roarevent.styleClass+'"><img src="https://placehold.it/250x150/4682b4/fff/&text='+roarevent.rid+'" class="img img-hover img-responsive img-shadow"/> <p class="card-text">' +roarevent.text+
+//           '</div>' +
+//            '</div>' +
+//           '</div></section>';
+              //return '<section class="slide phd" data-background="'+roarevent.media+'">'+temple+'</section>';
+               return temple;
 };
 
 var recurdive = function(src){
@@ -411,16 +424,10 @@ var  slide = templtr(roarevent);
 //   revealjs.Reveal().then(function () {
 //     window.Reveal.initialize(vm.options);
 
-//   });
-// };
 
-function buildslides (slidearray){
-  angular.forEach(slidearray, function(slide, key){
-    var tmpl = '<section>' + slide.content + '</section>';
-    slideshow.push(tmpl);
-  });
-}
-}]).controller('TimeLineCtrl', ['$scope', '$stateParams', '$document', '$http', 'storyjs', 'config', 'Collection', 'toastr', '$filter','ckdefault', function ($scope, $stateParams, $document, $http, storyjs, config, Collection, toastr, $filter, ckdefault) {
+ }
+
+]).controller('TimeLineCtrl', ['$scope', '$stateParams', '$document', '$http', 'storyjs', 'config', 'Collection', 'toastr', '$filter','ckdefault', function ($scope, $stateParams, $document, $http, storyjs, config, Collection, toastr, $filter, ckdefault) {
   var vm = this;
 
   var config = config || $scope.$parent.config;

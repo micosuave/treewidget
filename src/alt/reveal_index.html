@@ -24,7 +24,7 @@
 <article class="window clearfix" ng-hide="options.hidethemes" style="position:absolute;right:10px;">
 <h6 class="card-title">Themes</h6>
 <nav class="nav nav-dark" >
-  <li ng-repeat="theme in options.themes" id="{{theme.name}}{{theme.name}}" class="btn-glass btn-info" colorkey="{{theme.name}}">
+  <li ng-repeat="theme in options.themes" id="{{theme.name}}" class="btn-glass btn-info" colorkey="{{theme.name}}">
 <label class="label">{{theme.name}}
 <input type="radio" id="themename" name="themename" ng-model="options.selectedtheme" ng-value="theme.name" />
 </label>
