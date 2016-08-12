@@ -458,7 +458,7 @@ function buildslides (slidearray){
             'credit': rvent.styleClass || '&nbsp;',
             'caption': rvent.description || '&nbsp;',
             'thumbnail': rvent.thumnail || '/llp_core/apple-touch-icon.png',
-            'type': 'default',
+            'type': 'document',
             'tag': rvent.styleClass || '&nbsp;'
         }};
         toastr.info($filter('date')(rvent.date), rvent.title);
@@ -476,10 +476,10 @@ function buildslides (slidearray){
     vm.data = {
       'timeline': {
         'headline': 'Prosecution History Digest',
-        'type': 'default',
-        'text': collection.id + ' - ' +  collection.title,
+        'type': 'document',
+        'text': collection.rid + ' - ' +  collection.title,
         'asset': {
-          'media': collection.media || 'https://lexlab.io/llp_core/img/GoldLion.svg',
+          'media': collection.media ||'https://lexlab.io/files/public/uspto/patents/'+ collection.$id+'/'+collection.$id+'.png' ||'https://lexlab.io/llp_core/img/GoldLion.svg',
           'credit': 'Lion Legal Products',
           'caption': 'Master the Jungle of Legal Information'
         },
@@ -518,13 +518,30 @@ function buildslides (slidearray){
           createStoryJS(vm.options); vm.save(); });
       };
       vm.save = function(){
-        var ref = Collection(config.id).$ref();
-        ref.child('timeline').update({'data': angular.toJson(vm.data)});
-        // Collection(config.id).$loaded().then(function(vmodel){
-        //   vmodel.timeline = vm.data;
-        //   vmodel.$save();
-        // });
+        Collection(config.id).$loaded().then(function(data){
+          data.timeline = vm.data;
+          data.$save();
+         });
       };
+      vm.eventtypes = [
+      {value: 'plaintext', label: 'Plain Text'},
+      {value: 'quote', label: 'quote'},
+      {value: 'document', label: 'document'},
+      {value: 'photo', label: 'Photo'},
+      {value: 'twitter', label: 'Twitter'},
+      {value: 'vimeo', label: 'Vimeo'},
+      {value: 'vine', label: 'Vine'},
+      {value: 'youtube', label: 'Youtube'},
+      {value: 'video', label: 'Video'},
+      {value: 'audio', label: 'Audio'},
+      {value: 'map', label: 'Map'},
+      {value: 'website', label: 'Website'},
+      {value: 'link', label: 'Link'},
+      {value: 'wikipedia', label: 'Wikipedia'},
+      {value: 'storify', label: 'Storify'},
+      {value: 'googleplus', label: 'Google+'},
+      {value: 'instagram', label: 'Instagram'}
+];
 
 }]).directive('timelinejs',function(Collection){
   return {
