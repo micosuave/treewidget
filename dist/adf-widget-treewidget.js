@@ -242,7 +242,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
     var pups;
     var temple;
     if(roarevent.styleClass === 'Applicant'){
-    var apptemplate =  '<section class="slide phd" data-background-image="url('+roarevent.media.indexOf('img') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'")"><div class="container-fluid two-col-right">' +
+    var apptemplate =  '<section class="slide phd" data-background-image="url('+roarevent.media.indexOf('img') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+')"><div class="container-fluid two-col-right">' +
             '<div class="row">' +
             '<div class="col-xs-6"><div class="bs-callout bs-callout-Applicant"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite><p class="text-muted">'+ roarevent.text ? roarevent.text : roarevent.description + '</p></div></div>' +
             '<div class="col-xs-6"><iframe src="' + roarevent.media + '" class="card card-block slide-left" style="width:100%;min-height:400px;"></iframe><img src="https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
@@ -250,12 +250,11 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
             '</div></section>';
             temple = apptemplate;
     }else if(roarevent.styleClass === 'PTO'){
-                     var ptotemplate = '<section class="slide phd" data-background-image="url('+roarevent.file.mimetype.indexOf('image') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'")"><div class="container-fluid two-col-right">' +
+                     var ptotemplate = '<section class="slide phd" data-background-image="url('+roarevent.media.indexOf('img') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+')"><div class="container-fluid two-col-right">' +
             '<div class="row">' +
             '<div class="col-xs-6"><div class="bs-callout bs-callout-PTO"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite><p class="text-muted">'+ roarevent.text ? roarevent.text : roarevent.description + '</p></div></div>' +
             '<div class="col-xs-6"><iframe src="' + roarevent.media + '" class="card card-block slide-left" style="width:100%;min-height:400px;"></iframe><img src="https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
-            '</div>' +
-            '</div></section>';
+            '</div></div></section>'
             /*'<div class="container-fluid two-col-left">' +
             '<div class="row">' +
             '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe><p>
@@ -265,7 +264,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
             '</div><p>&nbsp;</p>';*/
             temple = ptotemplate;
                 }else if(roarevent.styleClass === 'NOA'){
-                     var noatemplate = '<section class="slide phd" data-background-image="url('+roarevent.file.mimetype.indexOf('image') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'")"><div class="container-fluid two-col-right">' +
+                     var noatemplate = '<section class="slide phd" data-background-image="url('+roarevent.media.indexOf('img') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+')"><div class="container-fluid two-col-right">' +
             '<div class="row">' +
             '<div class="col-xs-6"><div class="bs-callout bs-callout-NOA"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite><p class="text-muted">'+ roarevent.text ? roarevent.text : roarevent.description + '</p></div></div>' +
             '<div class="col-xs-6"><iframe src="' + roarevent.media + '" class="card card-block slide-left" style="width:100%;min-height:400px;"></iframe><img src="https://placehold.it/350x480/7c994f/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
@@ -279,7 +278,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
             // '</div><p>&nbsp;</p>';
             temple = noatemplate;
                 }else if(roarevent.styleClass === 'Petition'){
-                    var petitiontemplate = '<section class="slide phd" data-background-image="url('+roarevent.media.indexOf('img') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'")"><div class="container-fluid two-col-right">' +
+                    var petitiontemplate = '<section class="slide phd" data-background-image="url('+roarevent.media.indexOf('img') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+')"><div class="container-fluid two-col-right">' +
             '<div class="row">' +
             '<div class="col-xs-8"><div class="bs-callout bs-callout-Petition"><h4>'+ roarevent.title + '</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
             '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
@@ -287,7 +286,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
             '</div><p>&nbsp;</p></section>';
             temple = petitiontemplate;
                 }else if(roarevent.styleClass === 'Interview'){
-             var interviewtemplate = '<section class="slide phd" data-background-image="url('+roarevent.media.indexOf('img') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'")"><div class="container-fluid two-col-right">' +
+             var interviewtemplate = '<section class="slide phd" data-background-image="url('+roarevent.media.indexOf('img') > -1 ? roarevent.media : roarevent.styleClass === 'Applicant' ? '"https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'"' : '"https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+')"><div class="container-fluid two-col-right">' +
             '<div class="row">' +
             '<div class="col-xs-8"><div class="bs-callout bs-callout-Interview"><h4>'+ roarevent.title + '</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite></div></div>' +
             '<div class="col-xs-4"><iframe name="fframe" id="fframe" style="width:350px;height:480px;" src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"><img src="https://placehold.it/350x480/b48200/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe><p><img src="https://placehold.it/250x208/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></p></div>' +
