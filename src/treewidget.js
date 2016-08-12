@@ -243,7 +243,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
     if(roarevent.styleClass === 'Applicant'){
     var apptemplate =  '<section class="slide phd" data-background-image="url(\'https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'\')"><div class="container-fluid two-col-right">' +
             '<div class="row">' +
-            '<div class="col-xs-6"><div class="text-primary"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite><p class="text-muted">'+ roarevent.text ? $filter('plaintext')(roarevent.text) : roarevent.description + '</p></div></div>' +
+            '<div class="col-xs-6"><div class="text-primary"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite><p class="text-muted">'+ roarevent.text ? $filter('plainText')(roarevent.text) : roarevent.description + '</p></div></div>' +
             '<div class="col-xs-6"><iframe src="' + roarevent.media + '" class="card card-block slide-left" style="width:100%;min-height:400px;"></iframe><img src="https://placehold.it/350x480/4682b4/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
             '</div>' +
             '</div></section>';
@@ -251,7 +251,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
     }else if(roarevent.styleClass === 'PTO'){
                      var ptotemplate = '<section class="slide phd" data-background-image="url(\'https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'\')"><div class="container-fluid two-col-right">' +
             '<div class="row">' +
-            '<div class="col-xs-6"><div class="text-danger"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite><p class="text-muted">'+ roarevent.text ? $filter('plaintext')(roarevent.text) : roarevent.description + '</p></div></div>' +
+            '<div class="col-xs-6"><div class="text-danger"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite><p class="text-muted">'+ roarevent.text ? $filter('plainText')(roarevent.text) : roarevent.description + '</p></div></div>' +
             '<div class="col-xs-6"><iframe src="' + roarevent.media + '" class="card card-block slide-left" style="width:100%;min-height:400px;"></iframe><img src="https://placehold.it/350x480/640002/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
             '</div></div></section>'
             /*'<div class="container-fluid two-col-left">' +
@@ -265,7 +265,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
                 }else if(roarevent.styleClass === 'NOA'){
                      var noatemplate = '<section class="slide phd" data-background-image="url(\'https://placehold.it/350x480/7c994f/fff/&text='+roarevent.rid+'\')"><div class="container-fluid two-col-right">' +
             '<div class="row">' +
-            '<div class="col-xs-6"><div class="text-success"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite><p class="text-muted">'+ roarevent.text ? $filter('plaintext')(roarevent.text): roarevent.description + '</p></div></div>' +
+            '<div class="col-xs-6"><div class="text-success"><h4>'+ roarevent.title+'</h4><p>Filed '+roarevent.date+'</p><cite>'+roarevent.filename+'&nbsp;&nbsp;<a href="'+roarevent.media+'" target="fframe"><i class="fa fa-external-link"></i></a></cite><p class="text-muted">'+ roarevent.text ? $filter('plainText')(roarevent.text): roarevent.description + '</p></div></div>' +
             '<div class="col-xs-6"><iframe src="' + roarevent.media + '" class="card card-block slide-left" style="width:100%;min-height:400px;"></iframe><img src="https://placehold.it/350x480/7c994f/fff/&text='+roarevent.rid+'" class="img img-responsive img-shadow"/></iframe></div>' +
             '</div>' +
             '</div></section>';
