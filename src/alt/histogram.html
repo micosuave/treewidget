@@ -116,10 +116,10 @@
     width: 100%;
     top: 0;
 
-    -webkit-transform: translateZ(1em);
+    -webkit-transform: translateZ(5em);
 }
 </style>
-<div id="sky" colorkey="sky" style="width:100%;min-height:600px;" fullscreen="fillerup" >
+<div id="sky" colorkey="sky" style="width:140%;min-height:400px;" fullscreen="fillerup" >
 <fieldset class="material">
 <label>Search</label>
 <hr>
@@ -138,10 +138,10 @@
                     <td histo='20'>20</td>
                     <td histo='30'>60</td>
                 </tr>
-                <tr cubed one="<td histo='80'>80</td>" four="<td>40</td>" draggable>
+                <tr><cubed one="<td histo='80'>80</td>" four="<td>40</td>" draggable>
 
                     <td><img src="https://lexlab.io/llp_core/img/lll3.svg" /></td>
-
+</cubed>
                 </tr>
                 <tr>
                     <td histo="50">50</td>
@@ -154,15 +154,16 @@
 
 <script id="bartpl" type="text/ng-template">
 
-<div class="bar" ffbase="{{it}}" ng-style="font-size:{{item.rid||'25'}}">
-        <div class="face top" >
-        <img width="100%" height="100%" ng-src="/patents/{{item.$id.slice(0,8)}}/preview"/>
-        <d3pendingtree patent="{{item.id.slice(0,8)}}" tree="trees[$index]" pattern="{{config.pattern}}"></d3pendingtree>
+<div class="bar" ffbase="{{it}}" ng-style="font-size:{{item.rid||'5'}}">
+        <div class="face top" id="digest">
+        <img width="100%" height="100%" ng-src="/patents/{{item.$id.slice(0,7)}}/preview"/>
         </div>
-        <div class="face front"></div>
-        <div class="face back"></div>
-        <div class="face left"><img width="100%" height="100%" src="/llp_core/img/lll3.svg"></div>
-        <div class="face right"><img width="100%" height="100%" src="/llp_core/img/lll3.svg"></div>
+        <div class="face front" id="merits">FF</div>
+        <div class="face back" id="all">BB</div>
+        <div class="face left" id="claims">L</div>
+        <div class="face right" id="art">R</div>
+        <d3pendingtree patent="{{item.id.slice(0,7)}}" tree="trees[$index]" pattern="{{config.pattern}}"></d3pendingtree>
+
     </div>
     </script>
 </div>
