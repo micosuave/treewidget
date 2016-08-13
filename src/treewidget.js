@@ -336,7 +336,7 @@ var  slide = templtr(roarevent);
           // });
       //   }
        }else{
-         vm.slides = vm.slides + '<section>'+roarevent.slide + '</section>';
+         vm.slides = vm.slides + '<section>'+roarevent.slide.slice(roarevent.slide.indexOf('<!-----CUTSLIDEHEAD------->'), roarevent.slide.indexOf('<!-------CUTSLIDETAIL-------->')) + '</section>';
          angular.forEach(roarevent.roarlist, function(ittd, key){
            recurdive(ittd);
          });
@@ -426,7 +426,51 @@ var  slide = templtr(roarevent);
 
  }
 
-]).controller('TimeLineCtrl', ['$scope', '$stateParams', '$document', '$http', 'storyjs', 'config', 'Collection', 'toastr', '$filter','ckdefault', function ($scope, $stateParams, $document, $http, storyjs, config, Collection, toastr, $filter, ckdefault) {
+]).service('timeline', function(){
+  return {timeline: timeline,
+        timeevent: timeevent,
+      timeera: timeera };
+      var dataModel = {
+    "timeline":
+    {
+        "headline":"The Main Timeline Headline Goes here",
+        "type":"default",
+        "text":"<p>Intro body text goes here, some HTML is ok</p>",
+        "asset": {
+            "media":"http://yourdomain_or_socialmedialink_goes_here.jpg",
+            "credit":"Credit Name Goes Here",
+            "caption":"Caption text goes here"
+        },
+        "date": [
+            {
+                "startDate":"2011,12,10,07,02,10",
+                "endDate":"2011,12,11,08,11",
+                "headline":"Headline Goes Here",
+                "text":"<p>Body text goes here, some HTML is OK</p>",
+                "tag":"This is Optional",
+                "classname":"optionaluniqueclassnamecanbeaddedhere",
+                "asset": {
+                    "media":"http://twitter.com/ArjunaSoriano/status/164181156147900416",
+                    "thumbnail":"optional-32x32px.jpg",
+                    "credit":"Credit Name Goes Here",
+                    "caption":"Caption text goes here"
+                }
+            }
+        ],
+        "era": [
+            {
+                "startDate":"2011,12,10",
+                "endDate":"2011,12,11",
+                "headline":"Headline Goes Here",
+                "text":"<p>Body text goes here, some HTML is OK</p>",
+                "tag":"This is Optional"
+            }
+
+        ]
+    }
+}
+})
+.controller('TimeLineCtrl', ['$scope', '$stateParams', '$document', '$http', 'storyjs', 'config', 'Collection', 'toastr', '$filter','ckdefault', function ($scope, $stateParams, $document, $http, storyjs, config, Collection, toastr, $filter, ckdefault) {
   var vm = this;
 
   var config = config || $scope.$parent.config;
