@@ -119,7 +119,7 @@
     -webkit-transform: translateZ(5em);
 }
 </style>
-<div id="sky" colorkey="sky" style="width:140%;min-height:400px;" fullscreen="fillerup" >
+<div id="sky" colorkey="sky" style="width:140%;min-height:400px;" fullscreen="fillerup" class="html3">
 <fieldset class="material">
 <label>Search</label>
 <hr>
@@ -154,7 +154,7 @@
 
 <script id="bartpl" type="text/ng-template">
 
-<div class="bar" ffbase="{{it}}" ng-style="font-size:{{item.rid||'5'}}">
+<div class="bar" ffbase="{{it}}" >
         <div class="face top" id="digest">
         <img width="100%" height="100%" ng-src="/patents/{{item.$id.slice(0,7)}}/preview"/>
         </div>

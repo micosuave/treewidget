@@ -6,7 +6,14 @@
 <button class="fa fa-gear btn btn-default" ng-click="options.configure()"></button>
 <button class="fa fa-play btn btn-warning" ng-click="options.initialize()"></button>
 </header>
-   <div class="card card-fancy" id="{{options.selectedtheme}}" colorkey="{{options.selectedtheme}}">
+
+<div class="card card-block {{options.selectedtheme || 'card-fancy'}}" id="viewframe" ng-if="options.hidethemes" style="width:100%;min-height:400px;margin:5px;border:5px ridge inherit;">
+    <iframe style="width:100%;height:100%;" ng-attr-srcdoc="{{options.slideshowcontent | trustAsHTML}}" seamless allowfullscreen >
+<playlist></playlist>
+</div>
+
+
+   <div class="card {{options.selectedtheme || 'card-fancy'}}" id="{{options.selectedtheme}}" colorkey="{{options.selectedtheme}}" ng-hide="options.hidethemes">
   <json-formatter json="options.slides" style="position:relative;"></json-formatter>
 
   <dir-pagination-controls pagination-id="timeline" template-url="/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html"
