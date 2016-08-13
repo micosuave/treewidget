@@ -189,7 +189,8 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
       );
     });
   });
-}]).controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config','$compile','Collection','$filter', function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config, $compile, Collection,$filter){
+}])
+.controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config','$compile','Collection','$filter', function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config, $compile, Collection,$filter){
   var vm = this;
   vm.selectedtheme = 'league';
   var showheader = '<!doctype html><html ng-app="revealjs" class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/" target="_blank"></base><link  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet"/><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
