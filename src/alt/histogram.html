@@ -120,14 +120,23 @@
 }
 </style>
 <div id="sky" colorkey="sky" style="width:140%;min-height:400px;" fullscreen="fillerup" class="html3">
+<div style="position:absolute;z-index:10000;">
 <fieldset class="material">
-<label>Search</label>
-<hr>
-<input type="text" id="patterninput" ng-model="config.pattern" ng-dblclick="fillerup = !fillerup"/>
+<label>Perspective</label>
+<input type="range" id="persective" ng-model="config.perspective" min="500" max="5000" ng-dblclick="fillerup = !fillerup"/>
 </fieldset>
+<fieldset>
+  <label>Rotation - X , Y , Z</label>
+<input type="range" id="xrotate" ng-model="config.xrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
 
-<div class=" viewport">
-    <div class="htmlz world" rotate3d>
+<input type="range" id="yrotate" ng-model="config.zrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
+
+<input type="range" id="zrotate" ng-model="config.zrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
+</fieldset>
+</div>
+
+<div class=" viewport" style="perspective: {{config.perspective}}px, position:absolute;top:0;right:0;left:0;bottom:0;">
+    <div class="htmlz world" rotate3d style="rotate3d({{config,xrotate}},{{config,yrotate}},{{config,zrotate}},1deg);">
         <div class="ground card-dark" >
 <table class="histogram-3d" ffbase="{{histogram.col}}">
 <tr ng-repeat="tab in item.roarlist" ffbase="{{tab}}">
@@ -156,13 +165,14 @@
 
 <div class="bar" ffbase="{{it}}" >
         <div class="face top" id="digest">
-        <img width="100%" height="100%" ng-src="/patents/{{item.$id.slice(0,7)}}/preview"/>
+                  <d3pendingtree patent="{{item.id.slice(0,7)}}" tree="trees[$index]" pattern="{{config.pattern}}"></d3pendingtree>
+
         </div>
-        <div class="face front" id="merits">FF</div>
+        <div class="face front" id="merits">        <img width="100%" height="100%" ng-src="/patents/{{item.$id.slice(0,7)}}/preview"/>
+</div>
         <div class="face back" id="all">BB</div>
         <div class="face left" id="claims">L</div>
         <div class="face right" id="art">R</div>
-        <d3pendingtree patent="{{item.id.slice(0,7)}}" tree="trees[$index]" pattern="{{config.pattern}}"></d3pendingtree>
 
     </div>
     </script>
