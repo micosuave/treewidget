@@ -1,4 +1,231 @@
 
+
+<style>
+.viewport {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    cursor: move;
+contain:strict;
+    -webkit-perspective: 6000px;
+    -webkit-perspective-origin: 50% -100%;
+}
+.viewport .world {
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+
+    -webkit-transform: rotateX(-15deg) rotateY(-20deg);
+}
+
+.viewport .world,
+.viewport .world * {
+    -webkit-transform-style: preserve-3d;
+}
+.viewport .ground {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    height: 90%;
+    margin-left: -50%;
+    margin-top: -50%;
+    background: #444444;
+
+    -webkit-transform: rotateX(90deg);
+}
+.viewport .histogram-3d {
+    width: 80%;
+    height: 80%;
+    margin: 10% auto;
+    border-collapse: collapse;
+    border-style: solid;
+
+    /* make sure grid is raised above ground */
+    -webkit-transform: translateZ(1px);
+}
+
+.viewport .histogram-3d td {
+    position: relative;
+    width: 30%;
+    height: 30%;
+    padding: 10px;
+    border: 2px solid #555;
+    z-index: 0;
+}
+.viewport .bar {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.viewport .bar .face {
+    background: hsl(0, 100%, 50%);
+    position: absolute;
+    width: 100%;
+
+    overflow: hidden;
+    z-index: 1;
+}
+
+.viewport .bar .face.front {
+    background: hsl(0, 100%, 20%);
+    bottom: 0;
+    height: 1em;
+
+    -webkit-transform-origin: bottom center;
+    -webkit-transform: rotateX(-90deg);
+}
+
+.viewport .bar .face.right {
+    top: 0;
+    right: 0;
+    width: 1em;
+    height: 100%;
+
+    -webkit-transform-origin: center right;
+    -webkit-transform: rotateY(90deg);
+}
+
+.viewport .bar .face.left {
+    background: hsl(0, 100%, 45%);
+    top: 0;
+    left: 0;
+    width: 1em;
+    height: 100%;
+
+    -webkit-transform-origin: center left;
+    -webkit-transform: rotateY(-90deg);
+}
+
+.viewport .bar .face.back {
+    top: 0;
+    height: 1em;
+
+    -webkit-transform-origin: top center;
+    -webkit-transform: rotateX(90deg);
+}
+
+.viewport .bar .face.top {
+    background: hsl(0, 100%, 40%);
+    height: 100%;
+    width: 100%;
+    top: 0;
+
+    -webkit-transform: translateZ(1em);
+}
+</style>
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript" src="modernizr.2.5.3.min.js"></script>
+<script type="text/javascript" src="jquery.fly_sidemenu.js"></script>
+<link rel="stylesheet" href="fly_sidemenu.css">
+</head>
+
+<body>
+
+<div class="viewport">
+    <div class="world orbit">
+        <div class="ground">
+            <table class="histogram-3d spinY">
+                <tr>
+                    <td>30</td>
+                    <td>20</td>
+                    <td>60</td>
+                </tr>
+                <tr>
+                    <td>80</td>
+                    <td>100</td>
+                    <td>40</td>
+                </tr>
+                <tr>
+                    <td>20</td>
+                    <td>50</td>
+                    <td>300</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script id="bartpl" type="text/template">
+
+    <div class="bar">
+        <div class="face top">
+        <img width="100%" height="100%" src="/llp_core/img/lll3.svg">
+        </div>
+        <div class="face front"></div>
+        <div class="face back"></div>
+        <div class="face left"><img width="100%" height="100%" src="/llp_core/img/NYC1.jpg"></div>
+        <div class="face right"><img width="100%" height="100%" src="/llp_core/img/NYC1.jpg"></div>
+    </div>
+    </script>
+<script type="text/javascript">
+// get the template
+var tpl = $('#bartpl').html();
+
+// insert template markup into each td
+// and set the font size to be the value of the td
+$('.histogram-3d td').each(function(){
+    var val = this.innerHTML;
+    $(this)
+        .html(tpl)
+        .css('font-size', val+'px')
+        ;
+});</script><script type="text/javascript">
+var dragStart = {}
+    ,dragging = false
+    ,curpos = {x:100,y:-75}
+    ;
+
+var touch = Modernizr.touch
+    ,$vp = $('.viewport:first')
+    ;
+
+$vp.on(touch?'touchstart':'mousedown', function(e){
+
+    var evt = touch? e.originalEvent.touches[0] : e;
+    dragStart = {
+        x: evt.screenX + curpos.x,
+        y: evt.screenY + curpos.y
+    };
+
+    dragging = true;
+    $('body').addClass('noselect');
+});
+
+$(document).on(touch?'touchend':'mouseup', function(){
+    dragging = false;
+    $('body').removeClass('noselect');
+});
+
+$(document).on(touch?'touchmove':'mousemove', function(e){
+
+    if (!dragging) return;
+
+    e.preventDefault();
+
+    var evt = touch? e.originalEvent.touches[0] : e
+        ,x = dragStart.x - evt.screenX
+        ,y = dragStart.y - evt.screenY
+        ,amp = 0.2
+        ;
+
+    curpos.x = x;
+    curpos.y = y;
+
+    $vp.find('.world').css(
+        Modernizr.prefixed('transform'),
+        ['rotateX(',y*amp,'deg) rotateY(',-x*amp,'deg)'].join('')
+    );
+
+});</script>
+
+
+
 <style>
 .viewport {
     position: relative;
@@ -119,7 +346,7 @@
     -webkit-transform: translateZ(5em);
 }
 </style>
-<div id="html2" colorkey="sky" style="width:140%;min-height:400px;" fullscreen="fillerup" class="html3">
+<div id="html2" colorkey="" style="width:140%;min-height:400px;" fullscreen="fillerup" class="html3">
 <div style="position:absolute;z-index:10000;">
 <fieldset class="material">
 <label>Perspective {{config.perspective}}</label>
@@ -130,7 +357,7 @@
   <label>Rotation - X{{config.xrotate}} , Y{{config.yrotate}} , Z{{config.zrotate}}</label>
 <input type="range" id="xrotate" ng-model="config.xrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
 <br>
-<input type="range" id="yrotate" ng-model="config.zrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
+<input type="range" id="yrotate" ng-model="config.yrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
 <br>
 <input type="range" id="zrotate" ng-model="config.zrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
 </fieldset>
