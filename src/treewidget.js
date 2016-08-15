@@ -338,7 +338,7 @@ vm.slides.push(roarevent);
           // });
       //   }
        }else{
-         //vm.slides = vm.slides + '<section>'+roarevent.slide.slice(roarevent.slide.indexOf('<!-----CUTSLIDEHEAD------->'), roarevent.slide.indexOf('<!-------CUTSLIDETAIL-------->')) + '</section>';
+         //vm.slides = vm.slides;
 
          vm.slides.push(roarevent);
          angular.forEach(roarevent.roarlist, function(ittd, key){
@@ -369,12 +369,14 @@ vm.slides.push(roarevent);
           thishtml = thishtml + angular.element(slide.slide).wrap('<section>').toString();
         }
         else{
-          thishtml = thishtml + angular.element(slide.slide).toString();
+          var tol= angular.element(slide.slide).toString();
+          thishtml = thishtml + tol.slice(tol.indexOf('<!--CUTSLIDEHEAD-->'), tol.indexOf('<!--CUTSLIDETAIL-->')) + '</section>';
         }
       })
       return thishtml;
     };
     var newhtml = showheader + theme + showheaderone + vm.slides + showfooter;
+    vm.model.slideshow = vm.slides;
     vm.model.content = serialtree();
     vm.model.slide = newhtml;
     vm.model.$save();
