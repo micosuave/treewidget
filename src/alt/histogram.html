@@ -119,24 +119,25 @@
     -webkit-transform: translateZ(5em);
 }
 </style>
-<div id="sky" colorkey="sky" style="width:140%;min-height:400px;" fullscreen="fillerup" class="html3">
+<div id="html2" colorkey="sky" style="width:140%;min-height:400px;" fullscreen="fillerup" class="html3">
 <div style="position:absolute;z-index:10000;">
 <fieldset class="material">
-<label>Perspective</label>
+<label>Perspective {{config.perspective}}</label>
 <input type="range" id="persective" ng-model="config.perspective" min="500" max="5000" ng-dblclick="fillerup = !fillerup"/>
 </fieldset>
+<br>
 <fieldset>
-  <label>Rotation - X , Y , Z</label>
+  <label>Rotation - X{{config.xrotate}} , Y{{config.yrotate}} , Z{{config.zrotate}}</label>
 <input type="range" id="xrotate" ng-model="config.xrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
-
+<br>
 <input type="range" id="yrotate" ng-model="config.zrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
-
+<br>
 <input type="range" id="zrotate" ng-model="config.zrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
 </fieldset>
 </div>
 
 <div class=" viewport" style="perspective: {{config.perspective}}px, position:absolute;top:0;right:0;left:0;bottom:0;">
-    <div class="htmlz world" rotate3d style="rotate3d({{config,xrotate}},{{config,yrotate}},{{config,zrotate}},1deg);">
+    <div class="htmlz world" rotate3d style="rotate3d({{config.xrotate}},{{config.yrotate}},{{config.zrotate}},1deg);">
         <div class="ground card-dark" >
 <table class="histogram-3d" ffbase="{{histogram.col}}">
 <tr ng-repeat="tab in item.roarlist" ffbase="{{tab}}">
