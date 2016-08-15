@@ -316,13 +316,15 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
 
 var recurdive = function(src){
     Collection(src).$loaded().then(function(roarevent){
+
 var  slide = templtr(roarevent);
         roarevent.slide= slide;
 
       if(angular.isUndefined(roarevent.slide)){
         var  slide = templtr(roarevent);
         roarevent.slide= slide;
-        vm.slides = vm.slides +roarevent.slide;
+vm.slides.push(roarevent);
+//        vm.slides = vm.slides +roarevent.slide;
       //   if(roarevent.roarlist){
       //   angular.forEach(roarevent.roarlist, function(ittd, key){
       //       recurdive(ittd);
@@ -337,7 +339,9 @@ var  slide = templtr(roarevent);
           // });
       //   }
        }else{
-         vm.slides = vm.slides + '<section>'+roarevent.slide.slice(roarevent.slide.indexOf('<!-----CUTSLIDEHEAD------->'), roarevent.slide.indexOf('<!-------CUTSLIDETAIL-------->')) + '</section>';
+         //vm.slides = vm.slides + '<section>'+roarevent.slide.slice(roarevent.slide.indexOf('<!-----CUTSLIDEHEAD------->'), roarevent.slide.indexOf('<!-------CUTSLIDETAIL-------->')) + '</section>';
+
+         vm.slides.push(roarevent);
          angular.forEach(roarevent.roarlist, function(ittd, key){
            recurdive(ittd);
          });
@@ -372,7 +376,8 @@ var  slide = templtr(roarevent);
       return thishtml;
     };
     var newhtml = showheader + theme + showheaderone + vm.slides + showfooter;
-    vm.model.content = newhtml;
+    vm.model.content = thishtml;
+    vm.model.slide = newhtml;
     vm.model.$save();
   };
 
