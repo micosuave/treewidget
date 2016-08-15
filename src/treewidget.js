@@ -227,7 +227,7 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
           //if(angular.isUndefined(data.slide)){
           var slider = '<section data-background="url(\'https://lexlab.io/patents/'+srcid+'/preview\')"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>';
           data.slide = slider;
-          vm.slides = data.slide = slider
+          vm.slides.push(data.slide);
           //}else{
             //vm.slides.push(data.slide);
           //}
@@ -375,7 +375,7 @@ vm.slides.push(roarevent);
       return thishtml;
     };
     var newhtml = showheader + theme + showheaderone + vm.slides + showfooter;
-    vm.model.content = thishtml;
+    vm.model.content = serialtree();
     vm.model.slide = newhtml;
     vm.model.$save();
   };
