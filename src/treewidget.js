@@ -524,6 +524,7 @@ vm.slides.push(roarevent);
           'endDate': rvent.date ? rvent.date.replace(/-/g,',') : '2000,1,1',
           'headline': rvent.title || '&nbsp;',
           'text': rvent.text || rvent.description || '&nbsp;',
+          'classname': rvent.styleClass || 'btn-dark',
           'asset': {
             'media': rvent.media || '&nbsp;',
             'credit': rvent.styleClass || '&nbsp;',
@@ -581,7 +582,7 @@ vm.slides.push(roarevent);
             type: 'timeline',
             width: 950,
             height: 650,
-            source: angular.toJson(vm.data).toString(),
+            source: angular.toJson(vm.data),
             embed_id: 'timeline',
             hash_bookmark: false,
             debug: true,
@@ -592,10 +593,19 @@ vm.slides.push(roarevent);
       };
       vm.save = function(){
         Collection(config.id).$loaded().then(function(data){
-          data.timeline = angular.toJson(vm.data.timeline);
+          data.timeline = angular.toJson(vm.data);
           data.$save();
          });
       };
+      vm.export = function(){
+        var roo = '';
+        angular.forEach(vm.data.timeline.dates, function(date, key){
+          var htmlsnip = '<div class="card card-block"><h4>'+ date.headline+'<small class="pull-right">'+date.startDate+'</small></h4><hr>'+ date.text+'</div>';
+          roo = roo + htmlsnip;
+       });
+        data.content = ckstarter + roo + ckender;
+        data.$save();
+      }
       vm.eventtypes = [
       {value: 'plaintext', label: 'Plain Text'},
       {value: 'quote', label: 'quote'},
