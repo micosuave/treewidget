@@ -478,7 +478,8 @@ vm.slides.push(roarevent);
     }
 }
 })
-.controller('TimeLineCtrl', ['$scope', '$stateParams', '$document', '$http', 'storyjs', 'config', 'Collection', 'toastr', '$filter','ckdefault', function ($scope, $stateParams, $document, $http, storyjs, config, Collection, toastr, $filter, ckdefault) {
+.controller('TimeLineCtrl', ['$scope', '$stateParams', '$document', '$http', 'storyjs', 'config', 'Collection', 'toastr', '$filter','ckdefault','ckstarter','ckender',
+ function ($scope, $stateParams, $document, $http, storyjs, config, Collection, toastr, $filter, ckdefault, ckstarter,ckender) {
   var vm = this;
 
   var config = config || $scope.$parent.config;
