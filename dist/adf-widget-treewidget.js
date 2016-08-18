@@ -372,8 +372,9 @@ vm.slides.push(roarevent);
         }
         else{
           var tol= slide.slide || '<!--CUTSLIDEHEAD-->';
-          thishtml = thishtml + '<section >' +tol.slice(tol.indexOf('<!--CUTSLIDEHEAD-->'), tol.indexOf('<!--CUTSLIDETAIL-->')) + '</section>';
-        }
+          //thishtml = thishtml + '<section >' +tol.slice(tol.indexOf('<!--CUTSLIDEHEAD-->'), tol.indexOf('<!--CUTSLIDETAIL-->')+2) + '</section>';
+      thishtml = thishtml + tol;
+      }
       })
       return thishtml;
     };
