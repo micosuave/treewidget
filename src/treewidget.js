@@ -375,9 +375,9 @@ vm.slides.push(roarevent);
       })
       return thishtml;
     };
-    var newhtml = showheader + theme + showheaderone + vm.slides + showfooter;
+    var newhtml = showheader + theme + showheaderone + serialtree() + showfooter;
     vm.model.slideshow = vm.slides;
-    vm.model.content = serialtree();
+    vm.model.content = showheader + theme + showheaderone + serialtree() + showfooter;
     vm.model.slide = newhtml;
     vm.model.$save();
   };
