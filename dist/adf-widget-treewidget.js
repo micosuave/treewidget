@@ -222,13 +222,14 @@ var showfooter = 	'<script src="https://lexlab.io/lexlab-starter/node_modules/re
   });
 
   vm.import = function(src){
+        vm.slides = [];
         src = angular.isDefined(src) ? src : config.id;
         Collection(src).$loaded().then(function(data){
           var srcid = src.replace(/\D/g,'');
           //if(angular.isUndefined(data.slide)){
           var slider = '<section data-background="url(\'https://lexlab.io/patents/'+srcid+'/preview\')"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>';
           data.slide = slider;
-          vm.slides.push(data.slide);
+          vm.slides.push(data);
           //}else{
             //vm.slides.push(data.slide);
           //}
@@ -370,14 +371,14 @@ vm.slides.push(roarevent);
           thishtml = thishtml + angular.element(slide.slide).wrap('<section>').toString();
         }
         else{
-          var tol= slide.content || '<!--CUTSLIDEHEAD-->';
+          var tol= slide.slide || '<!--CUTSLIDEHEAD-->';
           thishtml = thishtml + '<section >' +tol.slice(tol.indexOf('<!--CUTSLIDEHEAD-->'), tol.indexOf('<!--CUTSLIDETAIL-->')) + '</section>';
         }
       })
       return thishtml;
     };
     var newhtml = showheader + theme + showheaderone + serialtree() + showfooter;
-    vm.model.slideshow = vm.slides;
+    vm.model.slideshow = newhtml;
     vm.model.content = showheader + theme + showheaderone + serialtree() + showfooter;
     vm.model.slide = newhtml;
     vm.model.$save();
