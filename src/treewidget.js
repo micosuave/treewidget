@@ -369,7 +369,7 @@ vm.slides.push(roarevent);
           thishtml = thishtml + angular.element(slide.slide).wrap('<section>').toString();
         }
         else{
-          var tol= angular.element(slide.slide).toString();
+          var tol= slide.slide.toString();
           thishtml = thishtml + tol.slice(tol.indexOf('<!--CUTSLIDEHEAD-->'), tol.indexOf('<!--CUTSLIDETAIL-->')) + '</section>';
         }
       })
