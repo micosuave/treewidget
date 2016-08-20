@@ -608,7 +608,7 @@ window.addEventListener( 'message', function( event ) {
           createStoryJS(vm.options); });
       };
       vm.save = function(){
-        $http.post('/timeline/'+config.id,{data: angular.toJson(vm.data)});
+        $http.post('/timeline/'+config.id,{data: vm.data});
       };
       vm.export = function(){
         var roo = '';
