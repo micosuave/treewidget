@@ -508,7 +508,7 @@ window.addEventListener( 'message', function( event ) {
       'type': 'default',
       'text': 'US 8,382,656',
       'asset': {
-        'media': 'https://lexlab.io/patents/8382656/preview',
+        'media': 'https://lexlab.io/files/public/uspto/patents/8382656/8382656.png',
         'credit': 'Lion Legal Products',
         'caption': 'Master the Jungle of Legal Information'
       },
@@ -525,7 +525,30 @@ window.addEventListener( 'message', function( event ) {
           'type': 'image/png',
           'tag': 'test'
         }
-      }]
+      },{
+                "startDate":"2011,12,10,07,02,10",
+                "endDate":"2011,12,11,08,11",
+                "headline":"Headline Goes Here",
+                "text":"<p>Body text goes here, some HTML is OK</p>",
+                "tag":"This is Optional",
+                "classname":"optionaluniqueclassnamecanbeaddedhere",
+                "asset": {
+                    "media":"http://twitter.com/ArjunaSoriano/status/164181156147900416",
+                    "thumbnail":"optional-32x32px.jpg",
+                    "credit":"Credit Name Goes Here",
+                    "caption":"Caption text goes here"
+                }
+            }],
+            "era": [
+            {
+                "startDate":"2011,12,10",
+                "endDate":"2011,12,11",
+                "headline":"Headline Goes Here",
+                "text":"<p>Body text goes here, some HTML is OK</p>",
+                "tag":"This is Optional"
+            }
+
+        ]
     }
   };
         }
