@@ -538,14 +538,14 @@ window.addEventListener( 'message', function( event ) {
           'startDate': rvent.date ? rvent.date.replace(/-/g,',') : '2000,1,1',
           'endDate': rvent.date ? rvent.date.replace(/-/g,',') : '2000,1,1',
           'headline': rvent.title || '&nbsp;',
-          'text': rvent.text || rvent.description || '&nbsp;',
+          'text':  rvent.description || '&nbsp;',
           'classname': rvent.styleClass || 'btn-dark',
           'asset': {
             'media': rvent.media || '&nbsp;',
             'credit': rvent.styleClass || '&nbsp;',
             'caption': rvent.description || '&nbsp;',
             'thumbnail': rvent.thumnail || '/llp_core/apple-touch-icon.png',
-            'type': 'defaultt',
+            'type': 'document',
             'tag': rvent.styleClass || '&nbsp;'
         }};
         toastr.info($filter('date')(rvent.date), rvent.title);
@@ -591,6 +591,9 @@ window.addEventListener( 'message', function( event ) {
 
 
       };
+      vm.remove = function(obj){
+        vm.data.timeline.date.splice(vm.data.timeline.date.indexOf(obj),1);
+      }
       vm.initialize = function(){
 
         storyjs.createStoryJS().then(function (createStoryJS) {
