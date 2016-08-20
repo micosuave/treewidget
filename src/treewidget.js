@@ -597,9 +597,9 @@ window.addEventListener( 'message', function( event ) {
             type: 'timeline',
             width: 950,
             height: 650,
-            source: angular.toJson(vm.data),
+            source: '/timeline/'+config.id,
             embed_id: 'timeline',
-            hash_bookmark: false,
+            hash_bookmark: true,
             debug: true,
             theme: 'dark',
             font: 'Georgia-Helvetica'
@@ -607,10 +607,7 @@ window.addEventListener( 'message', function( event ) {
           createStoryJS(vm.options); });
       };
       vm.save = function(){
-        Collection(config.id).$loaded().then(function(data){
-          data.timeline = angular.toJson(vm.data);
-          data.$save();
-         });
+        $http.post('/timeline/'+config.id,{data: angular.toJson(vm.data)});
       };
       vm.export = function(){
         var roo = '';
