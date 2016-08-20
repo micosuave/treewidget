@@ -611,7 +611,7 @@ window.addEventListener( 'message', function( event ) {
           createStoryJS(vm.options); });
       };
       vm.save = function(){
-        $http.post('/timeline/'+config.id, vm.data);
+        $http.post('/timeline/'+config.id, angular.toJson(vm.data));
       };
       vm.export = function(){
         var roo = '';
