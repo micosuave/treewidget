@@ -593,15 +593,13 @@ window.addEventListener( 'message', function( event ) {
 
       };
       vm.initialize = function(){
-        $http.get('/timeline/'+config.id).then(function(resp){
-          vm.data = resp.data;
-        })
+
         storyjs.createStoryJS().then(function (createStoryJS) {
           vm.options = {
             type: 'timeline',
             width: 950,
             height: 650,
-            source: angular.fromJson(vm.data),
+            source: 'https://lexlab.io/files/public/timelines/'+config.id,
             embed_id: 'timeline',
             hash_bookmark: true,
             debug: true,
