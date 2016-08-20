@@ -598,7 +598,7 @@ window.addEventListener( 'message', function( event ) {
             type: 'timeline',
             width: 950,
             height: 650,
-            source: 'https://lexlab.io/files/public/timelines/'+config.id,
+            source: 'https://lexlab.io/files/public/timelines/'+config.id+'.json',
             embed_id: 'timeline',
             hash_bookmark: true,
             debug: true,
