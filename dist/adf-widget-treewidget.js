@@ -191,7 +191,8 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
     });
   });
 }])
-.controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config','$compile','Collection','$filter', function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config, $compile, Collection,$filter){
+.controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config','$compile','Collection','$filter',
+function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config, $compile, Collection,$filter){
   var vm = this;
   vm.selectedtheme = 'league';
   var showheader = '<!doctype html><html class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/" target="_blank"></base><link  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet"/><link rel="stylesheet" href="https://lexlab.io/llp_core/bower_components/bootstrap/dist/css/bootstrap.min.css"/><link rel="stylesheet" href="https://lexlab.io/llp_core/dist/app.full.min.css"/><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
@@ -374,7 +375,9 @@ vm.slides.push(roarevent);
         else{
           var tol= slide.slide || '<!--CUTSLIDEHEAD-->';
           var colly = slide.content || '<!--CUTSLIDEHEAD-->';
-          thishtml = thishtml + '  <section>  ' +colly.slice(colly.indexOf('<body>')-1, colly.indexOf('<script>')) + '  </section>  ';
+      //    thishtml = thishtml + '  <section>  ' +colly.slice(colly.indexOf('<body>')-1, colly.indexOf('<script>')) + '  </section>  ';
+                thishtml = thishtml + '  <section data-background-image="url('+slide.media+')">  ' + '<h2>' +slide.title +'</h2><hr/>'+ slide.slide + '  </section>  ';
+
       //thishtml = thishtml + tol;
       }
       })
