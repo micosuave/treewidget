@@ -609,7 +609,7 @@ window.addEventListener( 'message', function( event ) {
           createStoryJS(vm.options); });
       };
       vm.save = function(){
-        $http.post('/timeline/'+config.id,{data: vm.data});
+        $http.post('/timeline/'+config.id,{data: {data: vm.data}});
       };
       vm.export = function(){
         var roo = '';
