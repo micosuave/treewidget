@@ -9,17 +9,53 @@
 </header>
 <section id="timeline" ></section>
     <json-formatter json="time.data"></json-formatter>
-   <div class="card card-fancy card-block">
+   <div class="card card-deck card-block">
          <dir-pagination-controls pagination-id="timeline" template-url="/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html"
             class=""></dir-pagination-controls>
         <div class="card card-fancy img-hover img-shadow bs-callout bs-callout-Applicant" dir-paginate="rvent in time.data.timeline.date | itemsPerPage: 10" pagination-id="timeline">
-            <h4 class="card-title"><img ng-src="{{rvent.asset.thumbnail}}" style="max-height:100px;" onaftersave="time.save()" editable-text="rvent.asset.thumbnail" class="img img-thumbnail img-hover pull-left">
-            <span editable-text="rvent.headline" onaftersave="time.save()">{{rvent.headline}}</span>
-            <select ng-model="rvent.asset.type">
-              <option ng-repeat="type in time.eventtypes" value="{{type.value}}" label="{{type.label}}"></option>
-            </select>
-            <small class="text-muted" onaftersave="time.save()" editable-date="rvent.startdate">{{rvent.startdate | date}}</small> <a class="pull-right" ng-click="time.remove(slide)"><i class="fa fa-close text-muted"></i></a></h4>
-            <p ng-bind-html="rvent.text | trustAsHTML" editable-textarea="rvent.text" onaftersave="time.save()" e-ckeditor="ckdefault"></p>
+            <h4 class="card-title"><img ng-src="{{rvent.asset.thumbnail}}" style="max-height:100px;" class="img img-thumbnail img-hover pull-left" ng-click="timeform.$show()">
+            <a class="pull-right" ng-click="time.remove(rvent)"><i class="fa fa-close text-muted"></i></a>
+            <table class="table table-condensed table-responsive table-stripped table-hover">
+              <tbody>
+                <tr>
+                  <th>Headline</th>
+                  <td editable-text="rvent.headline" e-form="timeform">{{rvent.headline | uppercase}}</td>
+                </tr>
+                <tr>
+                  <th>Start Date</th>
+                  <td editable-date="rvent.startDate"  e-form="timeform">{{rvent.startDate | date}}</td>
+                </tr>
+                                <tr>
+                  <th>End Date</th>
+                  <td editable-date="rvent.endDate"  e-form="timeform">{{rvent.endDate | date}}</td>
+                </tr>
+                <tr>
+                  <th>Tag</th>
+                  <td editable-text="rvent.tag"  e-form="timeform">{{rvent.tag}}</td>
+                </tr>
+                <tr>
+                  <th>ClassName</th>
+                  <td editable-text="rvent.classname"  e-form="timeform">{{rvent.classname}}</td>
+                </tr>
+                 <tr>
+                  <th>Media</th>
+                  <td editable-text="rvent.asset.media"  e-form="timeform">{{rvent.tag}}</td>
+                </tr>
+                <tr>
+                  <th>Credit</th>
+                  <td editable-text="rvent.asset.caption"  e-form="timeform">{{rvent.classname}}</td>
+                </tr>
+                 <tr>
+                  <th>Caption</th>
+                  <td editable-text="rvent.asset.caption"  e-form="timeform">{{rvent.tag}}</td>
+                </tr>
+                <tr>
+                  <th>Thumbnail</th>
+                  <td editable-text="rvent.asset.thumbnail"  e-form="timeform">{{rvent.classname}}</td>
+                </tr>
+              </tbody>
+            </table>
+
         </div>
    </div>
 

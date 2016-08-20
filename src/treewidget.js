@@ -568,9 +568,7 @@ window.addEventListener( 'message', function( event ) {
             'credit': rvent.styleClass || '&nbsp;',
             'caption': rvent.description || '&nbsp;',
             'thumbnail': rvent.thumnail || '/llp_core/apple-touch-icon.png',
-            'type': 'document',
-            'tag': rvent.styleClass || '&nbsp;'
-        }};
+                    }};
         toastr.info($filter('date')(rvent.date), rvent.title);
         vm.data.timeline.date.push(thisobj);
         if(rvent.roarlist){
@@ -603,8 +601,6 @@ window.addEventListener( 'message', function( event ) {
             'credit': collection.styleClass || '&nbsp;',
             'caption': ' ',
             'thumbnail': 'https://lexlab.io/llp_core/img/GoldLion.svg',
-            'type': 'default',
-            'tag': collection.rid || '&nbsp;'
           }
         }]
       }
