@@ -601,7 +601,7 @@ window.addEventListener( 'message', function( event ) {
             type: 'timeline',
             width: 950,
             height: 650,
-            source: vm.data,
+            source: angular.fromJson(vm.data),
             embed_id: 'timeline',
             hash_bookmark: true,
             debug: true,
