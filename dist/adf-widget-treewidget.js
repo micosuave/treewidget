@@ -370,19 +370,16 @@ vm.slides.push(roarevent);
     var serialtree = function(){
       var thishtml='';
       angular.forEach(vm.slides, function(slide, key){
-        if(slide.poodle){
-          thishtml = thishtml + angular.element(slide.slide).wrap('<section>').toString();
-        }
-        else{
+
           var tol= slide.slide || '<!--CUTSLIDEHEAD-->';
           var colly = slide.content || '<!--CUTSLIDEHEAD-->';
-         thishtml = thishtml + '  <section>  ' +colly.slice(colly.indexOf('<!--CUTSLIDEHEAD-->'), colly.indexOf('<!--CUTSLIDETAIL-->')) + '  </section>  ';
-         thishtml.replace(/\<div.*(?=page-break).*?\<\/div\>/g,'</section><section>').replace(/\<div.*(?=page-break).*?\<\/div\>/g,'</section><section>');
+         thishtml = thishtml + '  <section>  ' +colly.slice(colly.indexOf('<!--CUTSLIDEHEAD-->'), colly.indexOf('<!--CUTSLIDETAIL--\>')+20) + '  </section>  ';
+         thishtml.replace(/\<div\sstyle="page-break.*?\<\/div\>/g,'</section><section>').replace(/\<div.*(?=col-..-6).*?\<\/div\>/g,'</section><section>');
 
       //          thishtml = thishtml + '  <section data-background-image="url('+slide.media+')">  ' + '<h2>' +slide.title +'</h2><hr/>'+ slide.slide.slice(slide.slide.indexOf('<body'),slide.slide.indexOf('<script')) + '  </section>  ';
 
       //thishtml = thishtml + tol;
-      }
+
       })
       return thishtml;
     };
@@ -475,7 +472,7 @@ window.addEventListener( 'message', function( event ) {
                 "endDate":"2011,12,11,08,11",
                 "headline":"Headline Goes Here",
                 "text":"<p>Body text goes here, some HTML is OK</p>",
-                "tag":"This is Optional",
+                "tag":"info",
                 "classname":"optionaluniqueclassnamecanbeaddedhere",
                 "asset": {
                     "media":"http://twitter.com/ArjunaSoriano/status/164181156147900416",
@@ -489,9 +486,9 @@ window.addEventListener( 'message', function( event ) {
             {
                 "startDate":"2011,12,10",
                 "endDate":"2011,12,11",
-                "headline":"Headline Goes Here",
-                "text":"<p>Body text goes here, some HTML is OK</p>",
-                "tag":"This is Optional"
+                "headline":"ERA Headline",
+                "text":"<p>Body text goes here, <em>some</em> HTML is <strong>OK</strong></p>",
+                "tag":"info"
             }
 
         ]
