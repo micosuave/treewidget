@@ -616,14 +616,14 @@ window.addEventListener( 'message', function( event ) {
       vm.remove = function(obj){
         vm.data.timeline.date.splice(vm.data.timeline.date.indexOf(obj),1);
       }
-      vm.initialize = function(){
+      vm.initialize = function(datasource){
 
         storyjs.createStoryJS().then(function (createStoryJS) {
           vm.options = {
             type: 'timeline',
             width: 950,
             height: 650,
-            source: 'https://lexlab.io/files/public/timelines/'+config.id+'.json',
+            source: angular.isObject(datasource) ? datasource : 'https://lexlab.io/files/public/timelines/'+datasource+'.json',
             embed_id: 'timeline',
             hash_bookmark: true,
             debug: true,
@@ -631,6 +631,7 @@ window.addEventListener( 'message', function( event ) {
             font: 'Georgia-Helvetica'
           };
           createStoryJS(vm.options); });
+          
       };
       vm.save = function(){
         $http.post('/timeline/'+config.id, angular.toJson(vm.data));
@@ -667,7 +668,7 @@ window.addEventListener( 'message', function( event ) {
 }]).directive('timelinejs',function(Collection){
   return {
     restrict: 'E',
-    templateUrl: '/treewidget/src/alt/timeline.html',
+    template: '<section id="timeline" ></section>',
       scope:{},
       css: ['/treewidget/src/alt/build/css/themes/dark.css','/treewidget/src/alt/build/css/timeline.css'],
       controller: 'TimeLineCtrl',
