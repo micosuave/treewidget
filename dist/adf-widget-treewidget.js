@@ -375,7 +375,7 @@ vm.slides.push(roarevent);
         else{
           var tol= slide.slide || '<!--CUTSLIDEHEAD-->';
           var colly = slide.content || '<!--CUTSLIDEHEAD-->';
-         thishtml = thishtml + '  <section>  ' +colly.slice(colly.indexOf(/(?:\<body.*?\>)./i), colly.indexOf('<script')) + '  </section>  ';
+         thishtml = thishtml + '  <section>  ' +colly.slice(colly.indexOf('<!--CUTSLIDEHEAD-->'), colly.indexOf('<script')) + '  </section>  ';
       //          thishtml = thishtml + '  <section data-background-image="url('+slide.media+')">  ' + '<h2>' +slide.title +'</h2><hr/>'+ slide.slide.slice(slide.slide.indexOf('<body'),slide.slide.indexOf('<script')) + '  </section>  ';
 
       //thishtml = thishtml + tol;
