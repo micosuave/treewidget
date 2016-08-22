@@ -490,8 +490,7 @@ window.addEventListener( 'message', function( event ) {
         'credit':  'Lion Legal Products',
         'caption': 'Claim Dependencies for ' +  collection.pnum || '8382656'
       },
-      'date':[],
-      'era':[]
+      'date':[]
             }};
         }
 
@@ -528,8 +527,8 @@ window.addEventListener( 'message', function( event ) {
       Collection(rid).$loaded().then(function (rvent) {
 
         toastr.info($filter('date')(rvent.date), rvent.title);
-        vm.data.timeline.date.push(addtotime(rvent)[0]),
-        vm.data.timeline.era.push(addtotime(rvent)[1]);
+        vm.data.timeline.date.push(addtotime(rvent)[0]);
+        //vm.data.timeline.era.push(addtotime(rvent)[1]);
         if(rvent.roarlist){
           iteratey(rvent);
         }
@@ -557,7 +556,7 @@ window.addEventListener( 'message', function( event ) {
             type: 'timeline',
             width: 950,
             height: 650,
-            source: angular.isObject(datasource) ? angular.toJson(datasource) : 'https://lexlab.io/files/public/timelines/'+datasource+'.json',
+            source: angular.isObject(datasource) ? angular.fromJson(datasource) : 'https://lexlab.io/files/public/timelines/'+datasource+'.json',
             embed_id: 'timeline',
             hash_bookmark: true,
             debug: true,
