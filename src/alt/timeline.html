@@ -1,4 +1,4 @@
-<header class="bar bar-dark" style="display:flex;justify-content:space-around;">
+<section id="timeline" ><header class="bar bar-dark" style="display:flex;justify-content:space-around;">
   <label ng-bind="time.selectedtheme"></label>
   <input ng-model="time.source" placeholder="SourceID" type="text" />
  <button class="fa fa-download btn btn-primary" ng-click="time.import(time.source)"></button>
@@ -7,12 +7,13 @@
 <button class="fa fa-save btn btn-success" ng-click="time.save()"></button>
 <button class="fa fa-play btn btn-warning" ng-click="time.initialize(time.data)"></button>
 </header>
-<section id="timeline" ></section>
+</section>
     <json-formatter json="time.data"></json-formatter>
    <div class="card  card-block">
          <dir-pagination-controls pagination-id="timeline" template-url="/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html"
             class=""></dir-pagination-controls>
-        <div class="card card-fancy img-hover img-shadow bs-callout bs-callout-Applicant" dir-paginate="rvent in time.data.timeline.date | itemsPerPage: 10" pagination-id="timeline">
+            <a class="fa fa-plus text-success pull-right" ng-click="time.addnew()"></a>
+        <div class="card card-block img-hover img-shadow bs-callout bs-callout-Applicant" dir-paginate="rvent in time.data.timeline.date | itemsPerPage: 10" pagination-id="timeline">
             <h4 class="card-title"><img ng-src="{{rvent.asset.thumbnail}}" style="max-height:100px;" class="img img-thumbnail img-hover pull-left" ng-click="timeform.$show()">
             <a class="pull-right" ng-click="time.remove(rvent)"><i class="fa fa-close text-muted"></i></a>
             <table class="table table-condensed table-responsive table-stripped table-hover">

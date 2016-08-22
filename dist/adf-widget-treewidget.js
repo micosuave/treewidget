@@ -191,15 +191,21 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
     });
   });
 }])
+.factory('$slide', ['$compile','$window','$document','$css','$filter','$sce', function($compile, $window, $document, $css, $filter, $sce){
+  return function(inputRecord){
+      $document
+  }
+}])
 .controller('RevealCtrl', ['$scope', '$stateParams', 'revealjs', '$document', '$window', '$css', 'toastr','config','$compile','Collection','$filter',
 function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, config, $compile, Collection,$filter){
   var vm = this;
+
   vm.selectedtheme = 'none';
   var showheader = '<!doctype html><html class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/" target="_blank"></base><link  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet"/><link rel="stylesheet" href="https://lexlab.io/llp_core/bower_components/bootstrap/dist/css/bootstrap.min.css"/><link rel="stylesheet" href="https://lexlab.io/llp_core/dist/app.full.min.css"/><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
 
 
 
-  var showheaderone = '<!-- Theme used for syntax highlighting of code --><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css"><!-- Printing and PDF exports --><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/print/print.css"	</head>	<body>		<div class="reveal">			<!-- Any section element inside of this container is displayed as a slide -->			<div class="slides">';
+  var showheaderone = '<!-- Theme used for syntax highlighting of code --><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css"><!-- Printing and PDF exports --><link rel="stylesheet" href="https://lexlab.io/lexlab-starter/node_modules/reveal.js/css/print/print.css"/><style></style>	</head>	<body>		<div class="reveal">			<!-- Any section element inside of this container is displayed as a slide -->			<div class="slides">';
 
   var showfooter = 	   '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/tether-select/1.1.1/js/select.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script><script src="https://apis.google.com/js/client.js"></script><script src="https://apis.google.com/js/api.js"></script><script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script><script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/lib/js/head.min.js"></script><script src="https://lexlab.io/lexlab-starter/node_modules/reveal.js/js/reveal.js"></script><script>			Reveal.initialize({history: true,controls: false,progress: true,slideNumber: true,overview: true,center: true,touch: true,loop: true,rtl: false,shuffle: false, fragments: true,embedded: true,postMessage: true,postMessageEvents: true,help: true,showNotes: false, autoSlide:15000,autoSlideStoppable: true,autoSlideMethod: Reveal.navigateNext,mouseWheel: true, hideAddressBar: true,previewLinks: true,transition: "concave",transitionSpeed: "slow",backgroundTransition: "convex",viewDistance: 3,parallaxBackgroundImage: "https://lexlab.io/files/public/uspto/patents/7904579/7904579.png",parallaxBackgroundSize: "800px 800px",dependencies: [{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/markdown/marked.js" },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/markdown/markdown.js" },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/notes/notes.js", async: true },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/highlight/highlight.js", async: true, callback: function() { hljs.initHighlightingOnLoad(); } },{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/zoom-js/zoom.js", async: true},{ src: "https://lexlab.io/lexlab-starter/node_modules/reveal.js/plugin/print-pdf/print-pdf.js", async: true}],width: 960,height: 700,margin: 0.1,minScale: 0.2,maxScale: 1.5});</script><script src="/llp_core/ckeditor2/plugins/chart/widget2chart.js"></script> <script src="/lexlab-starter/node_modules/reveal.js/lib/js/head.min.js"></script><script src="/lexlab-starter/node_modules/reveal.js/js/reveal.js"></script>  <script src="/llp_core/dist/app.bower.js"></script>   <script data-require="jszip@2.4.0" data-semver="2.4.0" src="https://cdn.rawgit.com/Stuk/jszip/v2.4.0/dist/jszip.js" data-build="exclude"></script>   <script src="https://rawgit.com/alexk111/ngImgCrop/master/compile/unminified/ng-img-crop.js"></script>   <script src="/newwidget/dist/adf-widget-testwidget.js"></script>   <script src="/getphdwidget/dist/adf-widget-getphd.js"></script>   <script src="/pagebuilderwidget/dist/adf-widget-pagebuilder.js"></script>   <script src="/collectionwidget/dist/adf-widget-collectionwidget.js"></script>   <script src="/treewidget/dist/adf-widget-treewidget.js"></script>   <script src="/llp_core/dist/app.mini.js"></script>   <script src="/llp_core/dist/minicache.js"></script><script>angular.module("mini").config(function($locationProvider) {$locationProvider.html5Mode(false);});angular.element(document).ready(function(){angular.bootstrap(document, ["mini"])});</script>';
 
@@ -373,9 +379,11 @@ vm.slides.push(roarevent);
 
           var tol= slide.slide || '<!--CUTSLIDEHEAD-->';
           var colly = slide.content || '<!--CUTSLIDEHEAD-->';
+          var temphtml  =
          thishtml = thishtml + '  <section>  ' +colly.slice(colly.indexOf('<!--CUTSLIDEHEAD-->'), colly.indexOf('<!--CUTSLIDETAIL--\>')+20) + '  </section>  ';
          thishtml.replace(/\<div\sstyle="page-break.*?\<\/div\>/g,'</section><section>').replace(/\<div.*(?=col-..-6).*?\<\/div\>/g,'</section><section>');
 
+    var regexer = new RegExp(/\<div style="page-break-after: always"\>\<span style="display: none;"\>\&nbsp;\<\/span\>\<\/div\>/g);
       //          thishtml = thishtml + '  <section data-background-image="url('+slide.media+')">  ' + '<h2>' +slide.title +'</h2><hr/>'+ slide.slide.slice(slide.slide.indexOf('<body'),slide.slide.indexOf('<script')) + '  </section>  ';
 
       //thishtml = thishtml + tol;
@@ -391,9 +399,14 @@ vm.slides.push(roarevent);
   };
 window.addEventListener( 'message', function( event ) {
     var data = JSON.parse( event.data );
-    if( data.namespace === 'reveal' && data.eventName ==='slidechanged' ) {
-        alertify.success('slide changed')// Slide changed, see data.state for slide number
+    if(data.namespace === 'reveal'){
+      console.info('slide changed', data);
+    }else{
+      console.info(data);
     }
+//    if( data.namespace === 'reveal' && data.eventName ==='slidechanged' ) {
+        //alertify.success('slide changed')// Slide changed, see data.state for slide number
+  //  }
 } );
   vm.options = {
     history: true,
@@ -455,45 +468,7 @@ window.addEventListener( 'message', function( event ) {
   return {timeline: timeline,
         timeevent: timeevent,
       timeera: timeera };
-      var dataModel = {
-    "timeline":
-    {
-        "headline":"The Main Timeline Headline Goes here",
-        "type":"default",
-        "text":"<p>Intro body text goes here, some HTML is ok</p>",
-        "asset": {
-            "media":"http://yourdomain_or_socialmedialink_goes_here.jpg",
-            "credit":"Credit Name Goes Here",
-            "caption":"Caption text goes here"
-        },
-        "date": [
-            {
-                "startDate":"2011,12,10,07,02,10",
-                "endDate":"2011,12,11,08,11",
-                "headline":"Headline Goes Here",
-                "text":"<p>Body text goes here, some HTML is OK</p>",
-                "tag":"info",
-                "classname":"optionaluniqueclassnamecanbeaddedhere",
-                "asset": {
-                    "media":"http://twitter.com/ArjunaSoriano/status/164181156147900416",
-                    "thumbnail":"optional-32x32px.jpg",
-                    "credit":"Credit Name Goes Here",
-                    "caption":"Caption text goes here"
-                }
-            }
-        ],
-        "era": [
-            {
-                "startDate":"2011,12,10",
-                "endDate":"2011,12,11",
-                "headline":"ERA Headline",
-                "text":"<p>Body text goes here, <em>some</em> HTML is <strong>OK</strong></p>",
-                "tag":"info"
-            }
 
-        ]
-    }
-}
 })
 .controller('TimeLineCtrl', ['$scope', '$stateParams', '$document', '$http', 'storyjs', 'config', 'Collection', 'toastr', '$filter','ckdefault','ckstarter','ckender',
  function ($scope, $stateParams, $document, $http, storyjs, config, Collection, toastr, $filter, ckdefault, ckstarter,ckender) {
@@ -507,74 +482,53 @@ window.addEventListener( 'message', function( event ) {
         }else{
             vm.data = {
     'timeline': {
-      'headline': 'Prosecution History Digest',
+      'headline': collection.title || 'Prosecution History Digest',
       'type': 'default',
-      'text': 'US 8,382,656',
+      'text': collection.description || 'US 8,382,656',
       'asset': {
-        'media': 'https://lexlab.io/files/public/uspto/patents/8382656/8382656.png',
-        'credit': 'Lion Legal Products',
-        'caption': 'Master the Jungle of Legal Information'
-      },
-      'date': [{
-        'startDate': '1899,12,31',
-        'endDate': '1900,1,1',
-        'headline': 'End of an Era',
-        'text': '<strong>This</strong> is a <em>poodle</em>',
-        'asset': {
-          'media': 'https://lexlab.io/patents/8382656/preview',
-          'credit': 'LLP',
-          'caption': ' ',
-          'thumbnail': 'https://lexlab.io/patents/8382656/preview',
-          'type': 'image/png',
-          'tag': 'test'
-        }
-      },{
-                "startDate":"2011,12,10,07,02,10",
-                "endDate":"2011,12,11,08,11",
-                "headline":"Headline Goes Here",
-                "text":"<p>Body text goes here, some HTML is OK</p>",
-                "tag":"This is Optional",
-                "classname":"optionaluniqueclassnamecanbeaddedhere",
-                "asset": {
-                    "media":"http://twitter.com/ArjunaSoriano/status/164181156147900416",
-                    "thumbnail":"optional-32x32px.jpg",
-                    "credit":"Credit Name Goes Here",
-                    "caption":"Caption text goes here"
-                }
-            }],
-            "era": [
-            {
-                "startDate":"2011,12,10",
-                "endDate":"2011,12,11",
-                "headline":"Headline Goes Here",
-                "text":"<p>Body text goes here, some HTML is OK</p>",
-                "tag":"This is Optional"
-            }
+        'media': collection.media || 'https://lexlab.io/files/public/uspto/patents/8382656/8382656.png',
+        'credit': collection.application['First Named Inventor'] || 'Lion Legal Products',
+        'caption': 'Claim Dependencies for ' + collection.patent.id || collection.pnum
+      }
 
-        ]
-    }
-  };
+            }};
         }
 
   });
+  var addtotime = function(rvent){
+    return [{
+                "startDate":rvent.date ? rvent.date.replace(/-/g,',') :"2011,12,10,07,02,10",
+                "endDate":rvent.date ? rvent.date.replace(/-/g,',') :"2011,12,11,08,11",
+                "headline":rvent.title || "Headline Goes Here",
+                "text":rvent.description || "<p>Body text goes here, some HTML is OK</p>",
+                "tag":rvent.styleClass || "This is Optional",
+                "classname":"optionaluniqueclassnamecanbeaddedhere",
+                "asset": {
+                    "media": rvent.media || "http://twitter.com/ArjunaSoriano/status/164181156147900416",
+                    "thumbnail":rvent.thumnail || 'https;//lexlab.io/llp_core/apple-touch-icon.png',
+                    "credit":"Credit Name Goes Here",
+                    "caption":"Caption text goes here"
+                }
+    },
+
+            {
+                "startDate":rvent.date ? rvent.date.replace(/-/g,',') :"2011,12,10",
+                "endDate":rvent.date ? rvent.date.replace(/-/g,',') :"2011,12,11",
+                "headline":rvent.title || "Headline Goes Here",
+                "text":rvent.description || "<p>Body text goes here, some HTML is OK</p>",
+                "tag": rvent.styleClass || "This is Optional"
+            }
+
+        ];
+    };
 
   var iteratey = function(collection){
     return angular.forEach(collection.roarlist, function (rid, key) {
       Collection(rid).$loaded().then(function (rvent) {
-        var thisobj = {
-          'startDate': rvent.date ? rvent.date.replace(/-/g,',') : '2000,1,1',
-          'endDate': rvent.date ? rvent.date.replace(/-/g,',') : '2000,1,1',
-          'headline': rvent.title || '&nbsp;',
-          'text':  rvent.description || '&nbsp;',
-          'classname': rvent.styleClass || 'btn-dark',
-          'asset': {
-            'media': rvent.media || '&nbsp;',
-            'credit': rvent.styleClass || '&nbsp;',
-            'caption': rvent.description || '&nbsp;',
-            'thumbnail': rvent.thumnail || '/llp_core/apple-touch-icon.png',
-                    }};
+
         toastr.info($filter('date')(rvent.date), rvent.title);
-        vm.data.timeline.date.push(thisobj);
+        vm.data.timeline.date.push(addtotime(rvent)[0]),
+        vm.data.timeline.era.push(addtotime(rvent)[1]);
         if(rvent.roarlist){
           iteratey(rvent);
         }
@@ -585,30 +539,8 @@ window.addEventListener( 'message', function( event ) {
     src = src || config.id;
     Collection(src).$loaded().then(function (collection) {
 
-    vm.data = {
-      'timeline': {
-        'headline': 'Prosecution History Digest',
-        'type': 'document',
-        'text': collection.rid + ' - ' +  collection.title,
-        'asset': {
-          'media': collection.media ||'https://lexlab.io/files/public/uspto/patents/'+ collection.$id.replace(/\D/g,'')+'/'+collection.$id.replace(/\D/g,'')+'.png' ||'https://lexlab.io/llp_core/img/GoldLion.svg',
-          'credit': 'Lion Legal Products',
-          'caption': 'Master the Jungle of Legal Information'
-        },
-        'date': [{
-          'startDate': collection.date ? collection.date.replace(/-/g,',') : '2000,1,1',
-          'endDate': collection.date ? collection.date.replace(/-/g,',') : '2000,1,1',
-          'headline': collection.title || '&nbsp;',
-          'text': collection.description || '&nbsp;',
-          'asset': {
-            'media': collection.media || 'https://lexlab.io/llp_core/img/GoldLion.svg',
-            'credit': collection.styleClass || '&nbsp;',
-            'caption': ' ',
-            'thumbnail': 'https://lexlab.io/llp_core/img/GoldLion.svg',
-          }
-        }]
-      }
-    };
+
+
     iteratey(collection);
     });
 
@@ -624,11 +556,11 @@ window.addEventListener( 'message', function( event ) {
             type: 'timeline',
             width: 950,
             height: 650,
-            source: angular.isObject(datasource) ? datasource : 'https://lexlab.io/files/public/timelines/'+datasource+'.json',
+            source: angular.isObject(datasource) ? angular.toJson(datasource) : 'https://lexlab.io/files/public/timelines/'+datasource+'.json',
             embed_id: 'timeline',
             hash_bookmark: true,
             debug: true,
-            theme: 'dark',
+            theme: 'default',
             font: 'Georgia-Helvetica'
           };
           createStoryJS(vm.options); });
@@ -646,6 +578,11 @@ window.addEventListener( 'message', function( event ) {
         data.content = ckstarter + roo + ckender;
         data.$save();
       }
+      vm.addnew = function(){
+        vm.data.timeline.date.push({});
+        vm.data.timeline.era.push({});
+
+      };
       vm.eventtypes = [
       {value: 'plaintext', label: 'Plain Text'},
       {value: 'quote', label: 'quote'},
@@ -690,7 +627,7 @@ $templateCache.put("{widgetsPath}/treewidget/src/alt/histogram.html","<style>\n.
 $templateCache.put("{widgetsPath}/treewidget/src/alt/reveal_index.html","<header class=\"bar bar-dark\"><label ng-bind=options.selectedtheme></label> <input ng-model=options.source placeholder=SourceID type=text> <button class=\"fa fa-download btn btn-primary\" ng-click=options.import(options.source)></button> <button class=\"fa fa-gear btn btn-default\" ng-click=options.configure()></button> <button class=\"fa fa-play btn btn-warning\" ng-click=options.initialize()></button></header><div class=\"card card-block {{options.selectedtheme || \'card-fancy\'}}\" id=viewframe ng-if=options.hidethemes style=\"width:100%;min-height:400px;margin:5px;border:5px ridge inherit;\"><iframe style=width:100%;height:100%; ng-attr-srcdoc=\"{{options.slideshowcontent | trustAsHTML}}\" seamless allowfullscreen><playlist></playlist></iframe></div><div class=\"card {{options.selectedtheme || \'card-fancy\'}}\" id={{options.selectedtheme}} colorkey={{options.selectedtheme}} ng-hide=options.hidethemes><json-formatter json=options.slides style=position:relative;></json-formatter><dir-pagination-controls pagination-id=timeline template-url=/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html></dir-pagination-controls><div dir-paginate=\"slide in options.slides | itemsPerPage: 5\" pagination-id=timeline class=card><h5><label class=\"label badge\">{{$index}}</label><span ng-bind=slide.title></span><a class=pull-right ng-click=options.remove(slide)><i class=\"fa fa-close text-muted\"></i></a></h5><div class=card-block ng-bind-html=\"slide.slide | trustAsHTML\"></div><div class=card-footer><a class=card-link ng-click=options.slideoptions(slide)>options</a> <a class=card-link ng-click=options.editslide(slide)>edit</a></div></div></div><article class=\"window clearfix\" ng-hide=options.hidethemes style=position:absolute;right:10px;><h6 class=card-title>Themes</h6><nav class=\"nav nav-dark\"><li ng-repeat=\"theme in options.themes\" id={{theme.name}} class=\"btn-glass btn-info\" colorkey={{theme.name}}><label class=label>{{theme.name}} <input type=radio id=themename name=themename ng-model=options.selectedtheme ng-value=theme.name></label></li></nav><div class=tabbable><nav class=\"nav nav-tabs\"><ul class=right-tabs style=height:79vh;max-height:79vh;><li class=\"row {{item.styleClass}}\" ng-repeat=\"ts in options.model.roarlist\" ffbase={{ts}} ng-cloak ng-click=\"$parent.options.source = key\"><div uib-dropdown uib-keyboard-nav dropdown-append-to-body><a uib-dropdown-toggle class=\"vcenter pull-left\"><label class=\"label label-pill badge label-{{item.styleClass}}\" style=cursor:pointer;>{{tab.rid || item.rid || \' - \'}}</label></a><ul class=uib-dropdown-menu><li class={{menuitem.styleClass}} ng-repeat=\"menuitem in rightmenu.items\"><a ng-click=\"menuitem.onClick(item.$id, key)\" class=\"fa fa-fw {{menuitem.icon}} {{menuitem.styleClass}}\">&nbsp;&nbsp;&nbsp;&nbsp;{{menuitem.label}}</a></li></ul></div>&nbsp&nbsp{{item.title || item.name}}&nbsp&nbsp <a class=\"fa fa-3x btn btn-default btn-xs\" ng-class=\"{\'fa-check\':($parent.options.source === item.$id )}\" ng-click=\"$parent.options.source = item.$id\"></a></li></ul></nav></div></article>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/slide_edit.html","<input ng-model=config.id><hr><label class=\"label material\" ng-repeat=\"(option, key) in reveal.options\">{{key}}<switch ng-model=option text={{key}} icon=\"fa fa-{{key}}\"><input ng-model=option> <textarea ng-model=option>\n</textarea></switch></label><hr>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/timeedit.html","<fieldset class=material><input type=text ng-model=config.id placeholder=\"Enter patent id number\"><hr><label class=\"label label-NOA\">Enter ID #</label></fieldset>");
-$templateCache.put("{widgetsPath}/treewidget/src/alt/timeline.html","<header class=\"bar bar-dark\" style=display:flex;justify-content:space-around;><label ng-bind=time.selectedtheme></label> <input ng-model=time.source placeholder=SourceID type=text> <button class=\"fa fa-download btn btn-primary\" ng-click=time.import(time.source)></button> <button class=\"fa fa-external-link btn btn-info\" ng-click=time.export()></button> <button class=\"fa fa-save btn btn-success\" ng-click=time.save()></button> <button class=\"fa fa-play btn btn-warning\" ng-click=time.initialize(time.data)></button></header><section id=timeline></section><json-formatter json=time.data></json-formatter><div class=\"card card-block\"><dir-pagination-controls pagination-id=timeline template-url=/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html></dir-pagination-controls><div class=\"card card-fancy img-hover img-shadow bs-callout bs-callout-Applicant\" dir-paginate=\"rvent in time.data.timeline.date | itemsPerPage: 10\" pagination-id=timeline><h4 class=card-title><img ng-src={{rvent.asset.thumbnail}} style=max-height:100px; class=\"img img-thumbnail img-hover pull-left\" ng-click=timeform.$show()> <a class=pull-right ng-click=time.remove(rvent)><i class=\"fa fa-close text-muted\"></i></a><table class=\"table table-condensed table-responsive table-stripped table-hover\"><tbody><tr><th>Headline</th><td editable-text=rvent.headline e-form=timeform>{{rvent.headline | uppercase}}</td></tr><tr><th>Start Date</th><td editable-text=rvent.startDate e-form=timeform>{{rvent.startDate | date}}</td></tr><tr><th>End Date</th><td editable-text=rvent.endDate e-form=timeform>{{rvent.endDate | date}}</td></tr><tr><th>Tag</th><td editable-text=rvent.tag e-form=timeform>{{rvent.tag}}</td></tr><tr><th>ClassName</th><td editable-text=rvent.classname e-form=timeform>{{rvent.classname}}</td></tr><tr><th>Media</th><td editable-text=rvent.asset.media e-form=timeform>{{rvent.asset.media}}</td></tr><tr><th>Credit</th><td editable-text=rvent.asset.credit e-form=timeform>{{rvent.asset.credit}}</td></tr><tr><th>Caption</th><td editable-text=rvent.asset.caption e-form=timeform>{{rvent.asset.caption}}</td></tr><tr><th>Thumbnail</th><td editable-text=rvent.asset.thumbnail e-form=timeform>{{rvent.asset.thumbnail}}</td></tr></tbody></table></h4></div></div><script type=text/javascript src={widgetsPath}/treewidget/src/alt/build/js/storyjs-embed.js></script>");
+$templateCache.put("{widgetsPath}/treewidget/src/alt/timeline.html","<section id=timeline><header class=\"bar bar-dark\" style=display:flex;justify-content:space-around;><label ng-bind=time.selectedtheme></label> <input ng-model=time.source placeholder=SourceID type=text> <button class=\"fa fa-download btn btn-primary\" ng-click=time.import(time.source)></button> <button class=\"fa fa-external-link btn btn-info\" ng-click=time.export()></button> <button class=\"fa fa-save btn btn-success\" ng-click=time.save()></button> <button class=\"fa fa-play btn btn-warning\" ng-click=time.initialize(time.data)></button></header></section><json-formatter json=time.data></json-formatter><div class=\"card card-block\"><dir-pagination-controls pagination-id=timeline template-url=/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html></dir-pagination-controls><a class=\"fa fa-plus text-success pull-right\" ng-click=time.addnew()></a><div class=\"card card-block img-hover img-shadow bs-callout bs-callout-Applicant\" dir-paginate=\"rvent in time.data.timeline.date | itemsPerPage: 10\" pagination-id=timeline><h4 class=card-title><img ng-src={{rvent.asset.thumbnail}} style=max-height:100px; class=\"img img-thumbnail img-hover pull-left\" ng-click=timeform.$show()> <a class=pull-right ng-click=time.remove(rvent)><i class=\"fa fa-close text-muted\"></i></a><table class=\"table table-condensed table-responsive table-stripped table-hover\"><tbody><tr><th>Headline</th><td editable-text=rvent.headline e-form=timeform>{{rvent.headline | uppercase}}</td></tr><tr><th>Start Date</th><td editable-text=rvent.startDate e-form=timeform>{{rvent.startDate | date}}</td></tr><tr><th>End Date</th><td editable-text=rvent.endDate e-form=timeform>{{rvent.endDate | date}}</td></tr><tr><th>Tag</th><td editable-text=rvent.tag e-form=timeform>{{rvent.tag}}</td></tr><tr><th>ClassName</th><td editable-text=rvent.classname e-form=timeform>{{rvent.classname}}</td></tr><tr><th>Media</th><td editable-text=rvent.asset.media e-form=timeform>{{rvent.asset.media}}</td></tr><tr><th>Credit</th><td editable-text=rvent.asset.credit e-form=timeform>{{rvent.asset.credit}}</td></tr><tr><th>Caption</th><td editable-text=rvent.asset.caption e-form=timeform>{{rvent.asset.caption}}</td></tr><tr><th>Thumbnail</th><td editable-text=rvent.asset.thumbnail e-form=timeform>{{rvent.asset.thumbnail}}</td></tr></tbody></table></h4></div></div><script type=text/javascript src={widgetsPath}/treewidget/src/alt/build/js/storyjs-embed.js></script>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/build/embed/index.html","<!DOCTYPE html><html lang=en><head><title>TimelineJS Embed</title><meta charset=utf-8><meta name=description content=\"TimelineJS Embed\"><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-touch-fullscreen content=yes><meta name=viewport content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0\"><style>\n      html, body {\n      height:100%;\n      padding: 0px;\n      margin: 0px;\n      }\n\n      #timeline-embed { height: 100%; }\n    </style></head></html><body><div id=timeline-embed></div><script type=text/javascript>\n    var trim_point = window.location.href.indexOf(\'embed/index.html\');\n    if (trim_point > 0) {\n      var embed_path = window.location.href.substring(0,trim_point); // supports https access via https://s3.amazonaws.com/cdn.knightlab.com/libs/timeline/latest/embed/index.html \n    } else {\n      var embed_path = \"http://cdn.knightlab.com/libs/timeline/latest/\";\n    }\n  </script><script type=text/javascript src=../js/storyjs-embed-cdn.js?v214></script></body>");}]);
 /*
     TimelineJS - ver. 2.32.0 - 2014-05-08
