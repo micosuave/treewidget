@@ -603,18 +603,34 @@ window.addEventListener( 'message', function( event ) {
       {value: 'instagram', label: 'Instagram'}
 ];
 
-}]).directive('timelinejs',["Collection", function(Collection){
+}]).directive('timelinejs',["$http", "storyjs", function($http, storyjs){
   return {
     restrict: 'E',
     template: '<section id="timeline" ></section>',
       scope:{},
       css: ['/treewidget/src/alt/build/css/themes/dark.css','/treewidget/src/alt/build/css/timeline.css'],
-      controller: 'TimeLineCtrl',
-      controllerAs: 'time',
+      // controller: 'TimeLineCtrl',
+      // controllerAs: 'time',
       link: function($scope, $element, $attr, $ctrl){
-          Collection($attr.source).$loaded().then(function(sourcedata){
-            $ctrl.data = sourcedata.timeline;
-            $ctrl.initialize();
+          $http.get('https://lexlab.io/files/public/timelines/'+$attr.source+'.json').then(function(resp){
+            $scope.data = resp.timeline;
+
+
+        storyjs.createStoryJS().then(function (createStoryJS) {
+          var options = {
+            type: 'timeline',
+            width: 950,
+            height: 650,
+            source: angular.isObject($scope.data) ? angular.fromJson($scope.data) : 'https://lexlab.io/files/public/timelines/'+$attr.source+'.json',
+            embed_id: 'timeline',
+            hash_bookmark: true,
+            debug: true,
+            theme: 'default',
+            font: 'Georgia-Helvetica'
+          };
+          createStoryJS(options); });
+
+
           });
       }
   }
