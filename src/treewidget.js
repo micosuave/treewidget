@@ -486,7 +486,7 @@ window.addEventListener( 'message', function( event ) {
       'text': collection.description || 'US 8,382,656',
       'asset': {
         'media': collection.media || 'https://lexlab.io/files/public/uspto/patents/8382656/8382656.png',
-        'credit': collection.application['First Named Inventor'] || 'Lion Legal Products',
+        'credit':  'Lion Legal Products',
         'caption': 'Claim Dependencies for ' + collection.patent.id || collection.pnum || '8382656'
       },
       'date':[],
