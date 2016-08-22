@@ -6,29 +6,15 @@
 <button class="fa fa-gear btn btn-default" ng-click="options.configure()"></button>
 <button class="fa fa-play btn btn-warning" ng-click="options.initialize()"></button>
 </header>
-
+<!--
 <div class="card card-block {{options.selectedtheme || 'card-fancy'}}" id="viewframe" ng-if="options.hidethemes" style="width:100%;min-height:400px;margin:5px;border:5px ridge inherit;">
     <iframe style="width:100%;height:100%;" ng-attr-srcdoc="{{options.slideshowcontent | trustAsHTML}}" seamless allowfullscreen >
 <playlist></playlist>
-</div>
+</div>-->
 
 
-   <div class="card {{options.selectedtheme || 'card-fancy'}}" id="{{options.selectedtheme}}" colorkey="{{options.selectedtheme}}" ng-hide="options.hidethemes">
-  <json-formatter json="options.slides" style="position:relative;"></json-formatter>
-
-  <dir-pagination-controls pagination-id="timeline" template-url="/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html"
-            class=""></dir-pagination-controls>
-  <div dir-paginate="slide in options.slides | itemsPerPage: 5" pagination-id="timeline" class="card">
-    <h5><label class="label badge">{{$index}}</label><span ng-bind="slide.title"></span><a class="pull-right" ng-click="options.remove(slide)"><i class="fa fa-close text-muted"></i></a></h5>
-    <div class="card-block" ng-bind-html="slide.slide | trustAsHTML"></div>
-  <div class="card-footer">
-    <a class="card-link" ng-click="options.slideoptions(slide)">options</a>
-    <a class="card-link" ng-click="options.editslide(slide)">edit</a>
-
-  </div>
-  </div>
-   </div>
-<article class="window clearfix" ng-hide="options.hidethemes" style="position:absolute;right:10px;">
+   <!--a-->
+<article class="window clearfix" ng-hide="options.hidethemes" style="">
 <h6 class="card-title">Themes</h6>
 <nav class="nav nav-dark" >
   <li ng-repeat="theme in options.themes" id="{{theme.name}}" class="btn-glass btn-info" colorkey="{{theme.name}}">

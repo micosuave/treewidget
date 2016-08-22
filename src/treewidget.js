@@ -488,8 +488,9 @@ window.addEventListener( 'message', function( event ) {
         'media': collection.media || 'https://lexlab.io/files/public/uspto/patents/8382656/8382656.png',
         'credit': collection.application['First Named Inventor'] || 'Lion Legal Products',
         'caption': 'Claim Dependencies for ' + collection.patent.id || collection.pnum
-      }
-
+      },
+      'date':[],
+      'era':[]
             }};
         }
 
