@@ -488,7 +488,7 @@ window.addEventListener( 'message', function( event ) {
       'asset': {
         'media': collection.media || 'https://lexlab.io/files/public/uspto/patents/8382656/8382656.png',
         'credit':  'Lion Legal Products',
-        'caption': 'Claim Dependencies for ' + collection.patent.id || collection.pnum || '8382656'
+        'caption': 'Claim Dependencies for ' +  collection.pnum || '8382656'
       },
       'date':[],
       'era':[]
