@@ -476,8 +476,8 @@ window.addEventListener( 'message', function( event ) {
 
   var config = config || $scope.$parent.config;
   $scope.ckdefault  = ckdefault;
-  Collection(config.id).$loaded().then(function(lesource){
-        if(angular.isDefined(lesource.timeline)){
+  Collection(config.id).$loaded().then(function(collection){
+        if(angular.isDefined(collection.timeline)){
           vm.data = lesource.timeline;
         }else{
             vm.data = {
@@ -488,7 +488,7 @@ window.addEventListener( 'message', function( event ) {
       'asset': {
         'media': collection.media || 'https://lexlab.io/files/public/uspto/patents/8382656/8382656.png',
         'credit': collection.application['First Named Inventor'] || 'Lion Legal Products',
-        'caption': 'Claim Dependencies for ' + collection.patent.id || collection.pnum
+        'caption': 'Claim Dependencies for ' + collection.patent.id || collection.pnum || '8382656'
       },
       'date':[],
       'era':[]
