@@ -396,17 +396,7 @@ vm.slides.push(roarevent);
     vm.model.slide = newhtml;
     vm.model.$save();
   };
-window.addEventListener( 'message', function( event ) {
-    var data = JSON.parse( event.data );
-    if(data.namespace === 'reveal'){
-      console.info('slide changed', data);
-    }else{
-      console.info(data);
-    }
-//    if( data.namespace === 'reveal' && data.eventName ==='slidechanged' ) {
-        //alertify.success('slide changed')// Slide changed, see data.state for slide number
-  //  }
-} );
+
   vm.options = {
     history: true,
     controls: true,
@@ -501,11 +491,11 @@ window.addEventListener( 'message', function( event ) {
                 "headline":rvent.title || "Headline Goes Here",
                 "text":rvent.description || "<p>Body text goes here, some HTML is OK</p>",
                 "tag":rvent.styleClass || "This is Optional",
-                "classname":"optionaluniqueclassnamecanbeaddedhere",
+                "classname":rvent.styleClass || "dependent",
                 "asset": {
-                    "media": rvent.media || "http://twitter.com/ArjunaSoriano/status/164181156147900416",
-                    "thumbnail":rvent.thumnail || 'https;//lexlab.io/llp_core/apple-touch-icon.png',
-                    "credit":"Credit Name Goes Here",
+                    "media": rvent.media || "https://lexlab.io/llp_core/img/lll3.svg",
+                    "thumbnail":rvent.thumnail || 'https://lexlab.io/llp_core/apple-touch-icon.png',
+                    "credit":"LLP",
                     "caption":"Caption text goes here"
                 }
     },
