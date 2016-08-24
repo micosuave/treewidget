@@ -467,7 +467,7 @@ vm.slides.push(roarevent);
   $scope.ckdefault  = ckdefault;
   Collection(config.id).$loaded().then(function(collection){
         if(angular.isDefined(collection.timeline)){
-          vm.data = lesource.timeline;
+          vm.data = collection.timeline;
         }else{
             vm.data = {
     'timeline': {
@@ -477,9 +477,10 @@ vm.slides.push(roarevent);
       'asset': {
         'media': collection.media || 'https://lexlab.io/files/public/uspto/patents/8382656/8382656.png',
         'credit':  'Lion Legal Products',
-        'caption': 'Claim Dependencies for ' +  collection.pnum || '8382656'
+        'caption': 'Claim Dependencies for ' +  collection.$id|| '8382656'
       },
-      'date':[]
+      'date':[],
+      'era':[]
             }};
         }
 
@@ -597,24 +598,25 @@ vm.slides.push(roarevent);
     restrict: 'E',
     template: '<section id="timeline" ></section>',
       scope:{},
-      css: ['/treewidget/src/alt/build/css/themes/dark.css','/treewidget/src/alt/build/css/timeline.css'],
+      css: '/treewidget/src/alt/build/css/themes/dark.css',
       // controller: 'TimeLineCtrl',
       // controllerAs: 'time',
       link: function($scope, $element, $attr, $ctrl){
           $http.get('https://lexlab.io/files/public/timelines/'+$attr.source+'.json').then(function(resp){
             $scope.data = resp.timeline;
 
-
+            var width = $($element[0]).innerWidth();
+            var height =  $(window).innerHeight();
         storyjs.createStoryJS().then(function (createStoryJS) {
           var options = {
             type: 'timeline',
-            width: 950,
-            height: 650,
+            width: width,
+            height: height,
             source: angular.isObject($scope.data) ? angular.fromJson($scope.data) : 'https://lexlab.io/files/public/timelines/'+$attr.source+'.json',
             embed_id: 'timeline',
             hash_bookmark: true,
             debug: true,
-            theme: 'default',
+            theme: 'dark',
             font: 'Georgia-Helvetica'
           };
           createStoryJS(options); });
