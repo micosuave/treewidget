@@ -466,10 +466,15 @@ vm.slides.push(roarevent);
 
   var config = config || $scope.$parent.config;
   $scope.ckdefault  = ckdefault;
+  var ur = "https://lexlab.io/files/public/timelines/"+config.id+'.json';
   Collection(config.id).$loaded().then(function(collection){
-        if(angular.isDefined(collection.timeline)){
-          vm.data = collection.timeline;
-        }else{
+        $http.get(ur).then(function(resp){
+
+          vm.data = resp.data;
+        }).catch(function(err){
+
+
+
             vm.data = {
     'timeline': {
       'headline': collection.title || 'Prosecution History Digest',
@@ -483,7 +488,8 @@ vm.slides.push(roarevent);
       'date':[],
       'era':[]
             }};
-        }
+            });
+
 
   });
   var addtotime = function(rvent){
@@ -519,7 +525,7 @@ vm.slides.push(roarevent);
 
         toastr.info($filter('date')(rvent.date), rvent.title);
         vm.data.timeline.date.push(addtotime(rvent)[0]);
-        //vm.data.timeline.era.push(addtotime(rvent)[1]);
+        vm.data.timeline.era.push(addtotime(rvent)[1]);
         if(rvent.roarlist){
           iteratey(rvent);
         }
@@ -551,7 +557,7 @@ vm.slides.push(roarevent);
             embed_id: 'timeline',
             hash_bookmark: true,
             debug: true,
-            theme: 'default',
+            theme: 'dark',
             font: 'Georgia-Helvetica'
           };
           createStoryJS(vm.options); });
