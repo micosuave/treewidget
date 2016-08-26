@@ -153,7 +153,7 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
         .css('font-size', val + 'px')
     });
     var dragStart = {}, dragging = false, curpos = {x: 100, y: -75}
-    var touch = Modernizr.touch, $vp = $('.viewport:first');
+    var touch = Modernizr.touch, $vp = $('.viewport');
     $vp.on(touch ? 'touchstart' : 'mousedown', function (e) {
       var evt = touch ? e.originalEvent.touches[0] : e;
       dragStart = {
