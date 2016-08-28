@@ -23,7 +23,7 @@ angular.module('adf.widget.treewidget', ['adf.provider'])
       reload: true,
       frameless: false,
       styleClass: 'NOA',
-      css: ['/treewidget/src/alt/build/css/themes/dark.css','/treewidget/src/alt/build/css/timeline.css'],
+      //css: ['/treewidget/src/alt/build/css/themes/dark.css','/treewidget/src/alt/build/css/timeline.css'],
       controller: 'TimeLineCtrl',
       controllerAs: 'time',
       edit: {
@@ -604,7 +604,7 @@ vm.slides.push(roarevent);
     restrict: 'E',
     template: '<section id="timeline" ></section>',
       scope:{},
-      css: '/treewidget/src/alt/build/css/themes/dark.css',
+      //css: '/treewidget/src/alt/build/css/themes/dark.css',
       // controller: 'TimeLineCtrl',
       // controllerAs: 'time',
       link: function($scope, $element, $attr, $ctrl){
@@ -622,7 +622,7 @@ vm.slides.push(roarevent);
             embed_id: 'timeline',
             hash_bookmark: true,
             debug: true,
-            theme: 'dark',
+            theme: 'default',
             font: 'Georgia-Helvetica'
           };
           createStoryJS(options); });

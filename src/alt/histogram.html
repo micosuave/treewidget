@@ -119,7 +119,7 @@ contain:strict;
     -webkit-transform: translateZ(1em);
 }
 </style>
-<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
 <script type="text/javascript" src="modernizr.2.5.3.min.js"></script>
 <script type="text/javascript" src="jquery.fly_sidemenu.js"></script>
 <link rel="stylesheet" href="fly_sidemenu.css">
@@ -149,7 +149,7 @@ contain:strict;
             </table>
         </div>
     </div>
-</div>
+</div>-->
 
 <script id="bartpl" type="text/template">
 
@@ -182,7 +182,7 @@ var dragStart = {}
     ;
 
 var touch = Modernizr.touch
-    ,$vp = $('.viewport:first')
+    ,$vp = $('.viewport')
     ;
 
 $vp.on(touch?'touchstart':'mousedown', function(e){
@@ -346,8 +346,8 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
     -webkit-transform: translateZ(5em);
 }
 </style>
-<div id="html2" colorkey="" style="width:140%;min-height:400px;" fullscreen="fillerup" class="html3">
-<div style="position:absolute;z-index:10000;">
+<div id="html" colorkey="" style="width:140%;min-height:400px;" fullscreen="fillerup" class="html2">
+<!--<div style="position:absolute;z-index:10000;">
 <fieldset class="material">
 <label>Perspective {{config.perspective}}</label>
 <input type="range" id="persective" ng-model="config.perspective" min="500" max="5000" ng-dblclick="fillerup = !fillerup"/>
@@ -361,7 +361,7 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
 <br>
 <input type="range" id="zrotate" ng-model="config.zrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
 </fieldset>
-</div>
+</div>-->
 
 <div class=" viewport" style="perspective: {{config.perspective}}px, position:absolute;top:0;right:0;left:0;bottom:0;">
     <div class="htmlz world" rotate3d style="rotate3d({{config.xrotate}},{{config.yrotate}},{{config.zrotate}},1deg);">
