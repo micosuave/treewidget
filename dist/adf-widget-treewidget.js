@@ -466,7 +466,7 @@ vm.slides.push(roarevent);
 
   var config = config || $scope.$parent.config;
   $scope.ckdefault  = ckdefault;
-  var ur = 'https://lexspace.net/files/public/timelines/'+config.id+'.json';
+  var ur = '/files/public/timelines/'+config.id+'.json';
   Collection(config.id).$loaded().then(function(collection){
         $http.get(ur).then(function(resp){
 
@@ -553,7 +553,7 @@ vm.slides.push(roarevent);
             type: 'timeline',
             width: 950,
             height: 650,
-            source: angular.isObject(datasource) ? angular.fromJson(datasource) : 'https://lexspace.net/files/public/timelines/'+datasource+'.json',
+            source: angular.isObject(datasource) ? angular.fromJson(datasource) : '/files/public/timelines/'+datasource+'.json',
             embed_id: 'timeline',
             hash_bookmark: true,
             debug: true,
