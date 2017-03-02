@@ -487,6 +487,7 @@ vm.slides.push(roarevent);
       'date':[],
       'era':[]
             }};
+            iteratey(collection);
             });
 
 
@@ -532,8 +533,10 @@ vm.slides.push(roarevent);
     });
 };
   vm.import = function(src){
-    src = src || config.id;
-    Collection(src).$loaded().then(function (collection) {
+
+    var rc = src || config.id;
+    alertify.log(rc);
+    Collection(rc).$loaded().then(function (collection) {
 
 
 

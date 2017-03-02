@@ -1,4 +1,4 @@
-<section id="timeline" ><header class="bar bar-dark" style="display:flex;justify-content:space-around;">
+<header class="bar bar-dark" style="display:flex;justify-content:space-around;">
   <label ng-bind="time.selectedtheme"></label>
   <input ng-model="time.source" placeholder="SourceID" type="text" />
  <button class="fa fa-edit btn btn-default text-primary" ng-click="timeform.$show()"></button>
@@ -7,8 +7,9 @@
 <button class="fa fa-save btn btn-default text-success" ng-click="time.save()"></button>
 <button class="fa fa-play btn btn-default text-warning" ng-click="time.initialize(time.data)"></button>
 </header>
-</section>
-<timeline control="time.data" height="80vh" options="options"></timeline>
+<section id="timeline"></section>
+
+<!--<timeline control="time.data" height="80vh" options="options"></timeline>-->
     <!--<json-formatter json="time.data"></json-formatter>-->
 
 
