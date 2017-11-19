@@ -200,13 +200,13 @@ function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, conf
   var vm = this;
 
   vm.selectedtheme = 'none';
-  var showheader = '<!doctype html><html class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/" target="_blank"></base><link  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet"/><link rel="stylesheet" href="https://lexspace.net/llp_core/bower_components/bootstrap/dist/css/bootstrap.min.css"/><link rel="stylesheet" href="https://lexspace.net/llp_core/dist/app.full.min.css"/><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/><link rel="stylesheet" href="https://lexspace.net/lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
+  var showheader = '<!doctype html><html class="html2"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>reveal.js</title><base href="/" target="_blank"></base><link  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" rel="stylesheet"/><link rel="stylesheet" href="./llp_core/bower_components/bootstrap/dist/css/bootstrap.min.css"/><link rel="stylesheet" href="./llp_core/dist/app.full.min.css"/><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/><link rel="stylesheet" href="./lexlab-starter/node_modules/reveal.js/css/reveal.css" />';
 
 
 
-  var showheaderone = '<!-- Theme used for syntax highlighting of code --><link rel="stylesheet" href="https://lexspace.net/lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css"><!-- Printing and PDF exports --><link rel="stylesheet" href="https://lexspace.net/lexlab-starter/node_modules/reveal.js/css/print/print.css"/><style></style>	</head>	<body>		<div class="reveal">			<!-- Any section element inside of this container is displayed as a slide -->			<div class="slides">';
+  var showheaderone = '<!-- Theme used for syntax highlighting of code --><link rel="stylesheet" href="./lexlab-starter/node_modules/reveal.js/lib/css/zenburn.css"><!-- Printing and PDF exports --><link rel="stylesheet" href="./lexlab-starter/node_modules/reveal.js/css/print/print.css"/><style></style>	</head>	<body>		<div class="reveal">			<!-- Any section element inside of this container is displayed as a slide -->			<div class="slides">';
 
-  var showfooter = 	   '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/tether-select/1.1.1/js/select.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script><script src="https://apis.google.com/js/client.js"></script><script src="https://apis.google.com/js/api.js"></script><script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script><script src="https://lexspace.net/lexlab-starter/node_modules/reveal.js/lib/js/head.min.js"></script><script src="https://lexspace.net/lexlab-starter/node_modules/reveal.js/js/reveal.js"></script><script>			Reveal.initialize({history: false,controls: true,progress: true,slideNumber: true,overview: true,center: true,touch: true,loop: true,rtl: false,shuffle: false, fragments: true,embedded: true,postMessage: true,postMessageEvents: true,help: true,showNotes: false, autoSlide:15000,autoSlideStoppable: true,autoSlideMethod: Reveal.navigateNext,mouseWheel: true, hideAddressBar: true,previewLinks: true,transition: "concave",transitionSpeed: "slow",backgroundTransition: "convex",viewDistance: 3,parallaxBackgroundImage: "https://lexspace.net/files/public/uspto/patents/7904579/7904579.png",parallaxBackgroundSize: "800px 800px",dependencies: [{ src: "https://lexspace.net/lexlab-starter/node_modules/reveal.js/plugin/markdown/marked.js" },{ src: "https://lexspace.net/lexlab-starter/node_modules/reveal.js/plugin/markdown/markdown.js" },{ src: "https://lexspace.net/lexlab-starter/node_modules/reveal.js/plugin/notes/notes.js", async: true },{ src: "https://lexspace.net/lexlab-starter/node_modules/reveal.js/plugin/highlight/highlight.js", async: true, callback: function() { hljs.initHighlightingOnLoad(); } },{ src: "https://lexspace.net/lexlab-starter/node_modules/reveal.js/plugin/zoom-js/zoom.js", async: true},{ src: "https://lexspace.net/lexlab-starter/node_modules/reveal.js/plugin/print-pdf/print-pdf.js", async: true}],width: 960,height: 700,margin: 0.1,minScale: 0.2,maxScale: 1.5});</script><script src="/llp_core/ckeditor2/plugins/chart/widget2chart.js"></script> <script src="/lexlab-starter/node_modules/reveal.js/lib/js/head.min.js"></script><script src="/lexlab-starter/node_modules/reveal.js/js/reveal.js"></script>  <script src="/llp_core/dist/app.bower.js"></script>   <script data-require="jszip@2.4.0" data-semver="2.4.0" src="https://cdn.rawgit.com/Stuk/jszip/v2.4.0/dist/jszip.js" data-build="exclude"></script>   <script src="https://rawgit.com/alexk111/ngImgCrop/master/compile/unminified/ng-img-crop.js"></script>   <script src="/newwidget/dist/adf-widget-testwidget.js"></script>   <script src="/getphdwidget/dist/adf-widget-getphd.js"></script>   <script src="/pagebuilderwidget/dist/adf-widget-pagebuilder.js"></script>   <script src="/collectionwidget/dist/adf-widget-collectionwidget.js"></script>   <script src="/treewidget/dist/adf-widget-treewidget.js"></script>   <script src="/llp_core/dist/app.mini.js"></script>   <script src="/llp_core/dist/minicache.js"></script><script>angular.module("mini").config(function($locationProvider) {$locationProvider.html5Mode(false);});angular.element(document).ready(function(){angular.bootstrap(document, ["mini"])});</script>';
+  var showfooter = 	   '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/tether-select/1.1.1/js/select.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script><script src="https://apis.google.com/js/client.js"></script><script src="https://apis.google.com/js/api.js"></script><script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script><script src="./lexlab-starter/node_modules/reveal.js/lib/js/head.min.js"></script><script src="./lexlab-starter/node_modules/reveal.js/js/reveal.js"></script><script>			Reveal.initialize({history: false,controls: true,progress: true,slideNumber: true,overview: true,center: true,touch: true,loop: true,rtl: false,shuffle: false, fragments: true,embedded: true,postMessage: true,postMessageEvents: true,help: true,showNotes: false, autoSlide:15000,autoSlideStoppable: true,autoSlideMethod: Reveal.navigateNext,mouseWheel: true, hideAddressBar: true,previewLinks: true,transition: "concave",transitionSpeed: "slow",backgroundTransition: "convex",viewDistance: 3,parallaxBackgroundImage: "./files/public/uspto/patents/7904579/7904579.png",parallaxBackgroundSize: "800px 800px",dependencies: [{ src: "./lexlab-starter/node_modules/reveal.js/plugin/markdown/marked.js" },{ src: "./lexlab-starter/node_modules/reveal.js/plugin/markdown/markdown.js" },{ src: "./lexlab-starter/node_modules/reveal.js/plugin/notes/notes.js", async: true },{ src: "./lexlab-starter/node_modules/reveal.js/plugin/highlight/highlight.js", async: true, callback: function() { hljs.initHighlightingOnLoad(); } },{ src: "./lexlab-starter/node_modules/reveal.js/plugin/zoom-js/zoom.js", async: true},{ src: "./lexlab-starter/node_modules/reveal.js/plugin/print-pdf/print-pdf.js", async: true}],width: 960,height: 700,margin: 0.1,minScale: 0.2,maxScale: 1.5});</script><script src="/llp_core/ckeditor2/plugins/chart/widget2chart.js"></script> <script src="/lexlab-starter/node_modules/reveal.js/lib/js/head.min.js"></script><script src="/lexlab-starter/node_modules/reveal.js/js/reveal.js"></script>  <script src="/llp_core/dist/app.bower.js"></script>   <script data-require="jszip@2.4.0" data-semver="2.4.0" src="https://cdn.rawgit.com/Stuk/jszip/v2.4.0/dist/jszip.js" data-build="exclude"></script>   <script src="https://rawgit.com/alexk111/ngImgCrop/master/compile/unminified/ng-img-crop.js"></script>   <script src="/newwidget/dist/adf-widget-testwidget.js"></script>   <script src="/getphdwidget/dist/adf-widget-getphd.js"></script>   <script src="/pagebuilderwidget/dist/adf-widget-pagebuilder.js"></script>   <script src="/collectionwidget/dist/adf-widget-collectionwidget.js"></script>   <script src="/treewidget/dist/adf-widget-treewidget.js"></script>   <script src="/llp_core/dist/app.mini.js"></script>   <script src="/llp_core/dist/minicache.js"></script><script>angular.module("mini").config(function($locationProvider) {$locationProvider.html5Mode(false);});angular.element(document).ready(function(){angular.bootstrap(document, ["mini"])});</script>';
 
  vm.themes = [
     {name: 'none'},
@@ -371,7 +371,7 @@ vm.slides.push(roarevent);
   // var apptemplate = showheader + theme + showheaderone +
   //         + showfooter;
   vm.initialize = function(){
-    var theme = '<link rel="stylesheet" href="https://lexspace.net/lexlab-starter/node_modules/reveal.js/css/theme/' + vm.selectedtheme + '.css" id="theme">';
+    var theme = '<link rel="stylesheet" href="./lexlab-starter/node_modules/reveal.js/css/theme/' + vm.selectedtheme + '.css" id="theme">';
     var serialtree = function(){
       var thishtml='';
       angular.forEach(vm.slides, function(slide, key){
@@ -422,7 +422,7 @@ vm.slides.push(roarevent);
     transitionSpeed: 'slow',
     backgroundTransition: 'convex',
     viewDistance: 4,
-    parallaxBackgroundImage: 'https://lexspace.net/llp_core/img/lll3.svg',
+    parallaxBackgroundImage: './llp_core/img/lll3.svg',
     parallaxBackgroundSize: '1500px 1500px',
     parallaxBackgroundHorizontal: null,
     parallaxBackgroundVertical: null,
@@ -480,7 +480,7 @@ vm.slides.push(roarevent);
       'type': 'default',
       'text': collection.description || 'US 8,382,656',
       'asset': {
-        'media': collection.media || 'https://lexspace.net/files/public/uspto/patents/8382656/8382656.png',
+        'media': collection.media || './files/public/uspto/patents/8382656/8382656.png',
         'credit':  'Lion Legal Products',
         'caption': 'Claim Dependencies for ' +  collection.$id|| '8382656'
       },
@@ -494,15 +494,15 @@ vm.slides.push(roarevent);
   });
   var addtotime = function(rvent){
     return [{
-                "startDate":rvent.date ? rvent.date.replace(/-/g,',') :"2011,12,10,07,02,10",
-                "endDate":rvent.date ? rvent.date.replace(/-/g,',') :"2011,12,11,08,11",
+                "startDate":rvent.date ? rvent.date.toString().replace(/-/g,',') :"2011,12,10,07,02,10",
+                "endDate":rvent.date ? rvent.date.toString().replace(/-/g,',') :"2011,12,11,08,11",
                 "headline":rvent.title || "Headline Goes Here",
                 "text":rvent.description || "<p>Body text goes here, some HTML is OK</p>",
                 "tag":rvent.styleClass || "This is Optional",
                 "classname":rvent.styleClass || "dependent",
                 "asset": {
-                    "media": rvent.media || "https://lexspace.net/llp_core/img/lll3.svg",
-                    "thumbnail":rvent.thumnail || 'https://lexspace.net/llp_core/apple-touch-icon.png',
+                    "media": rvent.media || "./llp_core/img/lll3.svg",
+                    "thumbnail":rvent.thumbnail || './llp_core/apple-touch-icon.png',
                     "credit":"LLP",
                     "caption":"Caption text goes here"
                 }
@@ -611,7 +611,7 @@ vm.slides.push(roarevent);
       // controller: 'TimeLineCtrl',
       // controllerAs: 'time',
       link: function($scope, $element, $attr, $ctrl){
-          $http.get('https://lexspace.net/files/public/timelines/'+$attr.source+'.json').then(function(resp){
+          $http.get('./files/public/timelines/'+$attr.source+'.json').then(function(resp){
             $scope.data = resp.timeline;
 
             var width = $($element[0]).innerWidth();
@@ -621,7 +621,7 @@ vm.slides.push(roarevent);
             type: 'timeline',
             width: width,
             height: height,
-            source: angular.isObject($scope.data) ? angular.fromJson($scope.data) : 'https://lexspace.net/files/public/timelines/'+$attr.source+'.json',
+            source: angular.isObject($scope.data) ? angular.fromJson($scope.data) : './files/public/timelines/'+$attr.source+'.json',
             embed_id: 'timeline',
             hash_bookmark: true,
             debug: true,

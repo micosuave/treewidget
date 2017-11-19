@@ -1,11 +1,11 @@
 <header class="bar bar-dark" style="display:flex;justify-content:space-around;">
   <label ng-bind="time.selectedtheme"></label>
   <input ng-model="time.source" placeholder="SourceID" type="text" />
- <button class="fa fa-edit btn btn-default text-primary" ng-click="timeform.$show()"></button>
- <button class="fa fa-external-link btn btn-default text-info" ng-click="time.import(time.source)"></button>
+ <button class="fa fa-edit btn btn-default text-primary" ng-click="timeform.$show()" uib-tooltip="Show Form" tooltip-animation tooltip-placement="top"></button>
+ <button class="fa fa-external-link btn btn-default text-info" ng-click="time.import(time.source)" uib-tooltip="Import" tooltip-animation tooltip-placement="top"></button>
 
-<button class="fa fa-save btn btn-default text-success" ng-click="time.save()"></button>
-<button class="fa fa-play btn btn-default text-warning" ng-click="time.initialize(time.data)"></button>
+<button class="fa fa-save btn btn-default text-success" ng-click="time.save()" uib-tooltip="Save" tooltip-animation tooltip-placement="top"></button>
+<button class="fa fa-play btn btn-default text-warning" ng-click="time.initialize(time.data)" uib-tooltip="Build Timeline" tooltip-animation tooltip-placement="top"></button>
 </header>
 <section id="timeline"></section>
 

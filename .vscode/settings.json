@@ -1,4 +1,6 @@
 {
     "jscs.enable": false,
-    "tslint.enable": false
+    "tslint.enable": false,
+    "angulardoc.repoId": "99000d45-15c7-48b1-afcc-06abf32f46ad",
+    "angulardoc.lastSync": 0
 }
