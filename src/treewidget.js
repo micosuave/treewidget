@@ -235,7 +235,7 @@ function ($scope, $stateParams, revealjs, $document, $window, $css, toastr, conf
         Collection(src).$loaded().then(function(data){
           var srcid = src.replace(/\D/g,'');
           //if(angular.isUndefined(data.slide)){
-          var slider = '<section data-background="url('+data.media+')"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x '+data.icon+'"></span></section>';
+          var slider = '<section data-background="url('+data.mediaUrl+')"><h1 class="display-2">'+data.title+'</h1><hr><h3>'+data.description+'</h3><span class="fa fa-5x fa-'+data.icon+'"></span></section>';
           data.slide = slider;
           vm.slides.push(data);
           //}else{
@@ -379,7 +379,8 @@ vm.slides.push(roarevent);
           var tol= slide.slide || '<!--CUTSLIDEHEAD-->';
           var colly = slide.content || '<!--CUTSLIDEHEAD-->';
           var temphtml  =
-         thishtml = thishtml + '  <section>  ' +colly.slice(colly.indexOf('<!--CUTSLIDEHEAD-->'), colly.indexOf('<!--CUTSLIDETAIL--\>')+20) + '  </section>  ';
+         //thishtml = thishtml + '  <section>  ' +colly.slice(colly.indexOf('<!--CUTSLIDEHEAD-->'), colly.indexOf('<!--CUTSLIDETAIL--\>')+20) + '  </section>  ';
+         thishtml = thishtml + ' <section> <iframe srcdoc="' + colly + '" style="width:960px;height:700px;"></iframe></section> ';
          thishtml.replace(/\<div\sstyle="page-break.*?\<\/div\>/g,'</section><section>').replace(/\<div.*(?=col-..-6).*?\<\/div\>/g,'</section><section>');
 
     var regexer = new RegExp(/\<div style="page-break-after: always"\>\<span style="display: none;"\>\&nbsp;\<\/span\>\<\/div\>/g);

@@ -1,6 +1,6 @@
 
 
-<style>
+<!--<style>
 .viewport {
     position: relative;
     width: 100%;
@@ -118,7 +118,7 @@ contain:strict;
 
     -webkit-transform: translateZ(1em);
 }
-</style>
+</style>-->
 <!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
 <script type="text/javascript" src="modernizr.2.5.3.min.js"></script>
 <script type="text/javascript" src="jquery.fly_sidemenu.js"></script>
@@ -151,7 +151,7 @@ contain:strict;
     </div>
 </div>-->
 
-<script id="bartpl" type="text/template">
+<!-- <script id="bartpl" type="text/template">
 
     <div class="bar">
         <div class="face top">
@@ -162,7 +162,7 @@ contain:strict;
         <div class="face left"><img width="100%" height="100%" src="/llp_core/img/NYC1.jpg"></div>
         <div class="face right"><img width="100%" height="100%" src="/llp_core/img/NYC1.jpg"></div>
     </div>
-    </script>
+    </script> -->
 <script type="text/javascript">
 // get the template
 var tpl = $('#bartpl').html();
@@ -233,6 +233,8 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
     padding-bottom: 100%;
     cursor: move;
     contain: strict;
+    perspective: 6000px;
+    perspective-origin: 50% 50%;
     -webkit-perspective: 6000px;
     -webkit-perspective-origin: 50% -100%;
 }
@@ -302,7 +304,7 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
 .viewport .bar .face.front {
     background: hsl(0, 100%, 20%);
     bottom: 0;
-    height: 1em;
+    height: 100%;
 
     -webkit-transform-origin: bottom center;
     -webkit-transform: rotateX(-90deg);
@@ -311,7 +313,7 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
 .viewport .bar .face.right {
     top: 0;
     right: 0;
-    width: 1em;
+    width: 100%;
     height: 100%;
 
     -webkit-transform-origin: center right;
@@ -322,7 +324,7 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
     background: hsl(0, 100%, 45%);
     top: 0;
     left: 0;
-    width: 1em;
+    width: 100%;
     height: 100%;
 
     -webkit-transform-origin: center left;
@@ -334,7 +336,7 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
     height: 1em;
 
     -webkit-transform-origin: top center;
-    -webkit-transform: rotateX(90deg);
+    -webkit-transform: rotateX(-90deg);
 }
 
 .viewport .bar .face.top {
@@ -343,11 +345,11 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
     width: 100%;
     top: 0;
 
-    -webkit-transform: translateZ(5em);
+    -webkit-transform: translateZ(10em);
 }
 </style>
 <div id="html" colorkey="" style="width:140%;min-height:400px;" fullscreen="fillerup" class="html2">
-<!--<div style="position:absolute;z-index:10000;">
+<div style="position:absolute;z-index:10000;">
 <fieldset class="material">
 <label>Perspective {{config.perspective}}</label>
 <input type="range" id="persective" ng-model="config.perspective" min="500" max="5000" ng-dblclick="fillerup = !fillerup"/>
@@ -361,29 +363,32 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
 <br>
 <input type="range" id="zrotate" ng-model="config.zrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
 </fieldset>
-</div>-->
+</div>
 
 <div class=" viewport" style="perspective: {{config.perspective}}px, position:absolute;top:0;right:0;left:0;bottom:0;">
     <div class="htmlz world" rotate3d style="rotate3d({{config.xrotate}},{{config.yrotate}},{{config.zrotate}},1deg);">
         <div class="ground card-dark" >
-<table class="histogram-3d" ffbase="{{histogram.col}}">
-<tr ng-repeat="tab in item.roarlist" ffbase="{{tab}}">
-  <td class="td-{{item.styleClass}}"> {{item.rid}} - {{item.title}}<br>{{item.description}}</td>
-                  <td ng-repeat="thing in item.roarlist" ffbase="{{thing}}" ng-include="'bartpl'" ng-init="it = thing;">{{item.rid}}</td>
+<table class="histogram-3d" collection="{{histogram.col}}" roarevents="{{histogram.col}}">
+<tr>
+<td ng-repeat="roarevent in roarevents" ffbase="{{roarevent.$id}}" ng-include="'bartpl'" ng-init="it = thing;">{{item.rid}}</td>
+</tr>
+<tr ng-repeat="roarevent in roarevents" >
+  <!-- <td class="td-{{roarevent.styleClass}}"> {{roarevent.rid}} - {{roarevent.title}}<br>{{roarevent.description}}</td> -->
+                  <td ng-repeat="thing in roarevent.roarlist" ffbase="{{thing}}" ng-include="'bartpl'" ng-init="it = thing;">{{item.rid}}</td>
 <!--</tr>-->
-                    <td histo='30'>30</td>
+                    <!-- <td histo='30'>30</td>
                     <td histo='20'>20</td>
-                    <td histo='30'>60</td>
+                    <td histo='30'>60</td> -->
                 </tr>
-                <tr><cubed one="<td histo='80'>80</td>" four="<td>40</td>" draggable>
+                <!-- <tr><cubed one="<td histo='80'>80</td>" four="<td>40</td>" draggable>
 
                     <td><img src="./llp_core/img/lll3.svg" /></td>
 </cubed>
-                </tr>
-                <tr>
+                </tr> -->
+                <!-- <tr>
                     <td histo="50">50</td>
                     <td histo="30">30</td>
-                </tr>
+                </tr> -->
             </table>
         </div>
     </div>
@@ -393,14 +398,19 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
 
 <div class="bar" ffbase="{{it}}" >
         <div class="face top" id="digest">
-                  <d3pendingtree patent="{{item.id.slice(0,7)}}" tree="trees[$index]" pattern="{{config.pattern}}"></d3pendingtree>
+                  <!-- <div class="row vcenter">
+                    <button class="rlabel btn-{{item.styleClass}}">{{item.rid}}</button>
+                    <h6>{{item.title}}</h6>
+                  </div> -->
+                  <roar-event id="{{item.$id}}"></roar-event>
+                  <!-- <img ng-src="{{item.thumbnail}}" width="100%" height="100%" /> -->
 
         </div>
-        <div class="face front" id="merits">        <img width="100%" height="100%" ng-src="/patents/{{item.$id.slice(0,7)}}/preview"/>
+        <div class="face front" id="merits">        <img width="100%" height="100%" ng-src="{{item.thumbnail}}"/>
 </div>
-        <div class="face back" id="all">BB</div>
-        <div class="face left" id="claims">L</div>
-        <div class="face right" id="art">R</div>
+        <div class="face back" id="all"><roar-event id="{{item.$id}}"></roar-event></div>
+        <div class="face left" id="claims"><roar-chip id="{{item.$id}}"></roar-chip></div>
+        <div class="face right" id="art"><roar-chip id="{{item.$id}}"></roar-chip></div>
 
     </div>
     </script>
