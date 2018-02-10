@@ -348,20 +348,39 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
     -webkit-transform: translateZ(10em);
 }
 </style>
-<div id="html" colorkey="" style="width:140%;min-height:400px;" fullscreen="fillerup" class="html2">
+<table collection="{{histogram.col}}">
+    <!-- <thead>
+        <tr>
+            <th>{{collection.rid}}</th>
+            <th>{{collection.title}}</th>
+        </tr>
+    </thead> -->
+    <tbody roarevents="{{histogram.col}}">
+        <tr ng-repeat="roarevent in roarevents">
+            <td>
+                <roar-event id="{{roarevent.$id}}"></roar-event>
+            </td>
+            <td collection="{{roarevent.$id}}"  ng-repeat="roar in roarevent.roarlist">
+                <roar-event id="{{roar}}"></roar-event>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div id="html" colorkey="" style="width:100%;min-height:600px;" class="html2">
 <div style="position:absolute;z-index:10000;">
 <fieldset class="material">
 <label>Perspective {{config.perspective}}</label>
-<input type="range" id="persective" ng-model="config.perspective" min="500" max="5000" ng-dblclick="fillerup = !fillerup"/>
+<input type="range" id="persective" ng-model="config.perspective" min="500" max="5000" />
 </fieldset>
 <br>
 <fieldset>
   <label>Rotation - X{{config.xrotate}} , Y{{config.yrotate}} , Z{{config.zrotate}}</label>
-<input type="range" id="xrotate" ng-model="config.xrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
+<input type="range" id="xrotate" ng-model="config.xrotate" min="-360" max="360" />
 <br>
-<input type="range" id="yrotate" ng-model="config.yrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
+<input type="range" id="yrotate" ng-model="config.yrotate" min="-360" max="360" />
 <br>
-<input type="range" id="zrotate" ng-model="config.zrotate" min="-360" max="360" ng-dblclick="fillerup = !fillerup"/>
+<input type="range" id="zrotate" ng-model="config.zrotate" min="-360" max="360" />
 </fieldset>
 </div>
 
