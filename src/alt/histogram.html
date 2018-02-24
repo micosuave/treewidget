@@ -162,8 +162,7 @@ contain:strict;
         <div class="face left"><img width="100%" height="100%" src="/llp_core/img/NYC1.jpg"></div>
         <div class="face right"><img width="100%" height="100%" src="/llp_core/img/NYC1.jpg"></div>
     </div>
-    </script> -->
-<script type="text/javascript">
+    </script> <script type="text/javascript">
 // get the template
 var tpl = $('#bartpl').html();
 
@@ -175,68 +174,73 @@ $('.histogram-3d td').each(function(){
         .html(tpl)
         .css('font-size', val+'px')
         ;
-});</script><script type="text/javascript">
-var dragStart = {}
-    ,dragging = false
-    ,curpos = {x:100,y:-75}
-    ;
+});</script> -->
 
-var touch = Modernizr.touch
-    ,$vp = $('.viewport')
-    ;
+<div class="html2" style="width:100%;min-height:100vh;perspective: var(--perspective);perspective-origin: var(--perspective-origin);">
 
-$vp.on(touch?'touchstart':'mousedown', function(e){
+<script type="text/javascript">
+    var dragStart = {},
+        dragging = false,
+        curpos = {x:100,y:-75};
+        
 
-    var evt = touch? e.originalEvent.touches[0] : e;
-    dragStart = {
-        x: evt.screenX + curpos.x,
-        y: evt.screenY + curpos.y
-    };
+    var touch = Modernizr.touch,
+        $vp = $('.viewport');
 
-    dragging = true;
-    $('body').addClass('noselect');
-});
 
-$(document).on(touch?'touchend':'mouseup', function(){
-    dragging = false;
-    $('body').removeClass('noselect');
-});
+    $vp.on(touch ? 'touchstart':'mousedown', function(e){
 
-$(document).on(touch?'touchmove':'mousemove', function(e){
+        var evt = touch ? e.originalEvent.touches[0] : e;
+            dragStart = {
+                            x: evt.screenX + curpos.x,
+                            y: evt.screenY + curpos.y
+                        };
 
-    if (!dragging) return;
+            dragging = true;
+        $('body').addClass('noselect');
+    });
 
-    e.preventDefault();
+    $(document).on( touch ? 'touchend':'mouseup', function(){
+            dragging = false;
+        $('body').removeClass('noselect');
+    });
 
-    var evt = touch? e.originalEvent.touches[0] : e
-        ,x = dragStart.x - evt.screenX
-        ,y = dragStart.y - evt.screenY
-        ,amp = 0.2
-        ;
+    $(document).on( touch ? 'touchmove':'mousemove', function(e){
 
-    curpos.x = x;
-    curpos.y = y;
+        if (!dragging) return;
 
-    $vp.find('.world').css(
-        Modernizr.prefixed('transform'),
-        ['rotateX(',y*amp,'deg) rotateY(',-x*amp,'deg)'].join('')
-    );
+        e.preventDefault();
 
-});</script>
+        var evt = touch ? e.originalEvent.touches[0] : e,
+              x = dragStart.x - evt.screenX,
+              y = dragStart.y - evt.screenY,
+            amp = 0.2;
+
+            curpos.x = x;
+            curpos.y = y;
+
+        $vp.find('.world').css(
+            Modernizr.prefixed('transform'),
+            ['rotateX(',y*amp,'deg) rotateY(',-x*amp,'deg)'].join('')
+        );
+
+    });
+</script>
 
 
 
 <style>
+
 .viewport {
     position: relative;
     width: 100%;
-    padding-bottom: 100%;
+    padding-bottom: 200%;
     cursor: move;
-    contain: strict;
-    perspective: 6000px;
-    perspective-origin: 50% -100%;
-    -webkit-perspective: 6000px;
-    -webkit-perspective-origin: 50% -100%;
+    /*contain: strict;*/
+    perspective: var(--perspective, 6000px);
+    perspective-origin: var(--perspective-origin, 50% -100%);
+    -webkit-perspective: var(--perspective, 6000px);
+    -webkit-perspective-origin: var(--perspective-origin, 50% -100%);
 }
 .viewport .world {
     position: absolute;
@@ -254,23 +258,25 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
     -webkit-transform-style: preserve-3d;
 }
 .viewport .ground {
+    --x: 50%;
+    --y: 50%;
     position: absolute;
     z-index: 1;
-    top: 50%;
-    left: 50%;
+    top: 25%;
+    left: 25%;
     width: 90%;
     height: 90%;
     margin-left: -50%;
     margin-top: -50%;
     background: rgba(44,24,24,0.84);
-
+    transform: rotateX(90deg);
     -webkit-transform: rotateX(90deg);
 }
 .viewport .histogram-3d {
     width: 80%;
     height: 80%;
     margin: 10% auto;
-    border-collapse: collapse;
+    /*border-collapse: collapse;*/
     border-style: groove;
 
     /* make sure grid is raised above ground */
@@ -279,13 +285,13 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
 
 .viewport .histogram-3d td {
     position: relative;
-    width: 30%;
-    height: 30%;
+    width: 100px;
+    height: 100px;
     padding: 10px;
     border: 2px solid #555;
     z-index: 0;
 }
-.viewport .bar {
+/*.viewport .bar {
     position: relative;
     width: 100%;
     height: 100%;
@@ -346,22 +352,23 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
     top: 0;
 
     -webkit-transform: translateZ(10em);
-}
+}*/
 </style>
-<perspective-slider min="-180" max="180" value="0" step="5" unit="px" selector="roar-event"></perspective-slider>
-<div class="viewport">
+
+<div class="viewport" style="perspective: 6000px;perspective-origin: 50% -100%;">
     <div class="world">
 <table collection="{{histogram.col}}" class="ground">
-    <tbody roarevents="{{histogram.col}}" class="">
-        <tr ng-repeat="roarevent in roarevents">
-            <td>
+    <tbody roarevents="{{histogram.col}}" class="histogram-3d">
+        <tr ng-repeat="roarevent in roarevents"  collection="{{roarevent.$id}}">
+            <td style="background-color:var(--noagreen);">
                 <roar-event id="{{roarevent.$id}}"></roar-event>
             </td>
-            <td collection="{{roarevent.$id}}"  ng-repeat="roar in roarevent.roarlist">
+            <td   ng-repeat="roar in roarevent.roarlist" style="background-color: var(--PTOred);">
                 <roar-event id="{{roar}}" style="height: 150px;"></roar-event>
                 <div class="stack rotate3d" roarevents="{{roar}}">
-                    <div ng-repeat="event in roarevents" style="transform: translate3d(0px,0px,{{$index*50}}px);" ng-style="'transform':'translate3d(0px,0px,'+{{$index * 50}}+'px)'" class="translate3d" >
+                    <div ng-repeat="event in roarevents" style="background-color:var(--applicantblue);transform: translate3d(0px,0px,{{$index*50}}px);" ng-style="'transform':'translate3d(0px,0px,'+{{$index * 50}}+'px)'" class="translate3d" >
                         <roar-event id="{{event.$id}}"></roar-event>
+                        <div ng-repeat="vent in event.roarlist" style="background-color:var(--petitionamber);transform: translate3d({{$index*150}}px, 0px, 0px);" ng-style="'transform':'translate3d({{$index * 150}}+'px,0px,0px)'" class="translate3d" ><roar-event id="{{vent}}"></roar-event></div>
                     </div>
                 </div>
             </td>
@@ -370,15 +377,17 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
 </table>
 </div>
 </div>
-
-<div id="html" colorkey="" style="width:100%;min-height:600px;" class="html2">
+<div class="card card-fancy card-rounded card-thick" style="position: absolute;top:0;width:30%;">
+<perspective-slider min="-180" max="180" value="0" step="5" unit="px" selector=""></perspective-slider>
+</div>
+<!--<div id="html" colorkey="" style="width:100%;min-height:600px;" class="html2">
 <div class="card-fancy card-rounded" style="position:absolute;z-index:10000;">
 <fieldset class="material">
 <label>Perspective {{config.perspective}}</label>
 <perspective-slider min="-180" max="180" value="0" step="5" unit="px" selector=".htmlz"></perspective-slider>
 </fieldset>
 <br>
-<!--
+
 <input type="range" id="persective" ng-model="config.perspective" min="500" max="5000" />
 <fieldset>
   <label>Rotation - X{{config.xrotate}} , Y{{config.yrotate}} , Z{{config.zrotate}}</label>
@@ -387,7 +396,7 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
 <input type="range" id="yrotate" ng-model="config.yrotate" min="-360" max="360" />
 <br>
 <input type="range" id="zrotate" ng-model="config.zrotate" min="-360" max="360" />
-</fieldset>-->
+</fieldset>
 </div>
 
 <div class=" viewport" style="perspective: 6000px, position:absolute;top:0;right:0;left:0;bottom:0;">
@@ -398,13 +407,13 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
 <td ng-repeat="roarevent in roarevents" ffbase="{{roarevent.$id}}" ng-include="'bartpl'" ng-init="it = thing;">{{item.rid}}</td>
 </tr>
 <tr ng-repeat="roarevent in roarevents" >
-  <!-- <td class="td-{{roarevent.styleClass}}"> {{roarevent.rid}} - {{roarevent.title}}<br>{{roarevent.description}}</td> -->
-                  <td ng-repeat="thing in roarevent.roarlist" ffbase="{{thing}}" ng-include="'bartpl'" ng-init="it = thing;">{{item.rid}}</td>
+  <td class="td-{{roarevent.styleClass}}"> {{roarevent.rid}} - {{roarevent.title}}<br>{{roarevent.description}}</td> -->
+                  <!-- <td ng-repeat="thing in roarevent.roarlist" ffbase="{{thing}}" ng-include="'bartpl'" ng-init="it = thing;">{{item.rid}}</td> -->
 <!--</tr>-->
                     <!-- <td histo='30'>30</td>
                     <td histo='20'>20</td>
                     <td histo='30'>60</td> -->
-                </tr>
+                <!-- </tr> -->
                 <!-- <tr><cubed one="<td histo='80'>80</td>" four="<td>40</td>" draggable>
 
                     <td><img src="./llp_core/img/lll3.svg" /></td>
@@ -414,7 +423,7 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
                     <td histo="50">50</td>
                     <td histo="30">30</td>
                 </tr> -->
-            </table>
+       <!--      </table>
         </div>
     </div>
 </div>
@@ -423,20 +432,20 @@ $(document).on(touch?'touchmove':'mousemove', function(e){
 
 <div class="bar" ffbase="{{it}}" >
         <div class="face top" id="digest">
-                  <!-- <div class="row vcenter">
+                   <div class="row vcenter">
                     <button class="rlabel btn-{{item.styleClass}}">{{item.rid}}</button>
                     <h6>{{item.title}}</h6>
-                  </div> -->
+                  </div> 
                   <roar-event id="{{item.$id}}"></roar-event>
-                  <!-- <img ng-src="{{item.thumbnail}}" width="100%" height="100%" /> -->
+                  <img ng-src="{{item.thumbnail}}" width="100%" height="100%" />
 
         </div>
-       <!--  <div class="face front" id="merits">        <img width="100%" height="100%" ng-src="{{item.thumbnail}}"/>
+         <div class="face front" id="merits">        <img width="100%" height="100%" ng-src="{{item.thumbnail}}"/>
 </div>
         <div class="face back" id="all"><roar-event id="{{item.$id}}"></roar-event></div>
         <div class="face left" id="claims"><roar-chip id="{{item.$id}}"></roar-chip></div>
-        <div class="face right" id="art"><roar-chip id="{{item.$id}}"></roar-chip></div> -->
+        <div class="face right" id="art"><roar-chip id="{{item.$id}}"></roar-chip></div> 
 
     </div>
-    </script>
-</div>
+    </script> 
+</div>-->
