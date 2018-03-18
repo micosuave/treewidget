@@ -468,12 +468,15 @@ vm.slides.push(roarevent);
   $scope.ckdefault  = ckdefault;
   var ur = '/files/public/timelines/'+config.id+'.json';
   Collection(config.id).$loaded().then(function(collection){
+        vm.cubedata = []
+          cubeiterate(collection);
+
         $http.get(ur).then(function(resp){
 
           vm.data = resp.data;
         }).catch(function(err){
 
-
+            
 
             vm.data = {
     'timeline': {
@@ -493,6 +496,18 @@ vm.slides.push(roarevent);
 
 
   });
+  var addtocube = function(revent){
+    return {
+        "title": '<hr>' + revent.rid + ' - ' + revent.title,
+        "description": '<blockquote>'+revent.description+'</blockquote>',
+        "source": revent.thumbnail,
+        "extraclass": revent.styleClass,
+        "startDate": (new Date(revent.date)),
+        "endDate": null
+         
+      }
+    
+  }
   var addtotime = function(rvent){
     return [{
                 "startDate":rvent.date ? rvent.date.toString().replace(/-/g,',') :"2011,12,10,07,02,10",
@@ -519,7 +534,17 @@ vm.slides.push(roarevent);
 
         ];
     };
-
+  var cubeiterate = function(collection){
+    return angular.forEach(collection.roarlist, function(rid, key){
+      Collection(rid).$loaded().then(function(revent){
+        toastr.success($filter('date')(revent.date), revent.title);
+        vm.cubedata.push(addtocube(revent));
+        if(revent.roarlist){
+          cubeiterate(revent);
+        }
+      })
+    })
+  }
   var iteratey = function(collection){
     return angular.forEach(collection.roarlist, function (rid, key) {
       Collection(rid).$loaded().then(function (rvent) {
@@ -634,5 +659,102 @@ vm.slides.push(roarevent);
 
           });
       }
+  }
+}).directive('timecube', function(Collection, toastr, $filter,$q, $timeout){
+  return{
+    restrict: 'EA',
+    templateUrl: '{widgetsPath}/treewidget/src/alt/timecube.html',
+    scope: {
+      id: '@'
+    },
+    controller: function($scope, Collection, toastr, $filter, $q, $timeout){
+       var $ctrl = this;
+      $scope.cubedata = [];
+       $ctrl.addtocube = function(revent){
+        return {
+          title: '<hr>' + revent.rid + ' - ' + revent.title,
+          description: '<blockquote>'+revent.description+'</blockquote>',
+          source: revent.thumbnail,
+          extraclass: revent.styleClass,
+          startDate: (new Date(revent.date)),
+          endDate: null
+        }
+      };
+      $ctrl.cubeiterate = function(collection){
+          var looppromises = [];
+          console.info(collection.roarlist);
+          forEach(collection.roarlist, function(key){
+            looppromises.push(deferred.promise);
+            Collection(key).$loaded().then(function(revent){
+              $scope.cubedata.push($ctrl.addtocube(revent));
+              $scope.cubedata.sort(function(a,b){ return a.startDate = b.startDate});
+              toastr.success($filter('date')(revent.date), revent.title);
+              deferred.resolve($scope.cubedata);
+            });
+          })
+          // angular.forEach(collection.roarlist, function(rid, key){
+          //   var deferred = $q.defer();
+          //   looppromises.push(deferred.promise);
+          //   Collection(rid).$loaded().then(function(revent){
+          //     $scope.cubedata.push($ctrl.addtocube(revent));
+              
+              
+          //     
+          //     $timeout(function(){ deferred.resolve();},2000);
+          //      $scope.cubedata.sort(function(a, b){return a.startDate - b.startDate});
+          //  // $("#timeline").html('');
+          //   })
+
+          // })
+            $q.all(looppromises).then(function(){
+             $("#timeline").timeCube({
+                    data: $scope.cubedata,
+                    granularity: "year",
+                    startDate: $scope.cubedata[0].startDate,
+                    endDate: $scope.cubedata[$scope.cubedata.length - 1].startDate,
+                    nextButton: $("#next-link"),
+                    previousButton: $("#prev-link"),
+                    showDate: true
+                  }); 
+          
+            
+          })
+                
+      };
+      Collection($scope.id).$loaded().then(function(collection){
+          $ctrl.cubeiterate(collection);
+        });
+    },
+    link: function($scope, $element, $attr, $ctrl){
+      
+     
+      var findStartDate = function(cubedata){
+        cubedata.reduce(function(result, event){
+          if (result === null){
+            return result = event.startDate;
+          }
+          else if (event.startDate < result ){
+            return result = event.startDate;
+          }
+          else {
+            return result
+          }
+        })
+      }
+      var findEndDate = function(cubedata){
+        cubedata.reduce(function(result, event){
+          if (result === null){
+            return result = event.startDate;
+          }
+          else if (event.startDate > result ){
+            return result = event.startDate;
+          }
+          else {
+            return result
+          }
+        })
+      }
+      
+          }
   }
 });

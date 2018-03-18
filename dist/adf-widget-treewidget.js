@@ -469,12 +469,15 @@ vm.slides.push(roarevent);
   $scope.ckdefault  = ckdefault;
   var ur = '/files/public/timelines/'+config.id+'.json';
   Collection(config.id).$loaded().then(function(collection){
+        vm.cubedata = []
+          cubeiterate(collection);
+
         $http.get(ur).then(function(resp){
 
           vm.data = resp.data;
         }).catch(function(err){
 
-
+            
 
             vm.data = {
     'timeline': {
@@ -494,6 +497,18 @@ vm.slides.push(roarevent);
 
 
   });
+  var addtocube = function(revent){
+    return {
+        "title": '<hr>' + revent.rid + ' - ' + revent.title,
+        "description": '<blockquote>'+revent.description+'</blockquote>',
+        "source": revent.thumbnail,
+        "extraclass": revent.styleClass,
+        "startDate": (new Date(revent.date)),
+        "endDate": null
+         
+      }
+    
+  }
   var addtotime = function(rvent){
     return [{
                 "startDate":rvent.date ? rvent.date.toString().replace(/-/g,',') :"2011,12,10,07,02,10",
@@ -520,7 +535,17 @@ vm.slides.push(roarevent);
 
         ];
     };
-
+  var cubeiterate = function(collection){
+    return angular.forEach(collection.roarlist, function(rid, key){
+      Collection(rid).$loaded().then(function(revent){
+        toastr.success($filter('date')(revent.date), revent.title);
+        vm.cubedata.push(addtocube(revent));
+        if(revent.roarlist){
+          cubeiterate(revent);
+        }
+      })
+    })
+  }
   var iteratey = function(collection){
     return angular.forEach(collection.roarlist, function (rid, key) {
       Collection(rid).$loaded().then(function (rvent) {
@@ -636,6 +661,103 @@ vm.slides.push(roarevent);
           });
       }
   }
+}]).directive('timecube', ["Collection", "toastr", "$filter", "$q", "$timeout", function(Collection, toastr, $filter,$q, $timeout){
+  return{
+    restrict: 'EA',
+    templateUrl: '{widgetsPath}/treewidget/src/alt/timecube.html',
+    scope: {
+      id: '@'
+    },
+    controller: ["$scope", "Collection", "toastr", "$filter", "$q", "$timeout", function($scope, Collection, toastr, $filter, $q, $timeout){
+       var $ctrl = this;
+      $scope.cubedata = [];
+       $ctrl.addtocube = function(revent){
+        return {
+          title: '<hr>' + revent.rid + ' - ' + revent.title,
+          description: '<blockquote>'+revent.description+'</blockquote>',
+          source: revent.thumbnail,
+          extraclass: revent.styleClass,
+          startDate: (new Date(revent.date)),
+          endDate: null
+        }
+      };
+      $ctrl.cubeiterate = function(collection){
+          var looppromises = [];
+          console.info(collection.roarlist);
+          forEach(collection.roarlist, function(key){
+            looppromises.push(deferred.promise);
+            Collection(key).$loaded().then(function(revent){
+              $scope.cubedata.push($ctrl.addtocube(revent));
+              $scope.cubedata.sort(function(a,b){ return a.startDate = b.startDate});
+              toastr.success($filter('date')(revent.date), revent.title);
+              deferred.resolve($scope.cubedata);
+            });
+          })
+          // angular.forEach(collection.roarlist, function(rid, key){
+          //   var deferred = $q.defer();
+          //   looppromises.push(deferred.promise);
+          //   Collection(rid).$loaded().then(function(revent){
+          //     $scope.cubedata.push($ctrl.addtocube(revent));
+              
+              
+          //     
+          //     $timeout(function(){ deferred.resolve();},2000);
+          //      $scope.cubedata.sort(function(a, b){return a.startDate - b.startDate});
+          //  // $("#timeline").html('');
+          //   })
+
+          // })
+            $q.all(looppromises).then(function(){
+             $("#timeline").timeCube({
+                    data: $scope.cubedata,
+                    granularity: "year",
+                    startDate: $scope.cubedata[0].startDate,
+                    endDate: $scope.cubedata[$scope.cubedata.length - 1].startDate,
+                    nextButton: $("#next-link"),
+                    previousButton: $("#prev-link"),
+                    showDate: true
+                  }); 
+          
+            
+          })
+                
+      };
+      Collection($scope.id).$loaded().then(function(collection){
+          $ctrl.cubeiterate(collection);
+        });
+    }],
+    link: function($scope, $element, $attr, $ctrl){
+      
+     
+      var findStartDate = function(cubedata){
+        cubedata.reduce(function(result, event){
+          if (result === null){
+            return result = event.startDate;
+          }
+          else if (event.startDate < result ){
+            return result = event.startDate;
+          }
+          else {
+            return result
+          }
+        })
+      }
+      var findEndDate = function(cubedata){
+        cubedata.reduce(function(result, event){
+          if (result === null){
+            return result = event.startDate;
+          }
+          else if (event.startDate > result ){
+            return result = event.startDate;
+          }
+          else {
+            return result
+          }
+        })
+      }
+      
+          }
+  }
 }]);
 
 angular.module("adf.widget.treewidget").run(["$templateCache", function($templateCache) {$templateCache.put("{widgetsPath}/treewidget/src/edit.html","<form role=form><div class=form-group><label for=sample>Sample</label> <input type=url class=form-control id=sample ng-model=config.url placeholder=\"Enter sample\"> <input type=number class=form-control id=num ng-model=config.diameter></div></form>");
@@ -644,8 +766,9 @@ $templateCache.put("{widgetsPath}/treewidget/src/alt/hist_edit.html","<fieldset 
 $templateCache.put("{widgetsPath}/treewidget/src/alt/histogram.html","<div class=html2 style=\"width:100%;min-height:100vh;perspective: var(--perspective);perspective-origin: var(--perspective-origin);\"><script type=text/javascript>\n    var dragStart = {},\n        dragging = false,\n        curpos = {x:100,y:-75};\n        \n\n    var touch = Modernizr.touch,\n        $vp = $(\'.viewport\');\n\n\n    $vp.on(touch ? \'touchstart\':\'mousedown\', function(e){\n\n        var evt = touch ? e.originalEvent.touches[0] : e;\n            dragStart = {\n                            x: evt.screenX + curpos.x,\n                            y: evt.screenY + curpos.y\n                        };\n\n            dragging = true;\n        $(\'body\').addClass(\'noselect\');\n    });\n\n    $(document).on( touch ? \'touchend\':\'mouseup\', function(){\n            dragging = false;\n        $(\'body\').removeClass(\'noselect\');\n    });\n\n    $(document).on( touch ? \'touchmove\':\'mousemove\', function(e){\n\n        if (!dragging) return;\n\n        e.preventDefault();\n\n        var evt = touch ? e.originalEvent.touches[0] : e,\n              x = dragStart.x - evt.screenX,\n              y = dragStart.y - evt.screenY,\n            amp = 0.2;\n\n            curpos.x = x;\n            curpos.y = y;\n\n        $vp.find(\'.world\').css(\n            Modernizr.prefixed(\'transform\'),\n            [\'rotateX(\',y*amp,\'deg) rotateY(\',-x*amp,\'deg)\'].join(\'\')\n        );\n\n    });\n</script><style>\n\n.viewport {\n    position: relative;\n    width: 100%;\n    padding-bottom: 200%;\n    cursor: move;\n    /*contain: strict;*/\n    perspective: var(--perspective, 6000px);\n    perspective-origin: var(--perspective-origin, 50% -100%);\n    -webkit-perspective: var(--perspective, 6000px);\n    -webkit-perspective-origin: var(--perspective-origin, 50% -100%);\n}\n.viewport .world {\n    position: absolute;\n    top:0;\n    left:0;\n    right:0;\n    bottom:0;\n    transform: preserve-3d;\n    -webkit-transform: rotateX(-15deg) rotateY(-20deg);\n\n}\n\n.viewport .world,\n.viewport .world * {\n    -webkit-transform-style: preserve-3d;\n}\n.viewport .ground {\n    --x: 50%;\n    --y: 50%;\n    position: absolute;\n    z-index: 1;\n    top: 25%;\n    left: 25%;\n    width: 90%;\n    height: 90%;\n    margin-left: -50%;\n    margin-top: -50%;\n    background: rgba(44,24,24,0.84);\n    transform: rotateX(90deg);\n    -webkit-transform: rotateX(90deg);\n}\n.viewport .histogram-3d {\n    width: 80%;\n    height: 80%;\n    margin: 10% auto;\n    /*border-collapse: collapse;*/\n    border-style: groove;\n\n    /* make sure grid is raised above ground */\n    -webkit-transform: translateZ(1px);\n}\n\n.viewport .histogram-3d td {\n    position: relative;\n    width: 100px;\n    height: 100px;\n    padding: 10px;\n    border: 2px solid #555;\n    z-index: 0;\n}\n/*.viewport .bar {\n    position: relative;\n    width: 100%;\n    height: 100%;\n    z-index: 1;\n}\n\n.viewport .bar .face {\n    background: hsl(0, 100%, 50%);\n    position: absolute;\n    width: 100%;\n    opacity:0.8;\n    overflow: hidden;\n    z-index: 1;\n}\n\n.viewport .bar .face.front {\n    background: hsl(0, 100%, 20%);\n    bottom: 0;\n    height: 100%;\n\n    -webkit-transform-origin: bottom center;\n    -webkit-transform: rotateX(-90deg);\n}\n\n.viewport .bar .face.right {\n    top: 0;\n    right: 0;\n    width: 100%;\n    height: 100%;\n\n    -webkit-transform-origin: center right;\n    -webkit-transform: rotateY(90deg);\n}\n\n.viewport .bar .face.left {\n    background: hsl(0, 100%, 45%);\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n\n    -webkit-transform-origin: center left;\n    -webkit-transform: rotateY(-90deg);\n}\n\n.viewport .bar .face.back {\n    top: 0;\n    height: 1em;\n\n    -webkit-transform-origin: top center;\n    -webkit-transform: rotateX(-90deg);\n}\n\n.viewport .bar .face.top {\n    background: hsl(0, 100%, 40%);\n    height: 100%;\n    width: 100%;\n    top: 0;\n\n    -webkit-transform: translateZ(10em);\n}*/\n</style><div class=viewport style=\"perspective: 6000px;perspective-origin: 50% -100%;\"><div class=world><table collection={{histogram.col}} class=ground><tbody roarevents={{histogram.col}} class=histogram-3d><tr ng-repeat=\"roarevent in roarevents\" collection={{roarevent.$id}}><td style=background-color:var(--noagreen);><roar-event id={{roarevent.$id}}></roar-event></td><td ng-repeat=\"roar in roarevent.roarlist\" style=\"background-color: var(--PTOred);\"><roar-event id={{roar}} style=\"height: 150px;\"></roar-event><div class=\"stack rotate3d\" roarevents={{roar}}><div ng-repeat=\"event in roarevents\" style=\"background-color:var(--applicantblue);transform: translate3d(0px,0px,{{$index*50}}px);\" ng-style=\"\'transform\':\'translate3d(0px,0px,\'+{{$index * 50}}+\'px)\'\" class=translate3d><roar-event id={{event.$id}}></roar-event><div ng-repeat=\"vent in event.roarlist\" style=\"background-color:var(--petitionamber);transform: translate3d({{$index*150}}px, 0px, 0px);\" ng-style=\"\'transform\':\'translate3d({{$index * 150}}+\'px,0px,0px)\'\" class=translate3d><roar-event id={{vent}}></roar-event></div></div></div></td></tr></tbody></table></div></div><div class=\"card card-fancy card-rounded card-thick\" style=\"position: absolute;top:0;width:30%;\"><perspective-slider min=-180 max=180 value=0 step=5 unit=px selector></perspective-slider></div></div>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/reveal_index.html","<header class=\"bar bar-dark\"><label ng-bind=options.selectedtheme></label> <input ng-model=options.source placeholder=SourceID type=text> <button class=\"fa fa-download btn btn-primary\" ng-click=options.import(options.source)></button> <button class=\"fa fa-gear btn btn-default\" ng-click=options.configure()></button> <button class=\"fa fa-play btn btn-warning\" ng-click=options.initialize()></button></header><article class=\"window clearfix\" ng-hide=options.hidethemes><h6 class=card-title>Themes</h6><nav class=\"nav nav-dark\"><li ng-repeat=\"theme in options.themes\" id={{theme.name}} class=\"btn-glass btn-info\" colorkey={{theme.name}}><label class=label>{{theme.name}} <input type=radio id=themename name=themename ng-model=options.selectedtheme ng-value=theme.name></label></li></nav><div class=tabbable><nav class=\"nav nav-tabs\"><ul class=right-tabs style=height:79vh;max-height:79vh;><li class=\"row {{item.styleClass}}\" ng-repeat=\"ts in options.model.roarlist\" ffbase={{ts}} ng-cloak ng-click=\"$parent.options.source = key\"><div uib-dropdown uib-keyboard-nav dropdown-append-to-body><a uib-dropdown-toggle class=\"vcenter pull-left\"><label class=\"label label-pill badge label-{{item.styleClass}}\" style=cursor:pointer;>{{tab.rid || item.rid || \' - \'}}</label></a><ul class=uib-dropdown-menu><li class={{menuitem.styleClass}} ng-repeat=\"menuitem in rightmenu.items\"><a ng-click=\"menuitem.onClick(item.$id, key)\" class=\"fa fa-fw {{menuitem.icon}} {{menuitem.styleClass}}\">&nbsp;&nbsp;&nbsp;&nbsp;{{menuitem.label}}</a></li></ul></div>&nbsp&nbsp{{item.title || item.name}}&nbsp&nbsp <a class=\"fa fa-3x btn btn-default btn-xs\" ng-class=\"{\'fa-check\':($parent.options.source === item.$id )}\" ng-click=\"$parent.options.source = item.$id\"></a></li></ul></nav></div></article>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/slide_edit.html","<input ng-model=config.id><hr><label class=\"label material\" ng-repeat=\"(option, key) in reveal.options\">{{key}}<switch ng-model=option text={{key}} icon=\"fa fa-{{key}}\"><input ng-model=option> <textarea ng-model=option>\n</textarea></switch></label><hr>");
+$templateCache.put("{widgetsPath}/treewidget/src/alt/timecube.html","<link rel=stylesheet type=text/css href=/lexlab-starter/public/Timecube.demo/css/timecube.jquery.css><link href=https://www.jqueryscript.net/css/jquerysctipttop.css rel=stylesheet type=text/css><div id=content-wrapper><div id=timeline class=timeCube></div><a href=# onclick=\"return false;\" id=next-link></a> <a href=# onclick=\"return false;\" id=prev-link class=disabled></a></div><div id=swipe></div>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/timeedit.html","<fieldset class=material><input type=text ng-model=config.id placeholder=\"Enter patent id number\"><hr><label class=\"label label-NOA\">Enter ID #</label></fieldset>");
-$templateCache.put("{widgetsPath}/treewidget/src/alt/timeline.html","<header class=\"bar bar-dark\" style=display:flex;justify-content:space-around;><label ng-bind=time.selectedtheme></label> <input ng-model=time.source placeholder=SourceID type=text> <button class=\"fa fa-edit btn btn-default text-primary\" ng-click=timeform.$show() uib-tooltip=\"Show Form\" tooltip-animation tooltip-placement=top></button> <button class=\"fa fa-external-link btn btn-default text-info\" ng-click=time.import(time.source) uib-tooltip=Import tooltip-animation tooltip-placement=top></button> <button class=\"fa fa-save btn btn-default text-success\" ng-click=time.save() uib-tooltip=Save tooltip-animation tooltip-placement=top></button> <button class=\"fa fa-play btn btn-default text-warning\" ng-click=time.initialize(time.data) uib-tooltip=\"Build Timeline\" tooltip-animation tooltip-placement=top></button></header><section id=timeline></section><table class=\"table table-condensed table-responsive table-stripped table-hover\"><tbody><tr><th>Headline</th><td editable-text=time.data.timeline.headline e-form=timeform>{{time.data.timeline.headline | uppercase}}</td></tr><tr><th>Headline</th><td editable-textarea=time.data.timeline.text e-form=timeform>{{time.data.timeline.text}}</td></tr><tr><th>Media</th><td editable-text=time.data.timeline.asset.media e-form=timeform>{{time.data.timeline.asset.media}}</td></tr><tr><th>Credit</th><td editable-text=time.data.timeline.asset.credit e-form=timeform>{{time.data.timeline.asset.credit}}</td></tr><tr><th>Caption</th><td editable-text=time.data.timeline.asset.caption e-form=timeform>{{time.data.timeline.asset.caption}}</td></tr></tbody></table><div class=\"card card-block\"><dir-pagination-controls pagination-id=timeline template-url=/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html></dir-pagination-controls><a class=\"fa fa-plus text-success pull-right\" ng-click=time.addnew()></a><div class=\"card card-block img-hover img-shadow bs-callout bs-callout-Applicant\" dir-paginate=\"rvent in time.data.timeline.date | itemsPerPage: 5\" pagination-id=timeline><h4 class=card-title><img ng-src={{rvent.asset.thumbnail}} style=max-height:100px; class=\"img img-thumbnail img-hover pull-left\" ng-click=timeform.$show()> <a class=pull-right ng-click=time.remove(rvent)><i class=\"fa fa-close text-muted\"></i></a><table class=\"table table-condensed table-responsive table-stripped table-hover\"><tbody><tr><th>Headline</th><td editable-text=rvent.headline e-form=timeform>{{rvent.headline | uppercase}}</td></tr><tr><th>Start Date</th><td editable-text=rvent.startDate e-form=timeform>{{rvent.startDate | date}}</td></tr><tr><th>End Date</th><td editable-text=rvent.endDate e-form=timeform>{{rvent.endDate | date}}</td></tr><tr><th>Tag</th><td editable-text=rvent.tag e-form=timeform>{{rvent.tag}}</td></tr><tr><th>Text</th><td editable-textarea=rvent.text e-form=timeform>{{rvent.text}}</td></tr><tr><th>ClassName</th><td editable-text=rvent.classname e-form=timeform>{{rvent.classname}}</td></tr><tr><th>Media</th><td editable-text=rvent.asset.media e-form=timeform>{{rvent.asset.media}}</td></tr><tr><th>Credit</th><td editable-text=rvent.asset.credit e-form=timeform>{{rvent.asset.credit}}</td></tr><tr><th>Caption</th><td editable-text=rvent.asset.caption e-form=timeform>{{rvent.asset.caption}}</td></tr><tr><th>Thumbnail</th><td editable-text=rvent.asset.thumbnail e-form=timeform>{{rvent.asset.thumbnail}}</td></tr></tbody></table></h4></div></div><script type=text/javascript src={widgetsPath}/treewidget/src/alt/build/js/storyjs-embed.js></script>");
+$templateCache.put("{widgetsPath}/treewidget/src/alt/timeline.html","<header class=\"bar bar-dark\" style=display:flex;justify-content:space-around;><label ng-bind=time.selectedtheme></label> <input ng-model=time.source placeholder=SourceID type=text> <button class=\"fa fa-edit btn btn-default text-primary\" ng-click=timeform.$show() uib-tooltip=\"Show Form\" tooltip-animation tooltip-placement=top></button> <button class=\"fa fa-external-link btn btn-default text-info\" ng-click=time.import(time.source) uib-tooltip=Import tooltip-animation tooltip-placement=top></button> <button class=\"fa fa-save btn btn-default text-success\" ng-click=time.save() uib-tooltip=Save tooltip-animation tooltip-placement=top></button> <button class=\"fa fa-play btn btn-default text-warning\" ng-click=time.initialize(time.data) uib-tooltip=\"Build Timeline\" tooltip-animation tooltip-placement=top></button></header><section id=timeline></section><link rel=stylesheet type=text/css href=/lexlab-starter/public/Timecube.demo/css/timecube.jquery.css><div id=content-wrapper><div id=timeline class=timeCube></div><a href=# onclick=\"return false;\" id=next-link></a> <a href=# onclick=\"return false;\" id=prev-link class=disabled></a></div><div id=swipe></div><table class=\"table table-condensed table-responsive table-stripped table-hover\"><tbody><tr><th>Headline</th><td editable-text=time.data.timeline.headline e-form=timeform>{{time.data.timeline.headline | uppercase}}</td></tr><tr><th>Headline</th><td editable-textarea=time.data.timeline.text e-form=timeform>{{time.data.timeline.text}}</td></tr><tr><th>Media</th><td editable-text=time.data.timeline.asset.media e-form=timeform>{{time.data.timeline.asset.media}}</td></tr><tr><th>Credit</th><td editable-text=time.data.timeline.asset.credit e-form=timeform>{{time.data.timeline.asset.credit}}</td></tr><tr><th>Caption</th><td editable-text=time.data.timeline.asset.caption e-form=timeform>{{time.data.timeline.asset.caption}}</td></tr></tbody></table><div class=\"card card-block\"><dir-pagination-controls pagination-id=timeline template-url=/llp_core/bower_components/angular-utils-pagination/dirPagination.tpl.html></dir-pagination-controls><a class=\"fa fa-plus text-success pull-right\" ng-click=time.addnew()></a><div class=\"card card-block img-hover img-shadow bs-callout bs-callout-Applicant\" dir-paginate=\"rvent in time.data.timeline.date | itemsPerPage: 5\" pagination-id=timeline><h4 class=card-title><img ng-src={{rvent.asset.thumbnail}} style=max-height:100px; class=\"img img-thumbnail img-hover pull-left\" ng-click=timeform.$show()> <a class=pull-right ng-click=time.remove(rvent)><i class=\"fa fa-close text-muted\"></i></a><table class=\"table table-condensed table-responsive table-stripped table-hover\"><tbody><tr><th>Headline</th><td editable-text=rvent.headline e-form=timeform>{{rvent.headline | uppercase}}</td></tr><tr><th>Start Date</th><td editable-text=rvent.startDate e-form=timeform>{{rvent.startDate | date}}</td></tr><tr><th>End Date</th><td editable-text=rvent.endDate e-form=timeform>{{rvent.endDate | date}}</td></tr><tr><th>Tag</th><td editable-text=rvent.tag e-form=timeform>{{rvent.tag}}</td></tr><tr><th>Text</th><td editable-textarea=rvent.text e-form=timeform>{{rvent.text}}</td></tr><tr><th>ClassName</th><td editable-text=rvent.classname e-form=timeform>{{rvent.classname}}</td></tr><tr><th>Media</th><td editable-text=rvent.asset.media e-form=timeform>{{rvent.asset.media}}</td></tr><tr><th>Credit</th><td editable-text=rvent.asset.credit e-form=timeform>{{rvent.asset.credit}}</td></tr><tr><th>Caption</th><td editable-text=rvent.asset.caption e-form=timeform>{{rvent.asset.caption}}</td></tr><tr><th>Thumbnail</th><td editable-text=rvent.asset.thumbnail e-form=timeform>{{rvent.asset.thumbnail}}</td></tr></tbody></table></h4></div></div><script type=text/javascript src={widgetsPath}/treewidget/src/alt/build/js/storyjs-embed.js></script>");
 $templateCache.put("{widgetsPath}/treewidget/src/alt/build/embed/index.html","<!DOCTYPE html><html lang=en><head><title>TimelineJS Embed</title><meta charset=utf-8><meta name=description content=\"TimelineJS Embed\"><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-touch-fullscreen content=yes><meta name=viewport content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0\"><style>\n      html, body {\n      height:100%;\n      padding: 0px;\n      margin: 0px;\n      }\n\n      #timeline-embed { height: 100%; }\n    </style></head></html><body><div id=timeline-embed></div><script type=text/javascript>\n    var trim_point = window.location.href.indexOf(\'embed/index.html\');\n    if (trim_point > 0) {\n      var embed_path = window.location.href.substring(0,trim_point); // supports https access via https://s3.amazonaws.com/cdn.knightlab.com/libs/timeline/latest/embed/index.html \n    } else {\n      var embed_path = \"http://cdn.knightlab.com/libs/timeline/latest/\";\n    }\n  </script><script type=text/javascript src=../js/storyjs-embed-cdn.js?v214></script></body>");}]);
 /*
     TimelineJS - ver. 2.32.0 - 2014-05-08
